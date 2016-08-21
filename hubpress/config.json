@@ -5,7 +5,14 @@
     "branch": "gh-pages",
     "cname": "www.rhymewithgravy.com"
   },
+  "site": {},
+  "socialnetwork": {
+    "email": "marc@rhymewithgravy.com",
+    "twitter": "marcsavy",
+    "linkedin": "https://uk.linkedin.com/in/marcsavy",
+    "github": "msavy"
+  },
   "theme": {
-    "name": "Casper"
+    "name": "casper"
   }
 }
