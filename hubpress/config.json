@@ -2,7 +2,8 @@
   "meta": {
     "username": "msavy",
     "repositoryName": "rhymewithgravy.com",
-    "branch": "gh-pages"
+    "branch": "gh-pages",
+    "cname": "www.rhymewithgravy.com"
   },
   "theme": {
     "name": "Casper"
