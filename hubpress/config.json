@@ -5,7 +5,11 @@
     "branch": "gh-pages",
     "cname": "www.rhymewithgravy.com"
   },
-  "site": {},
+  "site": {
+    "title": "The musings of Marc",
+    "description": "I'm a core contributor on apiman, an open source API Management platform. ",
+    "googleAnalytics": "UA-82902494-1"
+  },
   "socialnetwork": {
     "email": "marc@rhymewithgravy.com",
     "twitter": "marcsavy",
