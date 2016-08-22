@@ -12,9 +12,9 @@
   },
   "socialnetwork": {
     "email": "marc@rhymewithgravy.com",
-    "twitter": "marcsavy",
+    "twitter": "https://twitter.com/marcsavy",
     "linkedin": "https://uk.linkedin.com/in/marcsavy",
-    "github": "msavy"
+    "github": "https://github.com/msavy"
   },
   "theme": {
     "name": "casper"
