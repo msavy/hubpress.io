@@ -3,6 +3,8 @@
 :url-vertx-gw-impl: https://github.com/apiman/apiman/tree/master/gateway/platforms/vertx3/vertx3
 :url-apiman: http://apiman.io
 :url-vertx-example: https://github.com/vert-x3/vertx-examples/blob/master/core-examples/src/main/java/io/vertx/example/core/http2/simple/Server.java
+:url-alpn-boot-list: http://www.eclipse.org/jetty/documentation/9.4.x/alpn-chapter.html#alpn-versions
+:url-alpn-boot-bin: https://repo1.maven.org/maven2/org/mortbay/jetty/alpn/alpn-boot/
 :source-highlighter: hightlightjs
 :hp-tags: vertx apiman guide
 
@@ -14,7 +16,7 @@ There's already {url-vertx-example}[an example] in the Vert.x `core-examples` re
 
 So, here's how to go about making it work:
 
-. Download the version of `apln-boot` http://www.eclipse.org/jetty/documentation/9.4.x/alpn-chapter.html#alpn-versions[corresponding to your version of Java]. The binaries are available on https://repo1.maven.org/maven2/org/mortbay/jetty/alpn/alpn-boot/[Maven Central], or you can build your own if you prefer.
+. Download the version of `apln-boot` {url-alpn-boot-list}[corresponding to your version of Java]. The binaries are available on {url-alpn-boot-bin}[Maven Central], or you can build your own if you prefer.
 
 . When launching your verticle, put `alpn-boot` on the JVM's _boot classpath_; it's altering core library functionality and needs to be available early. There are a few ways to do this, here's the easiest one:
 
@@ -57,7 +59,7 @@ public class Example extends AbstractVerticle {
 }
 ```
 
-You'll likely want to check that it's really working. I've been using `cURL` compiled with `nghttp2` to enable HTTP/2 support, depending on your OS or distro, the built-in version it may already be there. If you're using OS X, you can do `brew install curl --with-nghttp2` footnote:[But remember cURL not linked by default so you'll have to dig into its Cellar (e.g. /Cellar/curl/7.50.1/bin/curl). Of course, you could alias it, or force link :-)]
+You'll likely want to check that it's really working. I've been using `cURL` compiled with `nghttp2` to enable HTTP/2 support; depending on your OS or distro, the shipping version may have been built with it. If you're using OS X, you can use `brew install curl --with-nghttp2`. footnote:[But remember cURL not linked by default so you'll have to dig into its Cellar (e.g. /Cellar/curl/7.50.1/bin/curl). Of course, you could alias it, or force link :-).]
 
 ```shellsession
  $  curl -k -v --http2 https://localhost:8443/
