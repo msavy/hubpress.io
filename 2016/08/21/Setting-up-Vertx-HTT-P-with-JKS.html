@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <title>Setting up Vert.x HTTP/2 with JKS</title>
+    <meta name="description" content="" />
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="shortcut icon" href="http://www.rhymewithgravy.com/favicon.ico">
+
+    <link rel="stylesheet" type="text/css" href="//www.rhymewithgravy.com/themes/casper/assets/css/screen.css?v=1471867946106" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400" />
+
+    <link rel="canonical" href="http://www.rhymewithgravy.com/2016/08/21/Setting-up-Vertx-HTT-P-with-JKS.html" />
+    <meta name="referrer" content="origin" />
+    
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Setting up Vert.x HTTP/2 with JKS" />
+    <meta property="og:description" content="I was playing with Vert.x&amp;#8217;s excellent HTTP/2 functionality with the aim of determining how difficult it&amp;#8217;d be to add support into apiman&#x27;s Vert.x gateway implementation (which is still somewhat of a tech preview, but it&amp;#8217;s finally getting some love). Many HTTP/" />
+    <meta property="og:url" content="http://www.rhymewithgravy.com/2016/08/21/Setting-up-Vertx-HTT-P-with-JKS.html" />
+    <meta property="article:tag" content="vertx apiman guide" />
+    
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Setting up Vert.x HTTP/2 with JKS" />
+    <meta name="twitter:description" content="I was playing with Vert.x&amp;#8217;s excellent HTTP/2 functionality with the aim of determining how difficult it&amp;#8217;d be to add support into apiman&#x27;s Vert.x gateway implementation (which is still somewhat of a tech preview, but it&amp;#8217;s finally getting some love). Many HTTP/" />
+    <meta name="twitter:url" content="http://www.rhymewithgravy.com/2016/08/21/Setting-up-Vertx-HTT-P-with-JKS.html" />
+    
+    <script type="application/ld+json">
+null
+    </script>
+
+    <meta name="generator" content="HubPress" />
+    <link rel="alternate" type="application/rss+xml" title="" href="http://www.rhymewithgravy.com/rss/" />
+</head>
+<body class="post-template tag-vertx-apiman-guide nav-closed">
+
+    
+
+    <div class="site-wrapper">
+
+        
+
+
+<header class="main-header post-head no-cover">
+    <nav class="main-nav  clearfix">
+        
+    </nav>
+</header>
+
+<main class="content" role="main">
+    <article class="post tag-vertx-apiman-guide">
+
+        <header class="post-header">
+            <h1 class="post-title">Setting up Vert.x HTTP/2 with JKS</h1>
+            <section class="post-meta">
+                <time class="post-date" datetime="2016-08-21">21 August 2016</time>  on <a href="http://www.rhymewithgravy.com/tag/vertx-apiman-guide/">vertx apiman guide</a>
+            </section>
+        </header>
+
+        <section class="post-content">
+            <div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>I was playing with <a href="http://vertx.io/">Vert.x&#8217;s</a> excellent HTTP/2 functionality with the aim of determining how difficult it&#8217;d be to add support into <a href="http://apiman.io">apiman</a>'s Vert.x <a href="https://github.com/apiman/apiman/tree/master/gateway/platforms/vertx3/vertx3">gateway implementation</a> (which is still somewhat of a tech preview, but it&#8217;s finally getting some love). Many HTTP/2 clients don&#8217;t support non-TLS connections, so transport security is a de facto requirement in the real-world usage (particularly with browsers).</p>
+</div>
+<div class="paragraph">
+<p>There&#8217;s already <a href="https://github.com/vert-x3/vertx-examples/blob/master/core-examples/src/main/java/io/vertx/example/core/http2/simple/Server.java">an example</a> in the Vert.x <code>core-examples</code> repository demonstrating how to set up and use HTTP/2. However, when using a keystore in JKS format, Vert.x (in v3.3.2, at least) tries to use Jetty&#8217;s <code>alpn-boot</code> ALPN implementation rather than OpenSSL.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_a_few_simple_steps">A few simple steps&#8230;&#8203;</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>So, here&#8217;s how to go about making it work:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Download the version of <code>apln-boot</code> <a href="http://www.eclipse.org/jetty/documentation/9.4.x/alpn-chapter.html#alpn-versions">corresponding to your version of Java</a>. The binaries are available on <a href="https://repo1.maven.org/maven2/org/mortbay/jetty/alpn/alpn-boot/">Maven Central</a>, or you can build your own if you prefer.</p>
+</li>
+<li>
+<p>When launching your verticle, put <code>alpn-boot</code> on the JVM&#8217;s <em>boot classpath</em>; it&#8217;s altering core library functionality and needs to be available early. There are a few ways to do this, here&#8217;s the easiest one:</p>
+<div class="literalblock">
+<div class="content">
+<pre>$ JAVA_OPTS=-Xbootclasspath/p:&lt;path-to-apln-boot.jar&gt; vertx run Example.java</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If you&#8217;re using an IDE you should add <code>-Xbootclasspath/p:&lt;path-to-apln-boot.jar&gt;</code> to the VM Arguments of your run configuration.</p>
+</div>
+</li>
+<li>
+<p>Set <code>setUseAlpn(true)</code> on your <code>HttpServerOptions</code>.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_testing_it_out">Testing it out</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Here&#8217;s some code to test it with.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">import io.vertx.core.AbstractVerticle;
+import io.vertx.core.http.HttpServer;
+import io.vertx.core.http.HttpServerOptions;
+import io.vertx.core.net.JksOptions;
+
+public class Example extends AbstractVerticle {
+
+    @Override
+    public void start() throws Exception {
+        HttpServer server =
+        vertx.createHttpServer(new HttpServerOptions()
+            .setUseAlpn(true)
+            .setSsl(true)
+            .setKeyStoreOptions(
+                new JksOptions()
+                .setPath(&lt;Path to your JKS&gt;)
+                .setPassword(&lt;The JKS password&gt;)
+            )
+        );
+
+        server.requestHandler(req -&gt; {
+            req.response().putHeader("Content-Type", "text/plain")
+                .end("Greetings, Earthicans!\n");
+        }).listen(8443);
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You&#8217;ll likely want to check that it&#8217;s really working. I&#8217;ve been using <code>cURL</code> compiled with <code>nghttp2</code> to enable HTTP/2 support, depending on your OS or distro, the built-in version it may already be there. If you&#8217;re using OS X, you can do <code>brew install curl --with-nghttp2</code> <sup class="footnote">[<a id="_footnoteref_1" class="footnote" href="#_footnote_1" title="View footnote.">1</a>]</sup></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-shellsession" data-lang="shellsession"> $  curl -k -v --http2 https://localhost:8443/
+ *   Trying ::1...
+ * Connected to localhost (::1) port 8443 (#0)
+ * ALPN, offering h2
+ * ALPN, offering http/1.1
+ * Cipher selection: ALL:!EXPORT:!EXPORT40:!EXPORT56:!aNULL:!LOW:!RC4:@STRENGTH
+ * successfully set certificate verify locations:
+ *   CAfile: /usr/local/etc/openssl/cert.pem
+   CApath: none
+ * TLSv1.2 (OUT), TLS header, Certificate Status (22):
+ * TLSv1.2 (OUT), TLS handshake, Client hello (1):
+ * TLSv1.2 (IN), TLS handshake, Server hello (2):
+ * TLSv1.2 (IN), TLS handshake, Certificate (11):
+ * TLSv1.2 (IN), TLS handshake, Server key exchange (12):
+ * TLSv1.2 (IN), TLS handshake, Server finished (14):
+ * TLSv1.2 (OUT), TLS handshake, Client key exchange (16):
+ * TLSv1.2 (OUT), TLS change cipher, Client hello (1):
+ * TLSv1.2 (OUT), TLS handshake, Finished (20):
+ * TLSv1.2 (IN), TLS change cipher, Client hello (1):
+ * TLSv1.2 (IN), TLS handshake, Finished (20):
+ * SSL connection using TLSv1.2 / ECDHE-RSA-AES128-GCM-SHA256
+ * ALPN, server accepted to use h2
+ * Server certificate:
+ *  subject: C=lo; ST=localhost; L=localhost; O=localhost; OU=localhost; CN=localhost
+ *  start date: Aug 20 15:23:02 2016 GMT
+ *  expire date: Nov 18 15:23:02 2016 GMT
+ *  issuer: C=lo; ST=localhost; L=localhost; O=localhost; OU=localhost; CN=localhost
+ *  SSL certificate verify result: self signed certificate (18), continuing anyway.
+ * Using HTTP2, server supports multi-use
+ * Connection state changed (HTTP/2 confirmed)
+ * TCP_NODELAY set
+ * Copying HTTP/2 data in stream buffer to connection buffer after upgrade: len=0
+ * Using Stream ID: 1 (easy handle 0x7fb8aa008800)
+ &gt; GET / HTTP/1.1
+ &gt; Host: localhost:8443
+ &gt; User-Agent: curl/7.50.1
+ &gt; Accept: */*
+ &gt;
+ * Connection state changed (MAX_CONCURRENT_STREAMS updated)!
+ &lt; HTTP/2 200
+ &lt; content-type: text/plain
+ &lt; content-length: 22
+ &lt;
+ * Connection #0 to host localhost left intact
+ Greetings, Earthicans!</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Hooray!</p>
+</div>
+<div class="paragraph">
+<p>Vert.x really is a gratifyingly well-thought-out and easy-to-use.</p>
+</div>
+</div>
+</div>
+<div id="footnotes">
+<hr>
+<div class="footnote" id="_footnote_1">
+<a href="#_footnoteref_1">1</a>. But remember cURL not linked by default so you&#8217;ll have to dig into its Cellar (e.g. /Cellar/curl/7.50.1/bin/curl). Of course, you could alias it, or force link :-)
+</div>
+</div>
+        </section>
+
+        <footer class="post-footer">
+
+
+            <figure class="author-image">
+                <a class="img" href="http://www.rhymewithgravy.com/author/msavy/" style="background-image: url(https://avatars.githubusercontent.com/u/423513?v&#x3D;3)"><span class="hidden">Marc Savy's Picture</span></a>
+            </figure>
+
+            <section class="author">
+                <h4><a href="http://www.rhymewithgravy.com/author/msavy/">Marc Savy</a></h4>
+
+                    <p>Core developer on the @apiman API Management project</p>
+                <div class="author-meta">
+                    <span class="author-location icon-location">UK</span>
+                    
+                </div>
+            </section>
+
+
+            <section class="share">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="https://twitter.com/intent/tweet?text=Setting%20up%20Vert.x%20HTTP%2F2%20with%20JKS&amp;url=http://www.rhymewithgravy.com/2016/08/21/Setting-up-Vertx-HTT-P-with-JKS.html"
+                    onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden">Twitter</span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://www.rhymewithgravy.com/2016/08/21/Setting-up-Vertx-HTT-P-with-JKS.html"
+                    onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden">Facebook</span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=http://www.rhymewithgravy.com/2016/08/21/Setting-up-Vertx-HTT-P-with-JKS.html"
+                   onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden">Google+</span>
+                </a>
+            </section>
+
+        </footer>
+
+
+    </article>
+
+</main>
+
+<aside class="read-next">
+</aside>
+
+
+
+        <footer class="site-footer clearfix">
+            <section class="copyright"><a href="http://www.rhymewithgravy.com"></a> &copy; 2016</section>
+            <section class="poweredby">Proudly published with <a href="http://hubpress.io">HubPress</a></section>
+        </footer>
+
+    </div>
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js?v="></script> <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.min.js?v="></script> <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js?v="></script> 
+      <script type="text/javascript">
+        jQuery( document ).ready(function() {
+          // change date with ago
+          jQuery('ago.ago').each(function(){
+            var element = jQuery(this).parent();
+            element.html( moment(element.text()).fromNow());
+          });
+        });
+
+        hljs.initHighlightingOnLoad();
+      </script>
+
+    <script type="text/javascript" src="//www.rhymewithgravy.com/themes/casper/assets/js/jquery.fitvids.js?v=1471867946106"></script>
+    <script type="text/javascript" src="//www.rhymewithgravy.com/themes/casper/assets/js/index.js?v=1471867946106"></script>
+
+</body>
+</html>
