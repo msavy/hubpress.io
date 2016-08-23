@@ -1,4 +1,5 @@
 = Beware the Connection Header in HTTP/2
+Marc Savy <marc@rhymewithgravy.com>
 :url-prev: http://www.rhymewithgravy.com/2016/08/21/Setting-up-Vertx-HTT-P-with-JKS.html
 :url-h2c: https://github.com/fstab/h2c
 :url-rfc7540: https://tools.ietf.org/html/rfc7540#section-3.2.1
