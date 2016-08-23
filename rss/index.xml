@@ -1,4 +1,54 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[The musings of Marc]]></title><description><![CDATA[I'm a core contributor on apiman, an open source API Management platform. ]]></description><link>http://www.rhymewithgravy.com</link><generator>RSS for Node</generator><lastBuildDate>Tue, 23 Aug 2016 16:49:20 GMT</lastBuildDate><atom:link href="http://www.rhymewithgravy.com/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Setting up Vert.x HTTP/2 with JKS]]></title><description><![CDATA[<div id="preamble">
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[The musings of Marc]]></title><description><![CDATA[I'm a core contributor on apiman, an open source API Management platform. ]]></description><link>http://www.rhymewithgravy.com</link><generator>RSS for Node</generator><lastBuildDate>Tue, 23 Aug 2016 16:52:38 GMT</lastBuildDate><atom:link href="http://www.rhymewithgravy.com/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Beware the Connection Header in HTTP/2]]></title><description><![CDATA[<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p><a href="http://www.rhymewithgravy.com/2016/08/21/Setting-up-Vertx-HTT-P-with-JKS.html">Whilst tinkering apiman&#8217;s Vert.x gateway implementation</a> I ran into a strange issue when invoking an API via <code>curl --http2</code>. It seemed to work fine in Chrome and using Go&#8217;s <a href="https://github.com/fstab/h2c">h2c</a>:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>$ * http2 error: Invalid HTTP header field was received: frame type: 1, stream: 1, name: [connection], value: [keep-alive]</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This is what the setup looks like (distilled):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>HTTP/2 Client &lt;--&gt; Apiman Gateway (HTTP/2) &lt;--&gt; Test API (HTTP/1)</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_what_s_going_on">What&#8217;s going on?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>I took to Twitter to figure out what was going on.</p>
+</div>
+<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr"><a href="https://twitter.com/apiman_io">@apiman_io</a> <a href="https://twitter.com/clementplop">@clementplop</a> although the cURL --http2 doesn&#39;t like the headers Vert.x sends - interesting <a href="https://t.co/0dK81huCmb">https://t.co/0dK81huCmb</a></p>&mdash; Marc Savy (@marcsavy) <a href="https://twitter.com/marcsavy/status/767038443151036416">August 20, 2016</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+<div class="paragraph">
+<p>Out of the blue, Mr cURL himself (Daniel Stenberg) popped up with the answer quoted from <a href="https://tools.ietf.org/html/rfc7540#section-3.2.1">RFC 7540</a>:</p>
+</div>
+<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr"><a href="https://twitter.com/marcsavy">@marcsavy</a> <a href="https://twitter.com/apiman_io">@apiman_io</a> <a href="https://twitter.com/clementplop">@clementplop</a> &quot;An endpoint MUST NOT generate an HTTP/2 message containing connection-specific header fields&quot;</p>&mdash; Daniel Stenberg (@bagder) <a href="https://twitter.com/bagder/status/767052367686688768">August 20, 2016</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_mystery_solved">Mystery solved</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Aha! The backend API apiman was <strong>proxying the response from</strong> returned a <code>Connection: keep-alive</code> header. Apiman simply forwarded this on, but it turns out this violates the HTTP/2 spec as <strong>there should be no connection-specific header fields</strong> - in response cURL spits out the error we see above.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>HTTP/2 Client (http2 error...) &lt;- Apiman Gateway &lt;- Test API (sets "Connection: keep-alive")</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/apiman/apiman/pull/498">The solution</a> was just to filter out <code>Connection</code> headers in apiman, but I wonder whether Vert.x should do it by default (or show an message, exception, etc). That said, I think <em>"it&#8217;s the app&#8217;s responsibility not to do stupid things"</em> or <em>"we shouldn&#8217;t handle it"</em> are both valid responses depending upon your philosophy. So, <a href="https://twitter.com/julienviet/status/767385923633967105">I let the Vert.x guys know</a>, and let&#8217;s see.</p>
+</div>
+</div>
+</div>]]></description><link>http://www.rhymewithgravy.com/2016/08/23/Beware-the-Connection-Header-in-HTT-P.html</link><guid isPermaLink="true">http://www.rhymewithgravy.com/2016/08/23/Beware-the-Connection-Header-in-HTT-P.html</guid><category><![CDATA[vertx]]></category><category><![CDATA[ apiman]]></category><category><![CDATA[ http2]]></category><dc:creator><![CDATA[Marc Savy]]></dc:creator><pubDate>Tue, 23 Aug 2016 00:00:00 GMT</pubDate></item><item><title><![CDATA[Setting up Vert.x HTTP/2 with JKS]]></title><description><![CDATA[<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
 <p>I was playing with <a href="http://vertx.io/">Vert.x&#8217;s</a> excellent HTTP/2 functionality with the aim of determining how difficult it&#8217;d be to add support into <a href="http://apiman.io">apiman</a>'s Vert.x <a href="https://github.com/apiman/apiman/tree/master/gateway/platforms/vertx3/vertx3">gateway implementation</a> (which is still somewhat of a tech preview, but it&#8217;s finally getting some love). Many HTTP/2 clients don&#8217;t support non-TLS connections, so transport security is a de facto requirement in the real-world usage (particularly with browsers).</p>
