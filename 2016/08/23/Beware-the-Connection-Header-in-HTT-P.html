@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <title>Beware the Connection Header in HTTP/2</title>
+    <meta name="description" content="" />
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="shortcut icon" href="http://www.rhymewithgravy.com/favicon.ico">
+
+    <link rel="stylesheet" type="text/css" href="//www.rhymewithgravy.com/themes/casper/assets/css/screen.css?v=1471971158370" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400" />
+
+    <link rel="canonical" href="http://www.rhymewithgravy.com/2016/08/23/Beware-the-Connection-Header-in-HTT-P.html" />
+    <meta name="referrer" content="origin" />
+    
+    <meta property="og:site_name" content="The musings of Marc" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Beware the Connection Header in HTTP/2" />
+    <meta property="og:description" content="Whilst tinkering apiman&amp;#8217;s Vert.x gateway implementation I ran into a strange issue when invoking an API via curl --http2. It seemed to work fine in Chrome and using Go&amp;#8217;s h2c: $ * http2 error: Invalid HTTP header field was received: frame type: 1, stream: 1, name: [connection]" />
+    <meta property="og:url" content="http://www.rhymewithgravy.com/2016/08/23/Beware-the-Connection-Header-in-HTT-P.html" />
+    <meta property="article:tag" content="vertx" />
+    <meta property="article:tag" content=" apiman" />
+    <meta property="article:tag" content=" http2" />
+    
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Beware the Connection Header in HTTP/2" />
+    <meta name="twitter:description" content="Whilst tinkering apiman&amp;#8217;s Vert.x gateway implementation I ran into a strange issue when invoking an API via curl --http2. It seemed to work fine in Chrome and using Go&amp;#8217;s h2c: $ * http2 error: Invalid HTTP header field was received: frame type: 1, stream: 1, name: [connection]" />
+    <meta name="twitter:url" content="http://www.rhymewithgravy.com/2016/08/23/Beware-the-Connection-Header-in-HTT-P.html" />
+    
+    <script type="application/ld+json">
+null
+    </script>
+
+    <meta name="generator" content="HubPress" />
+    <link rel="alternate" type="application/rss+xml" title="The musings of Marc" href="http://www.rhymewithgravy.com/rss/" />
+</head>
+<body class="post-template tag-vertx tag-apiman tag-http2 nav-closed">
+
+    
+
+    <div class="site-wrapper">
+
+        
+
+
+<header class="main-header post-head no-cover">
+    <nav class="main-nav  clearfix">
+        
+    </nav>
+</header>
+
+<main class="content" role="main">
+    <article class="post tag-vertx tag-apiman tag-http2">
+
+        <header class="post-header">
+            <h1 class="post-title">Beware the Connection Header in HTTP/2</h1>
+            <section class="post-meta">
+                <time class="post-date" datetime="2016-08-23">23 August 2016</time>  on <a href="http://www.rhymewithgravy.com/tag/vertx/">vertx</a>, <a href="http://www.rhymewithgravy.com/tag/apiman/"> apiman</a>, <a href="http://www.rhymewithgravy.com/tag/http2/"> http2</a>
+            </section>
+        </header>
+
+        <section class="post-content">
+            <div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p><a href="http://www.rhymewithgravy.com/2016/08/21/Setting-up-Vertx-HTT-P-with-JKS.html">Whilst tinkering apiman&#8217;s Vert.x gateway implementation</a> I ran into a strange issue when invoking an API via <code>curl --http2</code>. It seemed to work fine in Chrome and using Go&#8217;s <a href="https://github.com/fstab/h2c">h2c</a>:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>$ * http2 error: Invalid HTTP header field was received: frame type: 1, stream: 1, name: [connection], value: [keep-alive]</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This is what the setup looks like (distilled):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>HTTP/2 Client &lt;--&gt; Apiman Gateway (HTTP/2) &lt;--&gt; Test API (HTTP/1)</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_what_s_going_on">What&#8217;s going on?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>I took to Twitter to figure out what was going on.</p>
+</div>
+<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr"><a href="https://twitter.com/apiman_io">@apiman_io</a> <a href="https://twitter.com/clementplop">@clementplop</a> although the cURL --http2 doesn&#39;t like the headers Vert.x sends - interesting <a href="https://t.co/0dK81huCmb">https://t.co/0dK81huCmb</a></p>&mdash; Marc Savy (@marcsavy) <a href="https://twitter.com/marcsavy/status/767038443151036416">August 20, 2016</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+<div class="paragraph">
+<p>Out of the blue, Mr cURL himself (Daniel Stenberg) popped up with the answer quoted from <a href="https://tools.ietf.org/html/rfc7540#section-3.2.1">RFC 7540</a>:</p>
+</div>
+<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr"><a href="https://twitter.com/marcsavy">@marcsavy</a> <a href="https://twitter.com/apiman_io">@apiman_io</a> <a href="https://twitter.com/clementplop">@clementplop</a> &quot;An endpoint MUST NOT generate an HTTP/2 message containing connection-specific header fields&quot;</p>&mdash; Daniel Stenberg (@bagder) <a href="https://twitter.com/bagder/status/767052367686688768">August 20, 2016</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_mystery_solved">Mystery solved</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Aha! The backend API apiman was <strong>proxying the response from</strong> returned a <code>Connection: keep-alive</code> header. Apiman simply forwarded this on, but it turns out this violates the HTTP/2 spec as <strong>there should be no connection-specific header fields</strong> - in response cURL spits out the error we see above.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>HTTP/2 Client (http2 error...) &lt;- Apiman Gateway &lt;- Test API (sets "Connection: keep-alive")</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/apiman/apiman/pull/498">The solution</a> was just to filter out <code>Connection</code> headers in apiman, but I wonder whether Vert.x should do it by default (or show an message, exception, etc). That said, I think <em>"it&#8217;s the app&#8217;s responsibility not to do stupid things"</em> or <em>"we shouldn&#8217;t handle it"</em> are both valid responses depending upon your philosophy. So, <a href="https://twitter.com/julienviet/status/767385923633967105">I let the Vert.x guys know</a>, and let&#8217;s see.</p>
+</div>
+</div>
+</div>
+        </section>
+
+        <footer class="post-footer">
+
+
+            <figure class="author-image">
+                <a class="img" href="http://www.rhymewithgravy.com/author/msavy/" style="background-image: url(https://avatars.githubusercontent.com/u/423513?v&#x3D;3)"><span class="hidden">Marc Savy's Picture</span></a>
+            </figure>
+
+            <section class="author">
+                <h4><a href="http://www.rhymewithgravy.com/author/msavy/">Marc Savy</a></h4>
+
+                    <p>Core developer on the @apiman API Management project</p>
+                <div class="author-meta">
+                    <span class="author-location icon-location">UK</span>
+                    
+                </div>
+            </section>
+
+
+            <section class="share">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="https://twitter.com/intent/tweet?text=Beware%20the%20Connection%20Header%20in%20HTTP%2F2&amp;url=http://www.rhymewithgravy.com/2016/08/23/Beware-the-Connection-Header-in-HTT-P.html"
+                    onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden">Twitter</span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://www.rhymewithgravy.com/2016/08/23/Beware-the-Connection-Header-in-HTT-P.html"
+                    onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden">Facebook</span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=http://www.rhymewithgravy.com/2016/08/23/Beware-the-Connection-Header-in-HTT-P.html"
+                   onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden">Google+</span>
+                </a>
+            </section>
+
+        </footer>
+
+
+    </article>
+
+</main>
+
+<aside class="read-next">
+</aside>
+
+
+
+        <footer class="site-footer clearfix">
+            <section class="copyright"><a href="http://www.rhymewithgravy.com">The musings of Marc</a> &copy; 2016</section>
+            <section class="poweredby">Proudly published with <a href="http://hubpress.io">HubPress</a></section>
+        </footer>
+
+    </div>
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js?v="></script> <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.min.js?v="></script> <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js?v="></script> 
+      <script type="text/javascript">
+        jQuery( document ).ready(function() {
+          // change date with ago
+          jQuery('ago.ago').each(function(){
+            var element = jQuery(this).parent();
+            element.html( moment(element.text()).fromNow());
+          });
+        });
+
+        hljs.initHighlightingOnLoad();
+      </script>
+
+    <script type="text/javascript" src="//www.rhymewithgravy.com/themes/casper/assets/js/jquery.fitvids.js?v=1471971158370"></script>
+    <script type="text/javascript" src="//www.rhymewithgravy.com/themes/casper/assets/js/index.js?v=1471971158370"></script>
+
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-82902494-1', 'auto');
+    ga('send', 'pageview');
+
+    </script>
+</body>
+</html>
