@@ -1,0 +1,44 @@
+= Beware the Connection Header in HTTP/2
+:url-prev: http://www.rhymewithgravy.com/2016/08/21/Setting-up-Vertx-HTT-P-with-JKS.html
+:url-h2c: https://github.com/fstab/h2c
+:url-rfc7540: https://tools.ietf.org/html/rfc7540#section-3.2.1
+:hp-tags: vertx, apiman, http2
+
+{url-prev}[Whilst tinkering apiman's Vert.x gateway implementation] I ran into a strange issue when invoking an API via `curl --http2`. It seemed to work fine in Chrome and using Go's {url-h2c}[h2c]:
+
+ $ * http2 error: Invalid HTTP header field was received: frame type: 1, stream: 1, name: [connection], value: [keep-alive]
+
+This is what the setup looks like (distilled):
+
+```
+HTTP/2 Client <--> Apiman Gateway (HTTP/2) <--> Test API (HTTP/1)
+```
+     
+== What's going on?
+
+I took to Twitter to figure out what was going on.
+
+++++
+<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr"><a href="https://twitter.com/apiman_io">@apiman_io</a> <a href="https://twitter.com/clementplop">@clementplop</a> although the cURL --http2 doesn&#39;t like the headers Vert.x sends - interesting <a href="https://t.co/0dK81huCmb">https://t.co/0dK81huCmb</a></p>&mdash; Marc Savy (@marcsavy) <a href="https://twitter.com/marcsavy/status/767038443151036416">August 20, 2016</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+++++
+
+Out of the blue, Mr cURL himself (Daniel Stenberg) popped up with the answer quoted from {url-rfc7540}[RFC 7540]:
+
+++++
+<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr"><a href="https://twitter.com/marcsavy">@marcsavy</a> <a href="https://twitter.com/apiman_io">@apiman_io</a> <a href="https://twitter.com/clementplop">@clementplop</a> &quot;An endpoint MUST NOT generate an HTTP/2 message containing connection-specific header fields&quot;</p>&mdash; Daniel Stenberg (@bagder) <a href="https://twitter.com/bagder/status/767052367686688768">August 20, 2016</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+++++
+
+== Mystery solved
+
+Aha! The backend API apiman was *proxying the response from* returned a `Connection: keep-alive` header. Apiman simply forwarded this on, but it turns out this violates the HTTP/2 spec as *there should be no connection-specific header fields* - in response cURL spits out the error we see above. 
+
+```
+HTTP/2 Client (http2 error...) <- Apiman Gateway <- Test API (sets "Connection: keep-alive")
+```
+
+https://github.com/apiman/apiman/pull/498[The solution] was just to filter out `Connection` headers in apiman, but I wonder whether Vert.x should do it by default (or show an message, exception, etc). That said, I think _"it's the app's responsibility not to do stupid things"_ or _"we shouldn't handle it"_ are both valid responses depending upon your philosophy. So, https://twitter.com/julienviet/status/767385923633967105[I let the Vert.x guys know], and let's see. 
+
+
+ 
