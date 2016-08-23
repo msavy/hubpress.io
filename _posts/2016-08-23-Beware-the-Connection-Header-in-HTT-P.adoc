@@ -40,7 +40,9 @@ HTTP/2 Client (http2 error...) <- Apiman Gateway <- Test API (sets "Connection: 
 
 https://github.com/apiman/apiman/pull/498[The solution] was just to filter out `Connection` headers in apiman, but I wonder whether Vert.x should do it by default (or show an error message, exception, etc). 
 
-That said, I think _"it's the app's responsibility not to do stupid things"_ or _"we should handle it and filter out Connection headers"_ are both valid responses depending upon philosophy. So, https://twitter.com/julienviet/status/767385923633967105[I let the Vert.x guys know], and let's see. 
+That said, I think _"it's the app's responsibility not to do stupid things"_ or _"we should handle it and filter out Connection headers"_ are both valid responses depending upon philosophy. 
+
+So, https://twitter.com/julienviet/status/767385923633967105[I let the Vert.x guys know], and let's see. 
 
 
  
