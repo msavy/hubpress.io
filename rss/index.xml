@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[The musings of Marc]]></title><description><![CDATA[I'm a core contributor on apiman, an open source API Management platform. ]]></description><link>http://www.rhymewithgravy.com</link><generator>RSS for Node</generator><lastBuildDate>Tue, 23 Aug 2016 16:59:09 GMT</lastBuildDate><atom:link href="http://www.rhymewithgravy.com/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Beware the Connection Header in HTTP/2]]></title><description><![CDATA[<div id="preamble">
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[The musings of Marc]]></title><description><![CDATA[I'm a core contributor on apiman, an open source API Management platform. ]]></description><link>http://www.rhymewithgravy.com</link><generator>RSS for Node</generator><lastBuildDate>Tue, 23 Aug 2016 17:00:39 GMT</lastBuildDate><atom:link href="http://www.rhymewithgravy.com/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Beware the Connection Header in HTTP/2]]></title><description><![CDATA[<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
 <p><a href="http://www.rhymewithgravy.com/2016/08/21/Setting-up-Vertx-HTT-P-with-JKS.html">Whilst tinkering apiman&#8217;s Vert.x gateway implementation</a> I ran into a strange issue when invoking an API via <code>curl --http2</code>. It seemed to work fine in Chrome and using Go&#8217;s <a href="https://github.com/fstab/h2c">h2c</a>:</p>
@@ -37,7 +37,7 @@
 <h2 id="_mystery_solved">Mystery solved</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Aha! The backend API apiman was <strong>proxying the response from</strong> returned a <code>Connection: keep-alive</code> header. Apiman simply forwarded this on, but it turns out this violates the HTTP/2 spec as <strong>there should be no connection-specific header fields</strong> - in response cURL spits out the error we see above. Other implementations seem to just ignore these irrelevant fields.</p>
+<p>Aha! The backend API apiman was <strong>proxying the response from</strong> returned a <code>Connection: keep-alive</code> header. Apiman simply forwarded this on, but it turns out this violates the HTTP/2 spec as <strong>there should be no connection-specific header fields</strong> - in response cURL spits out the error we see above. <sup class="footnote">[<a id="_footnoteref_1" class="footnote" href="#_footnote_1" title="View footnote.">1</a>]</sup></p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -50,6 +50,12 @@
 <div class="paragraph">
 <p>That said, I think <em>"it&#8217;s the app&#8217;s responsibility not to do stupid things"</em> or <em>"we should handle it and filter out Connection headers"</em> are both valid responses depending upon philosophy. So, <a href="https://twitter.com/julienviet/status/767385923633967105">I let the Vert.x guys know</a>, and let&#8217;s see.</p>
 </div>
+</div>
+</div>
+<div id="footnotes">
+<hr>
+<div class="footnote" id="_footnote_1">
+<a href="#_footnoteref_1">1</a>. Other implementations seem to just ignore these irrelevant fields.
 </div>
 </div>]]></description><link>http://www.rhymewithgravy.com/2016/08/23/Beware-the-Connection-Header-in-HTT-P.html</link><guid isPermaLink="true">http://www.rhymewithgravy.com/2016/08/23/Beware-the-Connection-Header-in-HTT-P.html</guid><category><![CDATA[vertx]]></category><category><![CDATA[ apiman]]></category><category><![CDATA[ http2]]></category><dc:creator><![CDATA[Marc Savy]]></dc:creator><pubDate>Tue, 23 Aug 2016 00:00:00 GMT</pubDate></item><item><title><![CDATA[Setting up Vert.x HTTP/2 with JKS]]></title><description><![CDATA[<div id="preamble">
 <div class="sectionbody">
