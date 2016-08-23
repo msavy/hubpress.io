@@ -7,7 +7,7 @@
   },
   "site": {
     "title": "The Musings of Marc",
-    "description": "I'm a core contributor on <a href=\"http://www.apiman.io\">apiman<a/>, an open source API Management platform.",
+    "description": "I'm a core contributor on http://www.apiman.io[apiman], an open source API Management platform.",
     "googleAnalytics": "UA-82902494-1",
     "disqus": "rhymewithgravy"
   },
