@@ -5,7 +5,7 @@
 :url-vertx-example: https://github.com/vert-x3/vertx-examples/blob/master/core-examples/src/main/java/io/vertx/example/core/http2/simple/Server.java
 :url-alpn-boot-list: http://www.eclipse.org/jetty/documentation/9.4.x/alpn-chapter.html#alpn-versions
 :url-alpn-boot-bin: https://repo1.maven.org/maven2/org/mortbay/jetty/alpn/alpn-boot/
-:hp-tags: vertx apiman guide
+:hp-tags: vertx, apiman, guide
 
 I was playing with {url-vertx}[Vert.x's] excellent HTTP/2 functionality with the aim of determining how difficult it'd be to add support into {url-apiman}[apiman]'s Vert.x {url-vertx-gw-impl}[gateway implementation] (which is still somewhat of a tech preview, but it's finally getting some love). Many HTTP/2 clients don't support non-TLS connections, so transport security is a de facto requirement in the real-world usage (particularly with browsers).
 
@@ -59,7 +59,7 @@ public class Example extends AbstractVerticle {
 }
 ----
 
-You'll likely want to check that it's really working. I've been using `cURL` compiled with `nghttp2` to enable HTTP/2 support; depending on your OS or distro, the shipping version may have been built with it. If you're using OS X, you can use `brew install curl --with-nghttp2`. footnote:[But remember cURL not linked by default so you'll have to dig into its Cellar (e.g. /Cellar/curl/7.50.1/bin/curl). Of course, you could alias it, or force link :-).]
+You'll likely want to check that it's really working. I've been using `cURL` compiled with `nghttp2` to enable HTTP/2 support; depending on your OS or distro, the shipping version may have been built with it. If you're using OS X, you can use `brew install curl --with-nghttp2`. footnote:[But remember cURL is not linked by default so you'll have to dig into its Cellar (e.g. /usr/local/Cellar/curl/7.50.1/bin/curl). Of course, you could alias it, or force link :-).]
 
 ```shellsession
  $  curl -k -v --http2 https://localhost:8443/
