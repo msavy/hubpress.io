@@ -32,7 +32,7 @@ Out of the blue, Mr cURL himself (Daniel Stenberg) popped up with the answer quo
 
 == Mystery solved
 
-Aha! The backend API apiman was *proxying the response from* returned a `Connection: keep-alive` header. Apiman simply forwarded this on, but it turns out this violates the HTTP/2 spec as *there should be no connection-specific header fields* - in response cURL spits out the error we see above. Other implementations seem to just ignore these irrelevant fields. 
+Aha! The backend API apiman was *proxying the response from* returned a `Connection: keep-alive` header. Apiman simply forwarded this on, but it turns out this violates the HTTP/2 spec as *there should be no connection-specific header fields* - in response cURL spits out the error we see above. footnote:[Other implementations seem to just ignore these irrelevant fields.] 
 
 ```
 HTTP/2 Client (http2 error...) <- Apiman Gateway <- Test API (sets "Connection: keep-alive")
