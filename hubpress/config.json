@@ -8,7 +8,8 @@
   "site": {
     "title": "The musings of Marc",
     "description": "I'm a core contributor on apiman, an open source API Management platform. ",
-    "googleAnalytics": "UA-82902494-1"
+    "googleAnalytics": "UA-82902494-1",
+    "disqus": "rhymewithgravy"
   },
   "socialnetwork": {
     "email": "marc@rhymewithgravy.com",
