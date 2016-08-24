@@ -1,4 +1,85 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[The Musings of Marc]]></title><description><![CDATA[I'm a core contributor on apiman, an open source API Management platform.]]></description><link>http://www.rhymewithgravy.com</link><generator>RSS for Node</generator><lastBuildDate>Tue, 23 Aug 2016 22:57:43 GMT</lastBuildDate><atom:link href="http://www.rhymewithgravy.com/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Beware the Connection Header in HTTP/2]]></title><description><![CDATA[<div id="preamble">
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[The Musings of Marc]]></title><description><![CDATA[I'm a core contributor on apiman, an open source API Management platform.]]></description><link>http://www.rhymewithgravy.com</link><generator>RSS for Node</generator><lastBuildDate>Wed, 24 Aug 2016 10:53:46 GMT</lastBuildDate><atom:link href="http://www.rhymewithgravy.com/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Changing the root-context for apiman's gateway]]></title><description><![CDATA[<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>An <a href="http://www.apiman.io/">apiman</a> user recently asked me how they could change the root context of apiman-gateway from <code>/apiman-gateway/</code> to something else, for instance <code>/i-love-apiman/</code>.</p>
+</div>
+<div class="paragraph">
+<p>If you are using the WildFly or EAP apiman distributions (such as <a href="http://www.apiman.io/latest/download.html">our quickstart</a>), here&#8217;s an easy answer <sup class="footnote">[<a id="_footnoteref_1" class="footnote" href="#_footnote_1" title="View footnote.">1</a>]</sup>:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Unpack <code>apiman-gateway.war</code>.</p>
+<div class="literalblock">
+<div class="content">
+<pre>$ unzip apiman-gateway.war -d /tmp/apiman-gateway</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Edit <code>/tmp/apiman-gateway/WEB-INF/jboss-web.xml</code> to be to your new preferred context, e.g. <code>i-love-apiman</code>.</p>
+</li>
+<li>
+<p>Repack the war.</p>
+<div class="literalblock">
+<div class="content">
+<pre>$ zip -r apiman-gateway.war /tmp/apiman-gateway/META-INF /tmp/apiman-gateway/WEB-INF</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Replace the existing deployment.</p>
+</li>
+<li>
+<p>Alter your <code>apiman.properties</code> file and set <code>apiman-gateway.public-endpoint=&lt;new public endpoint&gt;</code>. <sup class="footnote">[<a id="_footnoteref_2" class="footnote" href="#_footnote_2" title="View footnote.">2</a>]</sup></p>
+<div class="literalblock">
+<div class="content">
+<pre>apiman-gateway.public-endpoint=https://localhost:8443/i-love-apiman/</pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_result">Result</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When you publish an API to the gateway setup you modified, you should see something like this in the UI:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="http://i.imgur.com/tqjusT6.png" alt="https://localhost:8443/i-love-apiman/test/test/1.0">
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_alternatives">Alternatives</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You can, of course, just set mappings on your load balancer (or some other technique external to apiman) if you want to avoid fiddling with the deployments. Even then, you&#8217;ll still probably want to set <code>apiman-gateway.public-endpoint</code> to report a sensible value for your setup.</p>
+</div>
+<div class="paragraph">
+<p>One final note: you can set these options via Java&#8217;s system properties, too</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>$ ./bin/standalone.sh -Dapiman-gateway.public-endpoint=https://localhost:8443/i-love-apiman/</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="footnotes">
+<hr>
+<div class="footnote" id="_footnote_1">
+<a href="#_footnoteref_1">1</a>. This procedure would be slightly different for other platforms such as Vert.x, Tomcat, etc
+</div>
+<div class="footnote" id="_footnote_2">
+<a href="#_footnoteref_2">2</a>. See: <a href="http://www.apiman.io/latest/production-guide.html#_setting_the_api_gateway_public_endpoint" class="bare">http://www.apiman.io/latest/production-guide.html#_setting_the_api_gateway_public_endpoint</a>
+</div>
+</div>]]></description><link>http://www.rhymewithgravy.com/2016/08/24/Changing-the-root-context-for-apimans-gateway.html</link><guid isPermaLink="true">http://www.rhymewithgravy.com/2016/08/24/Changing-the-root-context-for-apimans-gateway.html</guid><category><![CDATA[apiman]]></category><category><![CDATA[ apiman-gateway]]></category><category><![CDATA[ guide]]></category><category><![CDATA[ api management]]></category><dc:creator><![CDATA[Marc Savy]]></dc:creator><pubDate>Wed, 24 Aug 2016 00:00:00 GMT</pubDate></item><item><title><![CDATA[Beware the Connection Header in HTTP/2]]></title><description><![CDATA[<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
 <p><a href="http://www.rhymewithgravy.com/2016/08/21/Setting-up-Vertx-HTT-P-with-JKS.html">Whilst tinkering apiman&#8217;s Vert.x gateway implementation</a> I ran into a strange issue when invoking an API via <code>curl --http2</code>. It seemed to work fine in Chrome and using Go&#8217;s <a href="https://github.com/fstab/h2c">h2c</a>:</p>
