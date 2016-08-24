@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <title>Changing the root-context for apiman&#x27;s gateway</title>
+    <meta name="description" content="" />
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="shortcut icon" href="http://www.rhymewithgravy.com/favicon.ico">
+
+    <link rel="stylesheet" type="text/css" href="//www.rhymewithgravy.com/themes/casper/assets/css/screen.css?v=1472036026972" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400" />
+
+    <link rel="canonical" href="http://www.rhymewithgravy.com/2016/08/24/Changing-the-root-context-for-apimans-gateway.html" />
+    <meta name="referrer" content="origin" />
+    
+    <meta property="og:site_name" content="The Musings of Marc" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Changing the root-context for apiman&#x27;s gateway" />
+    <meta property="og:description" content="An apiman user recently asked me how they could change the root context of apiman-gateway from /apiman-gateway/ to something else, for instance /i-love-apiman/. If you are using the WildFly or EAP apiman distributions (such as our quickstart), here&amp;#8217;s an easy answer [1]: Unpack apiman-gateway.war. $ unzip apiman-gateway.war" />
+    <meta property="og:url" content="http://www.rhymewithgravy.com/2016/08/24/Changing-the-root-context-for-apimans-gateway.html" />
+    <meta property="article:tag" content="apiman" />
+    <meta property="article:tag" content=" apiman-gateway" />
+    <meta property="article:tag" content=" guide" />
+    <meta property="article:tag" content=" api management" />
+    
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Changing the root-context for apiman&#x27;s gateway" />
+    <meta name="twitter:description" content="An apiman user recently asked me how they could change the root context of apiman-gateway from /apiman-gateway/ to something else, for instance /i-love-apiman/. If you are using the WildFly or EAP apiman distributions (such as our quickstart), here&amp;#8217;s an easy answer [1]: Unpack apiman-gateway.war. $ unzip apiman-gateway.war" />
+    <meta name="twitter:url" content="http://www.rhymewithgravy.com/2016/08/24/Changing-the-root-context-for-apimans-gateway.html" />
+    
+    <script type="application/ld+json">
+null
+    </script>
+
+    <meta name="generator" content="HubPress" />
+    <link rel="alternate" type="application/rss+xml" title="The Musings of Marc" href="http://www.rhymewithgravy.com/rss/" />
+</head>
+<body class="post-template tag-apiman tag-apiman-gateway tag-guide tag-api-management nav-closed">
+
+    
+
+    <div class="site-wrapper">
+
+        
+
+
+<header class="main-header post-head no-cover">
+    <nav class="main-nav  clearfix">
+        
+    </nav>
+</header>
+
+<main class="content" role="main">
+    <article class="post tag-apiman tag-apiman-gateway tag-guide tag-api-management">
+
+        <header class="post-header">
+            <h1 class="post-title">Changing the root-context for apiman&#x27;s gateway</h1>
+            <section class="post-meta">
+                <time class="post-date" datetime="2016-08-24">24 August 2016</time>  on <a href="http://www.rhymewithgravy.com/tag/apiman/">apiman</a>, <a href="http://www.rhymewithgravy.com/tag/apiman-gateway/"> apiman-gateway</a>, <a href="http://www.rhymewithgravy.com/tag/guide/"> guide</a>, <a href="http://www.rhymewithgravy.com/tag/api-management/"> api management</a>
+            </section>
+        </header>
+
+        <section class="post-content">
+            <div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>An <a href="http://www.apiman.io/">apiman</a> user recently asked me how they could change the root context of apiman-gateway from <code>/apiman-gateway/</code> to something else, for instance <code>/i-love-apiman/</code>.</p>
+</div>
+<div class="paragraph">
+<p>If you are using the WildFly or EAP apiman distributions (such as <a href="http://www.apiman.io/latest/download.html">our quickstart</a>), here&#8217;s an easy answer <sup class="footnote">[<a id="_footnoteref_1" class="footnote" href="#_footnote_1" title="View footnote.">1</a>]</sup>:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Unpack <code>apiman-gateway.war</code>.</p>
+<div class="literalblock">
+<div class="content">
+<pre>$ unzip apiman-gateway.war -d /tmp/apiman-gateway</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Edit <code>/tmp/apiman-gateway/WEB-INF/jboss-web.xml</code> to be to your new preferred context, e.g. <code>i-love-apiman</code>.</p>
+</li>
+<li>
+<p>Repack the war.</p>
+<div class="literalblock">
+<div class="content">
+<pre>$ zip -r apiman-gateway.war /tmp/apiman-gateway/META-INF /tmp/apiman-gateway/WEB-INF</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Replace the existing deployment.</p>
+</li>
+<li>
+<p>Alter your <code>apiman.properties</code> file and set <code>apiman-gateway.public-endpoint=&lt;new public endpoint&gt;</code>. <sup class="footnote">[<a id="_footnoteref_2" class="footnote" href="#_footnote_2" title="View footnote.">2</a>]</sup></p>
+<div class="literalblock">
+<div class="content">
+<pre>apiman-gateway.public-endpoint=https://localhost:8443/i-love-apiman/</pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_result">Result</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When you publish an API to the gateway setup you modified, you should see something like this in the UI:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="http://i.imgur.com/tqjusT6.png" alt="https://localhost:8443/i-love-apiman/test/test/1.0">
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_alternatives">Alternatives</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You can, of course, just set mappings on your load balancer (or some other technique external to apiman) if you want to avoid fiddling with the deployments. Even then, you&#8217;ll still probably want to set <code>apiman-gateway.public-endpoint</code> to report a sensible value for your setup.</p>
+</div>
+<div class="paragraph">
+<p>One final note: you can set these options via Java&#8217;s system properties, too</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>$ ./bin/standalone.sh -Dapiman-gateway.public-endpoint=https://localhost:8443/i-love-apiman/</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="footnotes">
+<hr>
+<div class="footnote" id="_footnote_1">
+<a href="#_footnoteref_1">1</a>. This procedure would be slightly different for other platforms such as Vert.x, Tomcat, etc
+</div>
+<div class="footnote" id="_footnote_2">
+<a href="#_footnoteref_2">2</a>. See: <a href="http://www.apiman.io/latest/production-guide.html#_setting_the_api_gateway_public_endpoint" class="bare">http://www.apiman.io/latest/production-guide.html#_setting_the_api_gateway_public_endpoint</a>
+</div>
+</div>
+        </section>
+
+        <footer class="post-footer">
+
+
+            <figure class="author-image">
+                <a class="img" href="http://www.rhymewithgravy.com/author/msavy/" style="background-image: url(https://avatars.githubusercontent.com/u/423513?v&#x3D;3)"><span class="hidden">Marc Savy's Picture</span></a>
+            </figure>
+
+            <section class="author">
+                <h4><a href="http://www.rhymewithgravy.com/author/msavy/">Marc Savy</a></h4>
+
+                    <p>Core developer on the @apiman API Management project</p>
+                <div class="author-meta">
+                    <span class="author-location icon-location">UK</span>
+                    
+                </div>
+            </section>
+
+
+            <section class="share">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="https://twitter.com/intent/tweet?text=Changing%20the%20root-context%20for%20apiman's%20gateway&amp;url=http://www.rhymewithgravy.com/2016/08/24/Changing-the-root-context-for-apimans-gateway.html"
+                    onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden">Twitter</span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://www.rhymewithgravy.com/2016/08/24/Changing-the-root-context-for-apimans-gateway.html"
+                    onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden">Facebook</span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=http://www.rhymewithgravy.com/2016/08/24/Changing-the-root-context-for-apimans-gateway.html"
+                   onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden">Google+</span>
+                </a>
+            </section>
+
+        </footer>
+
+
+        <section class="post-comments">
+          <div id="disqus_thread"></div>
+          <script type="text/javascript">
+          var disqus_shortname = 'rhymewithgravy'; // required: replace example with your forum shortname
+          /* * * DON'T EDIT BELOW THIS LINE * * */
+          (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+          </script>
+          <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+          <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        </section>
+
+
+    </article>
+
+</main>
+
+<aside class="read-next">
+</aside>
+
+
+
+        <footer class="site-footer clearfix">
+            <section class="copyright"><a href="http://www.rhymewithgravy.com">The Musings of Marc</a> &copy; 2016</section>
+            <section class="poweredby">Proudly published with <a href="http://hubpress.io">HubPress</a></section>
+        </footer>
+
+    </div>
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js?v="></script> <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.min.js?v="></script> <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js?v="></script> 
+      <script type="text/javascript">
+        jQuery( document ).ready(function() {
+          // change date with ago
+          jQuery('ago.ago').each(function(){
+            var element = jQuery(this).parent();
+            element.html( moment(element.text()).fromNow());
+          });
+        });
+
+        hljs.initHighlightingOnLoad();
+      </script>
+
+    <script type="text/javascript" src="//www.rhymewithgravy.com/themes/casper/assets/js/jquery.fitvids.js?v=1472036026972"></script>
+    <script type="text/javascript" src="//www.rhymewithgravy.com/themes/casper/assets/js/index.js?v=1472036026972"></script>
+
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-82902494-1', 'auto');
+    ga('send', 'pageview');
+
+    </script>
+</body>
+</html>
