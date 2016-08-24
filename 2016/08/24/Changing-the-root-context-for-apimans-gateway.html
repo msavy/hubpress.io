@@ -12,7 +12,7 @@
 
     <link rel="shortcut icon" href="http://www.rhymewithgravy.com/favicon.ico">
 
-    <link rel="stylesheet" type="text/css" href="//www.rhymewithgravy.com/themes/casper/assets/css/screen.css?v=1472036026972" />
+    <link rel="stylesheet" type="text/css" href="//www.rhymewithgravy.com/themes/casper/assets/css/screen.css?v=1472037521838" />
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400" />
 
     <link rel="canonical" href="http://www.rhymewithgravy.com/2016/08/24/Changing-the-root-context-for-apimans-gateway.html" />
@@ -21,7 +21,7 @@
     <meta property="og:site_name" content="The Musings of Marc" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Changing the root-context for apiman&#x27;s gateway" />
-    <meta property="og:description" content="An apiman user recently asked me how they could change the root context of apiman-gateway from /apiman-gateway/ to something else, for instance /i-love-apiman/. If you are using the WildFly or EAP apiman distributions (such as our quickstart), here&amp;#8217;s an easy answer [1]: Unpack apiman-gateway.war. $ unzip apiman-gateway.war" />
+    <meta property="og:description" content="An apiman user recently asked me how they could change the root context of apiman-gateway from /apiman-gateway/ to something else, for instance /i-love-apiman/. If you are using the WildFly or EAP apiman distributions (such as our quickstart), here&amp;#8217;s an easy answer [1]: If you&amp;#8217;re using a" />
     <meta property="og:url" content="http://www.rhymewithgravy.com/2016/08/24/Changing-the-root-context-for-apimans-gateway.html" />
     <meta property="article:tag" content="apiman" />
     <meta property="article:tag" content=" apiman-gateway" />
@@ -30,7 +30,7 @@
     
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content="Changing the root-context for apiman&#x27;s gateway" />
-    <meta name="twitter:description" content="An apiman user recently asked me how they could change the root context of apiman-gateway from /apiman-gateway/ to something else, for instance /i-love-apiman/. If you are using the WildFly or EAP apiman distributions (such as our quickstart), here&amp;#8217;s an easy answer [1]: Unpack apiman-gateway.war. $ unzip apiman-gateway.war" />
+    <meta name="twitter:description" content="An apiman user recently asked me how they could change the root context of apiman-gateway from /apiman-gateway/ to something else, for instance /i-love-apiman/. If you are using the WildFly or EAP apiman distributions (such as our quickstart), here&amp;#8217;s an easy answer [1]: If you&amp;#8217;re using a" />
     <meta name="twitter:url" content="http://www.rhymewithgravy.com/2016/08/24/Changing-the-root-context-for-apimans-gateway.html" />
     
     <script type="application/ld+json">
@@ -73,6 +73,18 @@ null
 </div>
 <div class="paragraph">
 <p>If you are using the WildFly or EAP apiman distributions (such as <a href="http://www.apiman.io/latest/download.html">our quickstart</a>), here&#8217;s an easy answer <sup class="footnote">[<a id="_footnoteref_1" class="footnote" href="#_footnote_1" title="View footnote.">1</a>]</sup>:</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+If you&#8217;re using a load balancer or some other mapper, just skip to the <a href="#_alternatives">Alternatives</a> section or <a href="http://www.apiman.io/latest/production-guide.html#_setting_the_api_gateway_public_endpoint">read the apiman production guide</a>.
+</td>
+</tr>
+</table>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
@@ -233,8 +245,8 @@ null
         hljs.initHighlightingOnLoad();
       </script>
 
-    <script type="text/javascript" src="//www.rhymewithgravy.com/themes/casper/assets/js/jquery.fitvids.js?v=1472036026972"></script>
-    <script type="text/javascript" src="//www.rhymewithgravy.com/themes/casper/assets/js/index.js?v=1472036026972"></script>
+    <script type="text/javascript" src="//www.rhymewithgravy.com/themes/casper/assets/js/jquery.fitvids.js?v=1472037521838"></script>
+    <script type="text/javascript" src="//www.rhymewithgravy.com/themes/casper/assets/js/index.js?v=1472037521838"></script>
 
     <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
