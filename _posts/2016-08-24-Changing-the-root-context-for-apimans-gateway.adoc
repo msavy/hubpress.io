@@ -1,0 +1,39 @@
+= Changing the root-context for apiman's gateway
+Marc Savy <marc@rhymewithgravy.com>
+:hp-tags: apiman, apiman-gateway, guide, api management
+:url-apiman: http://www.apiman.io/
+:url-apiman-quickstart: http://www.apiman.io/latest/download.html
+
+An {url-apiman}[apiman] user recently asked me how they could change the root context of apiman-gateway from `/apiman-gateway/` to something else, for instance `/i-love-apiman/`. 
+
+If you are using the WildFly or EAP apiman distributions (such as {url-apiman-quickstart}[our quickstart]), here's an easy answer footnote:[This procedure would be slightly different for other platforms such as Vert.x, Tomcat, etc]:
+
+. Unpack `apiman-gateway.war`.
+
+ $ unzip apiman-gateway.war -d /tmp/apiman-gateway
+  
+. Edit `/tmp/apiman-gateway/WEB-INF/jboss-web.xml` to be to your new preferred context, e.g. `i-love-apiman`.
+
+. Repack the war.
+
+ $ zip -r apiman-gateway.war /tmp/apiman-gateway/META-INF /tmp/apiman-gateway/WEB-INF
+
+. Replace the existing deployment.
+
+. Alter your `apiman.properties` file and set `apiman-gateway.public-endpoint=<new public endpoint>`. footnote:[See: http://www.apiman.io/latest/production-guide.html#_setting_the_api_gateway_public_endpoint]
+
+   apiman-gateway.public-endpoint=https://localhost:8443/i-love-apiman/
+   
+== Result
+
+When you publish an API to the gateway setup you modified, you should see something like this in the UI: 
+
+image::http://i.imgur.com/tqjusT6.png[https://localhost:8443/i-love-apiman/test/test/1.0]
+
+== Alternatives
+
+You can, of course, just set mappings on your load balancer (or some other technique external to apiman) if you want to avoid fiddling with the deployments. Even then, you'll still probably want to set `apiman-gateway.public-endpoint` to report a sensible value for your setup.
+
+One final note: you can set these options via Java's system properties, too
+ 
+ $ ./bin/standalone.sh -Dapiman-gateway.public-endpoint=https://localhost:8443/i-love-apiman/
