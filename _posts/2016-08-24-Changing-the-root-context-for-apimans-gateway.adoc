@@ -7,9 +7,9 @@ Marc Savy <marc@rhymewithgravy.com>
 
 An {url-apiman}[apiman] user recently asked me how they could change the root context of apiman-gateway from `/apiman-gateway/` to something else, for instance `/i-love-apiman/`.
 
-If you are using the WildFly or EAP apiman distributions (such as {url-apiman-quickstart}[our quickstart]), here's an easy answer footnote:[This procedure would be slightly different for other platforms such as Vert.x, Tomcat, etc]:
-
 TIP: If you're using a load balancer or some other mapper, just skip to the <<Alternatives>> section or {url-prod-guide}[read the apiman production guide].
+
+If you are using the WildFly or EAP apiman distributions (such as {url-apiman-quickstart}[our quickstart]), here's an easy answer footnote:[This procedure would be slightly different for other platforms such as Vert.x, Tomcat, etc]:
 
 . Unpack `apiman-gateway.war`.
 
