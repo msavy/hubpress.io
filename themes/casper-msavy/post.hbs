@@ -2,7 +2,7 @@
 
 {{! The comment above "< default" means - insert everything in this file into
     the {body} of the default.hbs template, which contains our header/footer. }}
-     
+
 {{! Everything inside the #post tags pulls data from the post }}
 {{#post}}
 
@@ -23,7 +23,7 @@
             <section class="post-meta">
               <span><time class="post-date" datetime="{{date format='YYYY-MM-DD'}}">{{date format="DD MMMM YYYY"}}</time> {{tags prefix=" on "}}</span>
 	      <span class="author-bar-top">
-		{{name}} |
+		{{author.name}} |
 		<ul>
 		  <li>
 		    <a rel="me" href="{{socialnetwork.linkedin}}" title="{{user}}'s LinkedIn account">
