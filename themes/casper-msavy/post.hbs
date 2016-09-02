@@ -23,8 +23,9 @@
             <section class="post-meta">
               <span><time class="post-date" datetime="{{date format='YYYY-MM-DD'}}">{{date format="DD MMMM YYYY"}}</time> {{tags prefix=" on "}}</span>
 	      <span class="author-bar-top">
-		{{author.name}} |
 		<ul>
+        <li>{{@author.name}}</li>
+
 		  <li>
 		    <a rel="me" href="{{socialnetwork.linkedin}}" title="{{user}}'s LinkedIn account">
 		      <i class="fa fa-linkedin-square" aria-hidden="true"></i>
