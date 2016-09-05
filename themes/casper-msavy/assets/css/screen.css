@@ -1337,6 +1337,9 @@ body:not(.post-template) .post-title {
     list-style-type: none;
 }
 
+.author-bar-top > ul {
+    padding-left: 0;
+}
 
 /* ==========================================================================
    7. Read More - Next/Prev Post Links
