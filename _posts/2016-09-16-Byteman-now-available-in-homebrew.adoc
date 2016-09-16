@@ -1,0 +1,27 @@
+= Byteman now available in homebrew
+Marc Savy <marc@rhymewithgravy.com>
+:hp-tags: brew, byteman, java
+:url-byteman: http://byteman.jboss.org/
+:url-byteman-tutorial: https://developer.jboss.org/wiki/ABytemanTutorial#top
+:url-hawkular-apm: https://github.com/hawkular/hawkular-apm
+:url-brew: http://brew.sh/
+
+A friend and colleague of mine, Andrew Dinn, is the brains behind the brilliant {url-byteman}[Byteman project]. I recently contributed a {url-brew}[brew] formula to install Byteman and all of its scripts on OS X systems - allowing a package manager to sort out installing everything in sensible locations, with upgrading and other hassles handled for you.
+
+Install brew if you haven't, and then run footnote:[You may need to `brew update` to download the formula if you haven't done so in a long time.]:
+
+ $ brew install byteman
+ 
+You can upgrade Byteman with footnote:[Or just `brew upgrade` to do everything.]:
+
+ $ brew upgrade byteman
+ 
+You should now have all of the Byteman wrappers and binaries available on your path!
+
+ $ bmjava -version
+ 
+== What's Byteman?
+
+If you're not familiar with Byteman, it's an incredibly powerful byecode manipulation utility for testing, monitoring and tracing. It can be invoked via {url-byteman-tutorial}[scripts or API].  
+
+It's particularly useful for tracking down difficult-to-reproduce concurrency bugs, as you can use it to precisely orchestrate thread orderings (interleavings, etc), wait periods, inject faults etc. There are also some cool up-and-coming projects using it to dynamically inject {url-hawkular-apm}[tracing and monitoring] into existing code.
