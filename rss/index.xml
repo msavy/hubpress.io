@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[The Musings of Marc]]></title><description><![CDATA[I'm a core contributor on apiman, an open source API Management platform. My surname does not rhyme with gravy.]]></description><link>http://www.rhymewithgravy.com</link><generator>RSS for Node</generator><lastBuildDate>Sun, 18 Sep 2016 15:20:11 GMT</lastBuildDate><atom:link href="http://www.rhymewithgravy.com/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Byteman now available in homebrew]]></title><description><![CDATA[<div id="preamble">
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[The Musings of Marc]]></title><description><![CDATA[I'm a core contributor on apiman, an open source API Management platform. My surname does not rhyme with gravy.]]></description><link>http://www.rhymewithgravy.com</link><generator>RSS for Node</generator><lastBuildDate>Sun, 18 Sep 2016 18:33:57 GMT</lastBuildDate><atom:link href="http://www.rhymewithgravy.com/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Byteman now available in homebrew]]></title><description><![CDATA[<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
 <p>A friend and colleague of mine, Andrew Dinn, is the brains behind the brilliant <a href="http://byteman.jboss.org/">Byteman project</a>. I recently contributed a <a href="http://brew.sh/">brew</a> formula to install Byteman and all of its scripts on OS X systems - allowing a package manager to sort out installing everything in sensible locations, with upgrading and other hassles handled for you.</p>
@@ -261,10 +261,10 @@ public class Example extends AbstractVerticle {
     public void start() throws Exception {
         HttpServer server =
         vertx.createHttpServer(new HttpServerOptions()
-            .setUseAlpn(true) <i class="conum" data-value="1"></i><b>(1)</b>
-            .setSsl(true) <i class="conum" data-value="2"></i><b>(2)</b>
+            .setUseAlpn(true)
+            .setSsl(true)
             .setKeyStoreOptions(
-                new JksOptions() <i class="conum" data-value="3"></i><b>(3)</b>
+                new JksOptions()
                 .setPath(&lt;Path to your JKS&gt;)
                 .setPassword(&lt;The JKS password&gt;)
             )
@@ -277,18 +277,6 @@ public class Example extends AbstractVerticle {
     }
 }</code></pre>
 </div>
-</div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Enable ALPN;</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Enable SSL</td>
-</tr>
-</table>
 </div>
 <div class="paragraph">
 <p>You&#8217;ll likely want to check that it&#8217;s really working. I&#8217;ve been using <code>cURL</code> compiled with <code>nghttp2</code> to enable HTTP/2 support; depending on your OS or distro, the shipping version may have been built with it. If you&#8217;re using OS X, you can use <code>brew install curl --with-nghttp2</code>. <sup class="footnote">[<a id="_footnoteref_1" class="footnote" href="#_footnote_1" title="View footnote.">1</a>]</sup></p>
