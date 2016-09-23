@@ -12,6 +12,10 @@ Install brew if you haven't, and then run footnote:[You may need to `brew update
 
  $ brew install byteman
  
+If you need to, you can install the latest development version of Byteman with (e.g. ALPHA releases):
+
+ $ brew install byteman --devel
+ 
 You can upgrade Byteman with footnote:[Or just `brew upgrade` to do everything.]:
 
  $ brew upgrade byteman
