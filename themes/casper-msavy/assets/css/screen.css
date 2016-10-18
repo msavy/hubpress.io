@@ -163,8 +163,8 @@ td, th{ padding: 0; }
     content: "\f609";
 }
 i.fa.icon-tip:before {
-    font-family: 'FontAwesome';
     content: "\f0e7";
+    font-family: FontAwesome;
 }
 /*
     IMPORTANT: When making any changes to the icon font, be sure to increment
