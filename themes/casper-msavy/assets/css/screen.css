@@ -162,9 +162,9 @@ td, th{ padding: 0; }
 .icon-menu:before {
     content: "\f609";
 }
-.fa-icon-tip:before {
-    content: "\f0e7";
+i.fa.icon-tip:before {
     font-family: 'FontAwesome';
+    content: "\f0e7";
 }
 /*
     IMPORTANT: When making any changes to the icon font, be sure to increment
