@@ -1,4 +1,256 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[The Musings of Marc]]></title><description><![CDATA[I'm a core contributor on apiman, an open source API Management platform. My surname does not rhyme with gravy.]]></description><link>http://www.rhymewithgravy.com</link><generator>RSS for Node</generator><lastBuildDate>Fri, 23 Sep 2016 12:31:27 GMT</lastBuildDate><atom:link href="http://www.rhymewithgravy.com/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Byteman now available in homebrew]]></title><description><![CDATA[<div id="preamble">
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[The Musings of Marc]]></title><description><![CDATA[I'm a core contributor on apiman, an open source API Management platform. My surname does not rhyme with gravy.]]></description><link>http://www.rhymewithgravy.com</link><generator>RSS for Node</generator><lastBuildDate>Tue, 18 Oct 2016 14:54:09 GMT</lastBuildDate><atom:link href="http://www.rhymewithgravy.com/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Vert.x  and Blocking Code]]></title><description><![CDATA[<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>One of Vert.x&#8217;s core tenets is that you should <a href="http://vertx.io/docs/vertx-core/java/#golden_rule">never block the event loop</a>. If you&#8217;re writing an application from scratch and limit yourself to Vert.x&#8217;s provided facilities you&#8217;ll not go far wrong.</p>
+</div>
+<div class="paragraph">
+<p>However, if you&#8217;re writing a more complex application (such as apiman) there&#8217;s a good chance that you&#8217;ll be forced to stray outside of these boundaries, for example: integration constraints; inherently blocking protocols; static or shared data-structures. <sup class="footnote">[<a id="_footnoteref_1" class="footnote" href="#_footnote_1" title="View footnote.">1</a>]</sup></p>
+</div>
+<div class="paragraph">
+<p>Luckily, the Vert.x team understand this, and have provided ways to work with these real-world requirements.</p>
+</div>
+<div class="paragraph">
+<p>Back in the Vert.x 1.x and early 2.x days you only had one option: <a href="http://vertx.io/docs/vertx-core/java/#worker_verticles"><em>worker verticles</em></a>. Now the team have expanded things and there are several excellent options; so, let&#8217;s have a quick review of them. <sup class="footnote">[<a id="_footnoteref_2" class="footnote" href="#_footnote_2" title="View footnote.">2</a>]</sup></p>
+</div>
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Sections</div>
+<ul class="sectlevel1">
+<li><a href="#_why_is_blocking_bad_anyway">Why is blocking bad, anyway?</a></li>
+<li><a href="#_solutions">Solutions</a>
+<ul class="sectlevel2">
+<li><a href="#_worker_verticles">Worker Verticles</a></li>
+<li><a href="#_execute_blocking_statements">Execute Blocking Statements</a></li>
+<li><a href="#_vert_x_sync">Vert.x Sync</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_why_is_blocking_bad_anyway">Why is blocking bad, anyway?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Vert.x uses a pragmatic implementation of the reactor model (more specifically multi-reactor).</p>
+</div>
+<div class="paragraph">
+<p>A simple way to visualise this is to imagine there is only one thread per core, looping indefinitely, and executing work (handlers) from a queue. Many verticle instances share a given reactor; their execution is also <em>enqueued</em> as a task and runs asynchronously - that is, it only runs when the reactor has churned through any preceding tasks and reaches the verticle&#8217;s task(s). Each task runs <em>on the reactor thread directly</em>.</p>
+</div>
+<div class="paragraph">
+<p>Hence, if any of those enqueued tasks executed a blocking operation, such as listening on a socket, <em>the entire reactor</em> would be unable to make progress until the thread resumed.<sup class="footnote">[<a id="_footnoteref_3" class="footnote" href="#_footnote_3" title="View footnote.">3</a>]</sup></p>
+</div>
+<div class="paragraph">
+<p>Instead, Vert.x deals with blocking operations <em>outside of the event loop</em>; enqueuing a handler to be invoked when <em>the result</em> of the blocking operation is completed <sup class="footnote">[<a id="_footnoteref_4" class="footnote" href="#_footnote_4" title="View footnote.">4</a>]</sup>. For instance, instead of blocking on a socket until something arrives, we ask the operating system to call us back when something relevant arrives and invoke our handler with the result.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+The key benefit of this approach is that the reactor thread <em>does not need to block</em>, so it can achieve excellent CPU utilisation - spending as much of its time as possible usefully executing, rather than waiting or being blocked.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>In contrast, the typical webserver&#8217;s threads will spend much of their time in a non-running state (e.g. blocked or waiting), leaving large amounts of CPU time unused <sup class="footnote">[<a id="_footnoteref_5" class="footnote" href="#_footnote_5" title="View footnote.">5</a>]</sup>. To combat resource under-utilisation developers harness large numbers of threads so that new requests can continue to be satisfied. However, this incurs substantial CPU, memory and latency costs due to frequent <a href="https://en.wikipedia.org/wiki/Context_switch#Cost">context switching</a> <sup class="footnote">[<a id="_footnoteref_6" class="footnote" href="#_footnote_6" title="View footnote.">6</a>]</sup>.</p>
+</div>
+<div class="paragraph">
+<p>But, what if you <em>need</em> to do a blocking operation and it&#8217;s  not one of Vert.x&#8217;s supported things?</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_solutions">Solutions</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_worker_verticles">Worker Verticles</h3>
+<div class="paragraph">
+<p>The first approach Vert.x offered was <a href="http://vertx.io/docs/vertx-core/java/#worker_verticles">worker verticles</a>. Each worker verticle instance executes entirely on its own thread taken from a threadpool, hence when an operation blocks it does not affect the event loop or block progress.</p>
+</div>
+<div class="paragraph">
+<p>If your verticle&#8217;s work is <em>predominantly</em> blocking, then a worker verticle is a good option. You can use the pattern outlined in the example below to send and receive work over the event bus - this maintains asynchronicity and non-blocking behaviour in your standard verticles whilst allowing you to offload long-running, blocking functionality onto worker verticles. You should aim to minimise the amount of code run in worker verticles to maximise overall resource utilisation. <sup class="footnote">[<a id="_footnoteref_7" class="footnote" href="#_footnote_7" title="View footnote.">7</a>]</sup></p>
+</div>
+<div class="sect3">
+<h4 id="_offering_a_blocking_service">Offering a blocking service</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">package com.example.foo;
+
+public class BlockingVerticle extends AbstractVerticle {
+    @Override
+    public void start() throws Exception {
+        vertx.eventBus().&lt;String&gt;consumer("com.rhymewithgravy.doesit", message -&gt; { <i class="conum" data-value="0"></i><b>(0)</b>
+            boolean answer = SlowBlockingRhyme.doesItRhymeWithGravy(message.body()); <i class="conum" data-value="1"></i><b>(1)</b>
+            message.reply(answer);
+        } );
+    }
+
+    public static void main(String... args) {
+        DeploymentOptions opts = new DeploymentOptions().
+            setWorker(true); <i class="conum" data-value="2"></i><b>(2)</b>
+        Vertx.vertx().deployVerticle("com.example.foo.BlockingVerticle", opts); <i class="conum" data-value="3"></i><b>(3)</b>
+    }
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Listening (non-blocking) on the event bus.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>A service that blocks while it figures out if a word rhymes with gravy. Mostly the answer is no.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Setting the verticle to be deployed as a worker with <code>setWorker(true)</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Deploying the verticle, as normal.</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_consuming_a_blocking_service">Consuming a blocking service</h4>
+<div class="paragraph">
+<p>Here&#8217;s an example of the some non-blocking sender code which may interact with our fictional service over the event bus:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">vertx.eventBus().send("com.rhymewithgravy.com.doesit", <i class="conum" data-value="1"></i><b>(1)</b>
+    "apples", <i class="conum" data-value="2"></i><b>(2)</b>
+    reply -&gt; {
+        System.out.println("Does apples rhyme with gravy? " + reply.result().body()); <i class="conum" data-value="3"></i><b>(3)</b>
+    }
+);</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Send a message to the service over the event bus.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Contents of message to send (i.e. word we want to send to rhyme service).</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Print out the blocking service&#8217;s response:  "no", I would presume!</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_execute_blocking_statements">Execute Blocking Statements</h3>
+<div class="paragraph">
+<p>If the majority of your verticle&#8217;s work <em>does not</em> involve blocking (which is probably the most common scenario), then executing the entire verticle on a worker thread is rather wasteful. Even with clever optimisations it isn&#8217;t fully exploiting the platform&#8217;s strengths.</p>
+</div>
+<div class="paragraph">
+<p>It is possible to work around this limitation by separating blocking and non-blocking code into separate verticles, with the event bus acting as the asynchronous bridge to avoid the blocking verticle stopping progress in the non-blocking verticle. However, this can be rather unwieldy and forcing unnecessary boilerplate and complexity where it isn&#8217;t desirable.</p>
+</div>
+<div class="paragraph">
+<p>So, a newer and much more elegant solution was introduced for exactly these scenarios: <em>executeBlocking</em>.</p>
+</div>
+<div class="paragraph">
+<p>Code run in an <code>executeBlocking</code> handler will be run from the worker threadpool, with the results passed back asynchronously.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">    vertx.executeBlocking(future -&gt; {
+        boolean result = FastBlockingRhyme.doesItRhymeWithGravy(word); <i class="conum" data-value="1"></i><b>(1)</b>
+        future.complete(result); <i class="conum" data-value="2"></i><b>(2)</b>
+    },
+    res -&gt; {
+        if (result.succeeded()) {
+            System.out.println(String.format("Does %s rhyme with gravy? %b"), word, res.result()); <i class="conum" data-value="3"></i><b>(3)</b>
+        }
+    }
+} );</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>New improved rhyme engine, it blocks but is fast.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Indicate that the work in the block has been completed: successfully or otherwise.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>The result pops out in the second lambda, and we print out a helpful message.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p><em>executeBlocking</em> is achieving the same work as the event bus pattern shown in the <a href="#_worker_verticles">Worker Verticles</a> example, but is much more concise, efficient and less error-prone.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<code>executeBlocking</code> should be the preferred way of running blocking code for most simple use cases.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_vert_x_sync">Vert.x Sync</h3>
+<div class="paragraph">
+<p><a href="http://vertx.io/docs/vertx-sync/java/">Sync</a> the newest area of development for handling blocking code in Vert.x, taking an extremely different approach to the previously mentioned techniques. <a href="http://www.paralleluniverse.co/quasar/">Quasar</a> is used to offload blocking work onto <em>fibres</em>, which are extremely lightweight non-kernel threads that don&#8217;t incur the same context switching penalty as traditional threads.</p>
+</div>
+<div class="paragraph">
+<p>It&#8217;s not an option which I&#8217;ve had the opportunity to explore in much depth yet, but I&#8217;m going to spend some time analysing it and follow up; for example, to understand any performance implications, maintainability changes and deployment considerations. It sounds a promising area of research and development, as asynchronous development is trickier and can suffer from "handler inception" (excessive forwarding and handler hell).</p>
+</div>
+<div class="paragraph">
+<p>One of the most obvious differences is that you must instrument the JVM with the Quasar agent, and that the code modifications are coupled to a specific technology. It also only works with Java at the moment.</p>
+</div>
+<div class="paragraph">
+<p>Watch this space!</p>
+</div>
+</div>
+</div>
+</div>
+<div id="footnotes">
+<hr>
+<div class="footnote" id="_footnote_1">
+<a href="#_footnoteref_1">1</a>. Usually you want to avoid these, but for various reasons you may be compelled to do so
+</div>
+<div class="footnote" id="_footnote_2">
+<a href="#_footnoteref_2">2</a>. I&#8217;m assuming you have at least a passing understanding of how to write code in Vert.x)
+</div>
+<div class="footnote" id="_footnote_3">
+<a href="#_footnoteref_3">3</a>. In the meanwhile the latency of waiting tasks is shooting up and work may have to be rejected via timeout.
+</div>
+<div class="footnote" id="_footnote_4">
+<a href="#_footnoteref_4">4</a>. Or making progress in some meaningful way, such as streaming data.
+</div>
+<div class="footnote" id="_footnote_5">
+<a href="#_footnoteref_5">5</a>. And reducing responsiveness if/when the threadpool is exhausted.
+</div>
+<div class="footnote" id="_footnote_6">
+<a href="#_footnoteref_6">6</a>. Switching stacks and registry values; lots of thread state changes; etc
+</div>
+<div class="footnote" id="_footnote_7">
+<a href="#_footnoteref_7">7</a>. There are more advanced options available, such as multithreaded workers which can help improve performance on specific workloads, but are out of the scope of this blogpost. Multithreaded workers require thread-safe code.
+</div>
+</div>]]></description><link>http://www.rhymewithgravy.com/2016/10/18/Vertx-and-Blocking-Code.html</link><guid isPermaLink="true">http://www.rhymewithgravy.com/2016/10/18/Vertx-and-Blocking-Code.html</guid><category><![CDATA[vertx]]></category><category><![CDATA[ apiman]]></category><dc:creator><![CDATA[Marc Savy]]></dc:creator><pubDate>Tue, 18 Oct 2016 00:00:00 GMT</pubDate></item><item><title><![CDATA[Byteman now available in homebrew]]></title><description><![CDATA[<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
 <p>A friend and colleague of mine, Andrew Dinn, is the brains behind the brilliant <a href="http://byteman.jboss.org/">Byteman project</a>. I recently contributed a <a href="http://brew.sh/">brew</a> formula to install Byteman and all of its scripts on OS X systems - allowing a package manager to sort out installing everything in sensible locations, with upgrading and other hassles handled for you.</p>
