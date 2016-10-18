@@ -6,6 +6,7 @@
 :apiman: http://www.apiman.io
 :wiki-context-switching: https://en.wikipedia.org/wiki/Context_switch#Cost
 :quasar: http://www.paralleluniverse.co/quasar/
+:tweet: https://twitter.com/jetdrone/status/787532093186306049
 :toc: macro
 :toc-title: Sections
 
@@ -51,17 +52,19 @@ package com.example.foo;
 public class BlockingVerticle extends AbstractVerticle {
     @Override
     public void start() throws Exception {
-        vertx.eventBus().<String>consumer("com.rhymewithgravy.doesit", message -> { // <0>
-            boolean answer = SlowBlockingRhyme
-            	.doesItRhymeWithGravy(message.body()); // <1>
-            message.reply(answer);
-        } );
+        vertx.eventBus().<String>consumer("com.rhymewithgravy.doesit", 
+            message -> { // <0>
+                boolean answer = SlowBlockingRhyme
+                	  .doesItRhymeWithGravy(message.body()); // <1>
+                message.reply(answer);
+            } );
     }
 
     public static void main(String... args) {
         DeploymentOptions opts = new DeploymentOptions().
             setWorker(true); //<2>
-        Vertx.vertx().deployVerticle("com.example.foo.BlockingVerticle", opts); //<3>
+        Vertx.vertx()
+        	.deployVerticle("com.example.foo.BlockingVerticle", opts); //<3>
     }
 }
 ----
@@ -79,7 +82,8 @@ Here's an example of the some non-blocking sender code which may interact with o
 vertx.eventBus().send("com.rhymewithgravy.com.doesit", // <1>
     "apples", // <2>
     reply -> {
-        System.out.println("Does apples rhyme with gravy? " + reply.result().body()); // <3>
+        System.out.println("Does apples rhyme with gravy? " + 
+        	reply.result().body()); // <3>
     }
 );
 ----
@@ -104,7 +108,9 @@ Code run in an `executeBlocking` handler will be run from the worker threadpool,
     },
     res -> {
         if (result.succeeded()) {
-            System.out.println(String.format("Does %s rhyme with gravy? %b"), word, res.result()); // <3>
+            System.out.println(String.format("Does %s rhyme with gravy? %b"), 
+            	word, 
+                res.result()); // <3>
         }
     }
 } );
