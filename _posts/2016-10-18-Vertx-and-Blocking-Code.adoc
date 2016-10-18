@@ -109,7 +109,7 @@ vertx.executeBlocking(future -> {
 }, res -> {
     if (result.succeeded()) {
         System.out.println("Does apples rhyme with gravy?  " 
-            + res.result()); // <3>
+          + res.result()); // <3>
     }
 });
 ----
