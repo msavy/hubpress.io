@@ -16,9 +16,9 @@
 
     <link rel="shortcut icon" href="http://www.rhymewithgravy.com/favicon.ico">
 
-    <link rel="stylesheet" type="text/css" href="//www.rhymewithgravy.com/themes/casper-msavy/assets/css/screen.css?v=1476802449353" />
-    <link rel="stylesheet" type="text/css" href="//www.rhymewithgravy.com/themes/casper-msavy/assets/css/atom-one-light.css?v=1476802449353" />
-    <link rel="stylesheet" type="text/css" href="//www.rhymewithgravy.com/themes/casper-msavy/assets/css/font-awesome.min.css?v=1476802449353" />
+    <link rel="stylesheet" type="text/css" href="//www.rhymewithgravy.com/themes/casper-msavy/assets/css/screen.css?v=1476822808558" />
+    <link rel="stylesheet" type="text/css" href="//www.rhymewithgravy.com/themes/casper-msavy/assets/css/atom-one-light.css?v=1476822808558" />
+    <link rel="stylesheet" type="text/css" href="//www.rhymewithgravy.com/themes/casper-msavy/assets/css/font-awesome.min.css?v=1476822808558" />
     
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400" />
 
@@ -182,7 +182,8 @@ public class BlockingVerticle extends AbstractVerticle {
     @Override
     public void start() throws Exception {
         vertx.eventBus().&lt;String&gt;consumer("com.rhymewithgravy.doesit", message -&gt; { <i class="conum" data-value="0"></i><b>(0)</b>
-            boolean answer = SlowBlockingRhyme.doesItRhymeWithGravy(message.body()); <i class="conum" data-value="1"></i><b>(1)</b>
+            boolean answer = SlowBlockingRhyme
+            	.doesItRhymeWithGravy(message.body()); <i class="conum" data-value="1"></i><b>(1)</b>
             message.reply(answer);
         } );
     }
@@ -312,10 +313,10 @@ public class BlockingVerticle extends AbstractVerticle {
 <div class="sect2">
 <h3 id="_vert_x_sync">Vert.x Sync</h3>
 <div class="paragraph">
-<p><a href="http://vertx.io/docs/vertx-sync/java/">Sync</a> the newest area of development for handling blocking code in Vert.x, taking an extremely different approach to the previously mentioned techniques. <a href="http://www.paralleluniverse.co/quasar/">Quasar</a> is used to offload blocking work onto <em>fibres</em>, which are extremely lightweight non-kernel threads that don&#8217;t incur the same context switching penalty as traditional threads.</p>
+<p><a href="http://vertx.io/docs/vertx-sync/java/">Sync</a> the newest area of development for handling blocking code in Vert.x, taking an extremely different approach to the aforementioned techniques. <a href="http://www.paralleluniverse.co/quasar/">Quasar</a> is used to offload blocking work onto <em>fibres</em>, which are extremely lightweight non-kernel threads that don&#8217;t incur the same context switching penalty as traditional threads.</p>
 </div>
 <div class="paragraph">
-<p>It&#8217;s not an option which I&#8217;ve had the opportunity to explore in much depth yet, but I&#8217;m going to spend some time analysing it and follow up; for example, to understand any performance implications, maintainability changes and deployment considerations. It sounds a promising area of research and development, as asynchronous development is trickier and can suffer from "handler inception" (excessive forwarding and handler hell).</p>
+<p>It&#8217;s not an option which I&#8217;ve had the opportunity to explore in much depth yet, but I&#8217;m going to spend some time analysing it and follow up; for example, to {tweet}[understand performance implications], maintainability changes and deployment considerations. It sounds a promising area of research and development; asynchronous development tends to be trickier and can suffer from "handler inception" (excessive forwarding and handler hell) which Sync helps flatten out.</p>
 </div>
 <div class="paragraph">
 <p>One of the most obvious differences is that you must instrument the JVM with the Quasar agent, and that the code modifications are coupled to a specific technology. It also only works with Java at the moment.</p>
@@ -435,8 +436,8 @@ public class BlockingVerticle extends AbstractVerticle {
         hljs.initHighlightingOnLoad();
       </script>
 
-    <script type="text/javascript" src="//www.rhymewithgravy.com/themes/casper-msavy/assets/js/jquery.fitvids.js?v=1476802449353"></script>
-    <script type="text/javascript" src="//www.rhymewithgravy.com/themes/casper-msavy/assets/js/index.js?v=1476802449353"></script>
+    <script type="text/javascript" src="//www.rhymewithgravy.com/themes/casper-msavy/assets/js/jquery.fitvids.js?v=1476822808558"></script>
+    <script type="text/javascript" src="//www.rhymewithgravy.com/themes/casper-msavy/assets/js/index.js?v=1476822808558"></script>
 
     <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
