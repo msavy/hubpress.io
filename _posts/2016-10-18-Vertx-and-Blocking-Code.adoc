@@ -1,0 +1,127 @@
+= Vert.x  and Blocking Code
+:hp-tags: vertx, apiman
+:vertx-dont-block: http://vertx.io/docs/vertx-core/java/#golden_rule
+:vertx-worker-verticle: http://vertx.io/docs/vertx-core/java/#worker_verticles
+:vertx-sync: http://vertx.io/docs/vertx-sync/java/
+:apiman: http://www.apiman.io
+:wiki-context-switching: https://en.wikipedia.org/wiki/Context_switch#Cost
+:quasar: http://www.paralleluniverse.co/quasar/
+:toc: macro
+:toc-title: Sections
+
+One of Vert.x's core tenets is that you should {vertx-dont-block}[never block the event loop]. If you're writing an application from scratch and limit yourself to Vert.x's provided facilities you'll not go far wrong.
+
+However, if you're writing a more complex application (such as apiman) there's a good chance that you'll be forced to stray outside of these boundaries, for example: integration constraints; inherently blocking protocols; static or shared data-structures. footnote:[Usually you want to avoid these, but for various reasons you may be compelled to do so]
+
+Luckily, the Vert.x team understand this, and have provided ways to work with these real-world requirements.
+
+Back in the Vert.x 1.x and early 2.x days you only had one option: {vertx-worker-verticle}[_worker verticles_]. Now the team have expanded things and there are several excellent options; so, let's have a quick review of them. footnote:[I'm assuming you have at least a passing understanding of how to write code in Vert.x)]
+
+toc::[]
+
+== Why is blocking bad, anyway?
+
+Vert.x uses a pragmatic implementation of the reactor model (more specifically multi-reactor).
+
+A simple way to visualise this is to imagine there is only one thread per core, looping indefinitely, and executing work (handlers) from a queue. Many verticle instances share a given reactor; their execution is also _enqueued_ as a task and runs asynchronously - that is, it only runs when the reactor has churned through any preceding tasks and reaches the verticle's task(s). Each task runs _on the reactor thread directly_.
+
+Hence, if any of those enqueued tasks executed a blocking operation, such as listening on a socket, _the entire reactor_ would be unable to make progress until the thread resumed.footnote:[In the meanwhile the latency of waiting tasks is shooting up and work may have to be rejected via timeout.]
+
+Instead, Vert.x deals with blocking operations _outside of the event loop_; enqueuing a handler to be invoked when _the result_ of the blocking operation is completed footnote:[Or making progress in some meaningful way, such as streaming data.]. For instance, instead of blocking on a socket until something arrives, we ask the operating system to call us back when something relevant arrives and invoke our handler with the result.
+
+TIP: The key benefit of this approach is that the reactor thread _does not need to block_, so it can achieve excellent CPU utilisation - spending as much of its time as possible usefully executing, rather than waiting or being blocked.
+
+In contrast, the typical webserver's threads will spend much of their time in a non-running state (e.g. blocked or waiting), leaving large amounts of CPU time unused footnote:[And reducing responsiveness if/when the threadpool is exhausted.]. To combat resource under-utilisation developers harness large numbers of threads so that new requests can continue to be satisfied. However, this incurs substantial CPU, memory and latency costs due to frequent {wiki-context-switching}[context switching] footnote:[Switching stacks and registry values; lots of thread state changes; etc].
+
+But, what if you _need_ to do a blocking operation and it's  not one of Vert.x's supported things?
+
+== Solutions
+=== Worker Verticles
+
+The first approach Vert.x offered was {vertx-worker-verticle}[worker verticles]. Each worker verticle instance executes entirely on its own thread taken from a threadpool, hence when an operation blocks it does not affect the event loop or block progress.
+
+If your verticle's work is _predominantly_ blocking, then a worker verticle is a good option. You can use the pattern outlined in the example below to send and receive work over the event bus - this maintains asynchronicity and non-blocking behaviour in your standard verticles whilst allowing you to offload long-running, blocking functionality onto worker verticles. You should aim to minimise the amount of code run in worker verticles to maximise overall resource utilisation. footnote:[There are more advanced options available, such as multithreaded workers which can help improve performance on specific workloads, but are out of the scope of this blogpost. Multithreaded workers require thread-safe code.]
+
+==== Offering a blocking service
+
+[source,java]
+----
+package com.example.foo;
+
+public class BlockingVerticle extends AbstractVerticle {
+    @Override
+    public void start() throws Exception {
+        vertx.eventBus().<String>consumer("com.rhymewithgravy.doesit", message -> { // <0>
+            boolean answer = SlowBlockingRhyme.doesItRhymeWithGravy(message.body()); // <1>
+            message.reply(answer);
+        } );
+    }
+
+    public static void main(String... args) {
+        DeploymentOptions opts = new DeploymentOptions().
+            setWorker(true); //<2>
+        Vertx.vertx().deployVerticle("com.example.foo.BlockingVerticle", opts); //<3>
+    }
+}
+----
+<0> Listening (non-blocking) on the event bus.
+<1> A service that blocks while it figures out if a word rhymes with gravy. Mostly the answer is no.
+<2> Setting the verticle to be deployed as a worker with `setWorker(true)`.
+<3> Deploying the verticle, as normal.
+
+==== Consuming a blocking service
+
+Here's an example of the some non-blocking sender code which may interact with our fictional service over the event bus:
+
+[source, java]
+----
+vertx.eventBus().send("com.rhymewithgravy.com.doesit", // <1>
+    "apples", // <2>
+    reply -> {
+        System.out.println("Does apples rhyme with gravy? " + reply.result().body()); // <3>
+    }
+);
+----
+<1> Send a message to the service over the event bus.
+<2> Contents of message to send (i.e. word we want to send to rhyme service).
+<3> Print out the blocking service's response:  "no", I would presume!
+
+=== Execute Blocking Statements
+
+If the majority of your verticle's work _does not_ involve blocking (which is probably the most common scenario), then executing the entire verticle on a worker thread is rather wasteful. Even with clever optimisations it isn't fully exploiting the platform's strengths.
+
+It is possible to work around this limitation by separating blocking and non-blocking code into separate verticles, with the event bus acting as the asynchronous bridge to avoid the blocking verticle stopping progress in the non-blocking verticle. However, this can be rather unwieldy and forcing unnecessary boilerplate and complexity where it isn't desirable.
+
+So, a newer and much more elegant solution was introduced for exactly these scenarios: _executeBlocking_.
+
+Code run in an `executeBlocking` handler will be run from the worker threadpool, with the results passed back asynchronously.
+
+```java
+    vertx.executeBlocking(future -> {
+        boolean result = FastBlockingRhyme.doesItRhymeWithGravy(word); // <1>
+        future.complete(result); // <2>
+    },
+    res -> {
+        if (result.succeeded()) {
+            System.out.println(String.format("Does %s rhyme with gravy? %b"), word, res.result()); // <3>
+        }
+    }
+} );
+```
+<1> New improved rhyme engine, it blocks but is fast.
+<2> Indicate that the work in the block has been completed: successfully or otherwise.
+<3> The result pops out in the second lambda, and we print out a helpful message.
+
+_executeBlocking_ is achieving the same work as the event bus pattern shown in the <<Worker Verticles>> example, but is much more concise, efficient and less error-prone.
+
+TIP: _executeBlocking_ should now be the preferred way of running blocking code for most simple use cases.
+
+=== Vert.x Sync
+
+{vertx-sync}[Sync] the newest area of development for handling blocking code in Vert.x, taking an extremely different approach to the previously mentioned techniques. {quasar}[Quasar] is used to offload blocking work onto _fibres_, which are extremely lightweight non-kernel threads that don't incur the same context switching penalty as traditional threads.
+
+It's not an option which I've had the opportunity to explore in much depth yet, but I'm going to spend some time analysing it and follow up; for example, to understand any performance implications, maintainability changes and deployment considerations. It sounds a promising area of research and development, as asynchronous development is trickier and can suffer from "handler inception" (excessive forwarding and handler hell).
+
+One of the most obvious differences is that you must instrument the JVM with the Quasar agent, and that the code modifications are coupled to a specific technology. It also only works with Java at the moment.
+
+Watch this space!
