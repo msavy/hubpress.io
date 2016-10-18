@@ -101,20 +101,17 @@ So, a newer and much more elegant solution was introduced for exactly these scen
 
 Code run in an `executeBlocking` handler will be run from the worker threadpool, with the results passed back asynchronously.
 
-```java
-    vertx.executeBlocking(future -> {
-        boolean result = FastBlockingRhyme.doesItRhymeWithGravy(word); // <1>
-        future.complete(result); // <2>
-    },
-    res -> {
-        if (result.succeeded()) {
-            System.out.println(String.format("Does %s rhyme with gravy? %b"), 
-            	word, 
-                res.result()); // <3>
-        }
+[source, java]
+----
+vertx.executeBlocking(future -> {
+    boolean result = FastBlockingRhyme.doesItRhymeWithGravy("apples"); // <1>
+    future.complete(result); // <2>
+}, res -> {
+    if (result.succeeded()) {
+        System.out.println("Does apples rhyme with gravy?  " + res.result()); // <3>
     }
-} );
-```
+});
+----
 <1> New improved rhyme engine, it blocks but is fast.
 <2> Indicate that the work in the block has been completed: successfully or otherwise.
 <3> The result pops out in the second lambda, and we print out a helpful message.
