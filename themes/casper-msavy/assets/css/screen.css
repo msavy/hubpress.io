@@ -164,6 +164,7 @@ td, th{ padding: 0; }
 }
 .fa .icon-tip {
     content: "\f0e7";
+    font-family: 'FontAwesome';
 }
 /*
     IMPORTANT: When making any changes to the icon font, be sure to increment
