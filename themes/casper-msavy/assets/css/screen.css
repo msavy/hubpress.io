@@ -162,7 +162,7 @@ td, th{ padding: 0; }
 .icon-menu:before {
     content: "\f609";
 }
-.fa fa-bolt {
+.fa .icon-tip {
     content: "\f0e7";
 }
 /*
