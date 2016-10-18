@@ -52,7 +52,8 @@ public class BlockingVerticle extends AbstractVerticle {
     @Override
     public void start() throws Exception {
         vertx.eventBus().<String>consumer("com.rhymewithgravy.doesit", message -> { // <0>
-            boolean answer = SlowBlockingRhyme.doesItRhymeWithGravy(message.body()); // <1>
+            boolean answer = SlowBlockingRhyme
+            	.doesItRhymeWithGravy(message.body()); // <1>
             message.reply(answer);
         } );
     }
@@ -118,9 +119,9 @@ TIP: `executeBlocking` should be the preferred way of running blocking code for 
 
 === Vert.x Sync
 
-{vertx-sync}[Sync] the newest area of development for handling blocking code in Vert.x, taking an extremely different approach to the previously mentioned techniques. {quasar}[Quasar] is used to offload blocking work onto _fibres_, which are extremely lightweight non-kernel threads that don't incur the same context switching penalty as traditional threads.
+{vertx-sync}[Sync] the newest area of development for handling blocking code in Vert.x, taking an extremely different approach to the aforementioned techniques. {quasar}[Quasar] is used to offload blocking work onto _fibres_, which are extremely lightweight non-kernel threads that don't incur the same context switching penalty as traditional threads.
 
-It's not an option which I've had the opportunity to explore in much depth yet, but I'm going to spend some time analysing it and follow up; for example, to understand any performance implications, maintainability changes and deployment considerations. It sounds a promising area of research and development, as asynchronous development is trickier and can suffer from "handler inception" (excessive forwarding and handler hell).
+It's not an option which I've had the opportunity to explore in much depth yet, but I'm going to spend some time analysing it and follow up; for example, to {tweet}[understand performance implications], maintainability changes and deployment considerations. It sounds a promising area of research and development; asynchronous development tends to be trickier and can suffer from "handler inception" (excessive forwarding and handler hell) which Sync helps flatten out.
 
 One of the most obvious differences is that you must instrument the JVM with the Quasar agent, and that the code modifications are coupled to a specific technology. It also only works with Java at the moment.
 
