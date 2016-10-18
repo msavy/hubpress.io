@@ -82,8 +82,8 @@ Here's an example of the some non-blocking sender code which may interact with o
 vertx.eventBus().send("com.rhymewithgravy.com.doesit", // <1>
     "apples", // <2>
     reply -> {
-        System.out.println("Does apples rhyme with gravy? " + 
-        	reply.result().body()); // <3>
+        System.out.println("Does apples rhyme with gravy? "
+            + reply.result().body()); // <3>
     }
 );
 ----
