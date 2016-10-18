@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[The Musings of Marc]]></title><description><![CDATA[I'm a core contributor on apiman, an open source API Management platform. My surname does not rhyme with gravy.]]></description><link>http://www.rhymewithgravy.com</link><generator>RSS for Node</generator><lastBuildDate>Tue, 18 Oct 2016 20:33:28 GMT</lastBuildDate><atom:link href="http://www.rhymewithgravy.com/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Vert.x  and Blocking Code]]></title><description><![CDATA[<div id="preamble">
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[The Musings of Marc]]></title><description><![CDATA[I'm a core contributor on apiman, an open source API Management platform. My surname does not rhyme with gravy.]]></description><link>http://www.rhymewithgravy.com</link><generator>RSS for Node</generator><lastBuildDate>Tue, 18 Oct 2016 20:43:54 GMT</lastBuildDate><atom:link href="http://www.rhymewithgravy.com/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Vert.x  and Blocking Code]]></title><description><![CDATA[<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
 <p>One of Vert.x&#8217;s core tenets is that you should <a href="http://vertx.io/docs/vertx-core/java/#golden_rule">never block the event loop</a>. If you&#8217;re writing an application from scratch and limit yourself to Vert.x&#8217;s provided facilities you&#8217;ll not go far wrong.</p>
@@ -82,17 +82,19 @@ The key benefit of this approach is that the reactor thread <em>does not need to
 public class BlockingVerticle extends AbstractVerticle {
     @Override
     public void start() throws Exception {
-        vertx.eventBus().&lt;String&gt;consumer("com.rhymewithgravy.doesit", message -&gt; { <i class="conum" data-value="0"></i><b>(0)</b>
-            boolean answer = SlowBlockingRhyme
-            	.doesItRhymeWithGravy(message.body()); <i class="conum" data-value="1"></i><b>(1)</b>
-            message.reply(answer);
-        } );
+        vertx.eventBus().&lt;String&gt;consumer("com.rhymewithgravy.doesit",
+            message -&gt; { <i class="conum" data-value="0"></i><b>(0)</b>
+                boolean answer = SlowBlockingRhyme
+                	  .doesItRhymeWithGravy(message.body()); <i class="conum" data-value="1"></i><b>(1)</b>
+                message.reply(answer);
+            } );
     }
 
     public static void main(String... args) {
         DeploymentOptions opts = new DeploymentOptions().
             setWorker(true); <i class="conum" data-value="2"></i><b>(2)</b>
-        Vertx.vertx().deployVerticle("com.example.foo.BlockingVerticle", opts); <i class="conum" data-value="3"></i><b>(3)</b>
+        Vertx.vertx()
+        	.deployVerticle("com.example.foo.BlockingVerticle", opts); <i class="conum" data-value="3"></i><b>(3)</b>
     }
 }</code></pre>
 </div>
@@ -128,7 +130,8 @@ public class BlockingVerticle extends AbstractVerticle {
 <pre class="highlight"><code class="language-java" data-lang="java">vertx.eventBus().send("com.rhymewithgravy.com.doesit", <i class="conum" data-value="1"></i><b>(1)</b>
     "apples", <i class="conum" data-value="2"></i><b>(2)</b>
     reply -&gt; {
-        System.out.println("Does apples rhyme with gravy? " + reply.result().body()); <i class="conum" data-value="3"></i><b>(3)</b>
+        System.out.println("Does apples rhyme with gravy? " +
+        	reply.result().body()); <i class="conum" data-value="3"></i><b>(3)</b>
     }
 );</code></pre>
 </div>
@@ -173,7 +176,9 @@ public class BlockingVerticle extends AbstractVerticle {
     },
     res -&gt; {
         if (result.succeeded()) {
-            System.out.println(String.format("Does %s rhyme with gravy? %b"), word, res.result()); <i class="conum" data-value="3"></i><b>(3)</b>
+            System.out.println(String.format("Does %s rhyme with gravy? %b"),
+            	word,
+                res.result()); <i class="conum" data-value="3"></i><b>(3)</b>
         }
     }
 } );</code></pre>
@@ -217,7 +222,7 @@ public class BlockingVerticle extends AbstractVerticle {
 <p><a href="http://vertx.io/docs/vertx-sync/java/">Sync</a> the newest area of development for handling blocking code in Vert.x, taking an extremely different approach to the aforementioned techniques. <a href="http://www.paralleluniverse.co/quasar/">Quasar</a> is used to offload blocking work onto <em>fibres</em>, which are extremely lightweight non-kernel threads that don&#8217;t incur the same context switching penalty as traditional threads.</p>
 </div>
 <div class="paragraph">
-<p>It&#8217;s not an option which I&#8217;ve had the opportunity to explore in much depth yet, but I&#8217;m going to spend some time analysing it and follow up; for example, to {tweet}[understand performance implications], maintainability changes and deployment considerations. It sounds a promising area of research and development; asynchronous development tends to be trickier and can suffer from "handler inception" (excessive forwarding and handler hell) which Sync helps flatten out.</p>
+<p>It&#8217;s not an option which I&#8217;ve had the opportunity to explore in much depth yet, but I&#8217;m going to spend some time analysing it and follow up; for example, to <a href="https://twitter.com/jetdrone/status/787532093186306049">understand performance implications</a>, maintainability changes and deployment considerations. It sounds a promising area of research and development; asynchronous development tends to be trickier and can suffer from "handler inception" (excessive forwarding and handler hell) which Sync helps flatten out.</p>
 </div>
 <div class="paragraph">
 <p>One of the most obvious differences is that you must instrument the JVM with the Quasar agent, and that the code modifications are coupled to a specific technology. It also only works with Java at the moment.</p>
