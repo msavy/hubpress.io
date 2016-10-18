@@ -114,7 +114,7 @@ Code run in an `executeBlocking` handler will be run from the worker threadpool,
 
 _executeBlocking_ is achieving the same work as the event bus pattern shown in the <<Worker Verticles>> example, but is much more concise, efficient and less error-prone.
 
-TIP: _executeBlocking_ should now be the preferred way of running blocking code for most simple use cases.
+TIP: `executeBlocking` should be the preferred way of running blocking code for most simple use cases.
 
 === Vert.x Sync
 
