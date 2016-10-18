@@ -53,25 +53,25 @@ public class BlockingVerticle extends AbstractVerticle {
     @Override
     public void start() throws Exception {
         vertx.eventBus().<String>consumer("com.rhymewithgravy.doesit", 
-            message -> { // <0>
+            message -> { // <1>
                 boolean answer = SlowBlockingRhyme
-                	  .doesItRhymeWithGravy(message.body()); // <1>
+                    .doesItRhymeWithGravy(message.body()); // <2>
                 message.reply(answer);
             } );
     }
 
     public static void main(String... args) {
         DeploymentOptions opts = new DeploymentOptions()
-            .setWorker(true); //<2>
+            .setWorker(true); //<3>
         Vertx.vertx()
-            .deployVerticle("com.example.foo.BlockingVerticle", opts); // <3>
+            .deployVerticle("com.example.foo.BlockingVerticle", opts); // <4>
     }
 }
 ----
-<0> Listening (non-blocking) on the event bus.
-<1> A service that blocks while it figures out if a word rhymes with gravy. Mostly the answer is no.
-<2> Setting the verticle to be deployed as a worker with `setWorker(true)`.
-<3> Deploying the verticle, as normal.
+<1> Listening (non-blocking) on the event bus.
+<2> A service that blocks while it figures out if a word rhymes with gravy. Mostly the answer is no.
+<3> Setting the verticle to be deployed as a worker with `setWorker(true)`.
+<4> Deploying the verticle, as normal.
 
 ==== Consuming a blocking service
 
