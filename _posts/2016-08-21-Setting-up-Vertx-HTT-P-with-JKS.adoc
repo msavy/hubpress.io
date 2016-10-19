@@ -112,3 +112,7 @@ You'll likely want to check that it's really working. I've been using `cURL` com
 Hooray!
 
 Vert.x really is a gratifyingly well-thought-out and easy-to-use. 
+
+++++
+<meta name="og:image" content="https://www.rhymewithgravy.com/images/Vert-x-Logo-X.png" />
+++++
