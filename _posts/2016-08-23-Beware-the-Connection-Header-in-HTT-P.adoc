@@ -45,5 +45,8 @@ That said, I think _"it's the app's responsibility not to do stupid things"_ or 
 
 So, https://twitter.com/julienviet/status/767385923633967105[I let the Vert.x guys know], and let's see. 
 
+++++
+<meta name="og:image" content="https://www.rhymewithgravy.com/images/Vert-x-Logo-X.png" />
+++++
 
  
