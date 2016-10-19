@@ -40,3 +40,7 @@ You can, of course, just set mappings on your load balancer (or some other techn
 One final note: you can set these options via Java's system properties, too
  
  $ ./bin/standalone.sh -Dapiman-gateway.public-endpoint=https://localhost:8443/i-love-apiman/
+ 
+++++
+<meta name="og:image" content="https://www.rhymewithgravy.com/images/apiman_logo_final_mono_dark-01.png" />
+++++
