@@ -133,5 +133,5 @@ Watch this space!
 
 
 ++++
-<meta name="og:image" content="https://www.rhymewithgravy.com/images/Vert.x_Logo.svg" />
+<meta name="og:image" content="https://www.rhymewithgravy.com/images/Vert.x_Logo.png" />
 ++++
