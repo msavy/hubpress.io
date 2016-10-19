@@ -130,3 +130,8 @@ It's not an option which I've had the opportunity to explore in much depth yet, 
 One of the most obvious differences is that you must instrument the JVM with the Quasar agent, and that the code modifications are coupled to a specific technology. It also only works with Java at the moment.
 
 Watch this space!
+
+
+++++
+<meta name="og:image" content="https://www.rhymewithgravy.com/images/Vert.x_Logo.svg" />
+++++
