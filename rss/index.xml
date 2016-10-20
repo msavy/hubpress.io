@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[The Musings of Marc]]></title><description><![CDATA[I'm a core contributor on apiman, an open source API Management platform. My surname does not rhyme with gravy.]]></description><link>http://www.rhymewithgravy.com</link><generator>RSS for Node</generator><lastBuildDate>Wed, 19 Oct 2016 13:06:37 GMT</lastBuildDate><atom:link href="http://www.rhymewithgravy.com/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Vert.x  and Blocking Code]]></title><description><![CDATA[<div id="preamble">
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[The Musings of Marc]]></title><description><![CDATA[I'm a core contributor on apiman, an open source API Management platform. My surname does not rhyme with gravy.]]></description><link>http://www.rhymewithgravy.com</link><generator>RSS for Node</generator><lastBuildDate>Thu, 20 Oct 2016 11:50:25 GMT</lastBuildDate><atom:link href="http://www.rhymewithgravy.com/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Vert.x  and Blocking Code]]></title><description><![CDATA[<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
 <p>One of Vert.x&#8217;s core tenets is that you should <a href="http://vertx.io/docs/vertx-core/java/#golden_rule">never block the event loop</a>. If you&#8217;re writing an application from scratch and limit yourself to Vert.x&#8217;s provided facilities you&#8217;ll not go far wrong.</p>
@@ -160,13 +160,13 @@ public class BlockingVerticle extends AbstractVerticle {
 <p>If the majority of your verticle&#8217;s work <em>does not</em> involve blocking (which is probably the most common scenario), then executing the entire verticle on a worker thread is rather wasteful. Even with clever optimisations it isn&#8217;t fully exploiting the platform&#8217;s strengths.</p>
 </div>
 <div class="paragraph">
-<p>It is possible to work around this limitation by separating blocking and non-blocking code into separate verticles, with the event bus acting as the asynchronous bridge to avoid the blocking verticle stopping progress in the non-blocking verticle. However, this can be rather unwieldy and forcing unnecessary boilerplate and complexity where it isn&#8217;t desirable.</p>
+<p>It is possible to work around this limitation by separating blocking and non-blocking code into distinct verticles, with the event bus acting as the asynchronous bridge to avoid the blocking verticle stopping progress in the non-blocking verticle  <sup class="footnote">[<a id="_footnoteref_8" class="footnote" href="#_footnote_8" title="View footnote.">8</a>]</sup>. However, this can be rather unwieldy and forces additional boilerplate and complexity where it isn&#8217;t desirable.</p>
 </div>
 <div class="paragraph">
 <p>So, a newer and much more elegant solution was introduced for exactly these scenarios: <em>executeBlocking</em>.</p>
 </div>
 <div class="paragraph">
-<p>Code run in an <code>executeBlocking</code> handler will be run from the worker threadpool, with the results passed back asynchronously.</p>
+<p>Code in an <code>executeBlocking</code> handler will be run from a worker threadpool where it is safe to block, with the results passed back asynchronously.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -198,7 +198,7 @@ public class BlockingVerticle extends AbstractVerticle {
 </table>
 </div>
 <div class="paragraph">
-<p><em>executeBlocking</em> is achieving the same work as the event bus pattern shown in the <a href="#_worker_verticles">Worker Verticles</a> example, but is much more concise, efficient and less error-prone.</p>
+<p>In the shown code <em>executeBlocking</em> is achieving the same work as the event bus pattern shown in the <a href="#_worker_verticles">Worker Verticles</a> example, but in a much more concise, efficient and less error-prone manner.</p>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -253,6 +253,9 @@ public class BlockingVerticle extends AbstractVerticle {
 </div>
 <div class="footnote" id="_footnote_7">
 <a href="#_footnoteref_7">7</a>. There are more advanced options available, such as multithreaded workers which can help improve performance on specific workloads, but are out of the scope of this blogpost. Multithreaded workers require thread-safe code.
+</div>
+<div class="footnote" id="_footnote_8">
+<a href="#_footnoteref_8">8</a>. I call this the <em>event bus pattern for blocking code</em>.
 </div>
 </div>]]></description><link>http://www.rhymewithgravy.com/2016/10/18/Vertx-and-Blocking-Code.html</link><guid isPermaLink="true">http://www.rhymewithgravy.com/2016/10/18/Vertx-and-Blocking-Code.html</guid><category><![CDATA[vertx]]></category><category><![CDATA[ apiman]]></category><dc:creator><![CDATA[Marc Savy]]></dc:creator><pubDate>Tue, 18 Oct 2016 00:00:00 GMT</pubDate></item><item><title><![CDATA[Byteman now available in homebrew]]></title><description><![CDATA[<div id="preamble">
 <div class="sectionbody">
