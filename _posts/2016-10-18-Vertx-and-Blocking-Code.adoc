@@ -95,11 +95,11 @@ vertx.eventBus().send("com.rhymewithgravy.com.doesit", // <1>
 
 If the majority of your verticle's work _does not_ involve blocking (which is probably the most common scenario), then executing the entire verticle on a worker thread is rather wasteful. Even with clever optimisations it isn't fully exploiting the platform's strengths.
 
-It is possible to work around this limitation by separating blocking and non-blocking code into separate verticles, with the event bus acting as the asynchronous bridge to avoid the blocking verticle stopping progress in the non-blocking verticle. However, this can be rather unwieldy and forcing unnecessary boilerplate and complexity where it isn't desirable.
+It is possible to work around this limitation by separating blocking and non-blocking code into distinct verticles, with the event bus acting as the asynchronous bridge to avoid the blocking verticle stopping progress in the non-blocking verticle  footnote:[I call this the _event bus pattern for blocking code_.]. However, this can be rather unwieldy and forces additional boilerplate and complexity where it isn't desirable.
 
 So, a newer and much more elegant solution was introduced for exactly these scenarios: _executeBlocking_.
 
-Code run in an `executeBlocking` handler will be run from the worker threadpool, with the results passed back asynchronously.
+Code in an `executeBlocking` handler will be run from a worker threadpool where it is safe to block, with the results passed back asynchronously.
 
 [source, java]
 ----
@@ -117,7 +117,7 @@ vertx.executeBlocking(future -> {
 <2> Indicate that the work in the block has been completed: successfully or otherwise.
 <3> The result pops out in the second lambda, and we print out a helpful message.
 
-_executeBlocking_ is achieving the same work as the event bus pattern shown in the <<Worker Verticles>> example, but is much more concise, efficient and less error-prone.
+In the shown code _executeBlocking_ is achieving the same work as the event bus pattern shown in the <<Worker Verticles>> example, but in a much more concise, efficient and less error-prone manner.
 
 TIP: `executeBlocking` should be the preferred way of running blocking code for most simple use cases.
 
