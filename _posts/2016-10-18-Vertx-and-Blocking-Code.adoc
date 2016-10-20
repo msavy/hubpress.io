@@ -117,7 +117,7 @@ vertx.executeBlocking(future -> {
 <2> Indicate that the work in the block has been completed: successfully or otherwise.
 <3> The result pops out in the second lambda, and we print out a helpful message.
 
-In the shown code _executeBlocking_ is achieving the same work as the event bus pattern shown in the <<Worker Verticles>> example, but in a much more concise, efficient and less error-prone manner.
+In this sample _executeBlocking_ accomplishes the same work as the event bus pattern shown in the <<Worker Verticles>> example, but in a much more concise, efficient and less error-prone manner.
 
 TIP: `executeBlocking` should be the preferred way of running blocking code for most simple use cases.
 
