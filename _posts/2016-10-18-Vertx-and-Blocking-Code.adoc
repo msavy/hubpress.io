@@ -107,7 +107,7 @@ vertx.executeBlocking(future -> {
     boolean result = FastBlockingRhyme.doesItRhymeWithGravy("apples"); // <1>
     future.complete(result); // <2>
 }, res -> {
-    if (result.succeeded()) {
+    if (res.succeeded()) {
         System.out.println("Does apples rhyme with gravy?  " 
           + res.result()); // <3>
     }
