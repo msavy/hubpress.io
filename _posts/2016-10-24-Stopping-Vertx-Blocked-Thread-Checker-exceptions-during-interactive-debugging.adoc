@@ -4,6 +4,8 @@ Marc Savy <marc@rhymewithgravy.com>
 :blog-handling-blocking: https://www.rhymewithgravy.com/2016/10/18/Vertx-and-Blocking-Code.html
 :vertx-launcher: http://vertx.io/docs/apidocs/io/vertx/core/Launcher.html
 :vertx-options: http://vertx.io/docs/apidocs/io/vertx/core/VertxOptions.html
+:toc: macro
+:toc-title: Sections
 
 Vert.x's standard verticles require {blog-handling-blocking}[non-blocking code] to work optimally. A watchdog will warn you (extremely insistently) if anything does block for an excessive period. However, if you're just trying to run an interactive debugger footnote:[Eclipse, IntelliJ, NetBeans, etc.] then this can become extremely annoying as your console is flooded with `io.vertx.core.impl.BlockedThreadChecker` exceptions that look something like this:
 
