@@ -16,9 +16,9 @@
 
     <link rel="shortcut icon" href="http://www.rhymewithgravy.com/favicon.ico">
 
-    <link rel="stylesheet" type="text/css" href="//www.rhymewithgravy.com/themes/casper-msavy/assets/css/screen.css?v=1477489144677" />
-    <link rel="stylesheet" type="text/css" href="//www.rhymewithgravy.com/themes/casper-msavy/assets/css/atom-one-light.css?v=1477489144677" />
-    <link rel="stylesheet" type="text/css" href="//www.rhymewithgravy.com/themes/casper-msavy/assets/css/font-awesome.min.css?v=1477489144677" />
+    <link rel="stylesheet" type="text/css" href="//www.rhymewithgravy.com/themes/casper-msavy/assets/css/screen.css?v=1477489235434" />
+    <link rel="stylesheet" type="text/css" href="//www.rhymewithgravy.com/themes/casper-msavy/assets/css/atom-one-light.css?v=1477489235434" />
+    <link rel="stylesheet" type="text/css" href="//www.rhymewithgravy.com/themes/casper-msavy/assets/css/font-awesome.min.css?v=1477489235434" />
     
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400" />
 
@@ -107,8 +107,12 @@ null
 <div id="toctitle" class="title">Sections</div>
 <ul class="sectlevel1">
 <li><a href="#_what_s_the_cause">What&#8217;s the cause?</a></li>
+<li><a href="#_workarounds">Workarounds</a>
+<ul class="sectlevel2">
 <li><a href="#_via_system_properties">Via System Properties</a></li>
 <li><a href="#_directly_in_vertxoptions">Directly in VertxOptions</a></li>
+</ul>
+</li>
 <li><a href="#_caveats_conclusion">Caveats &amp; Conclusion</a></li>
 </ul>
 </div>
@@ -139,8 +143,10 @@ null
 </div>
 </div>
 <div class="sect1">
-<h2 id="_via_system_properties">Via System Properties</h2>
+<h2 id="_workarounds">Workarounds</h2>
 <div class="sectionbody">
+<div class="sect2">
+<h3 id="_via_system_properties">Via System Properties</h3>
 <div class="paragraph">
 <p>Whether you&#8217;re using <a href="http://vertx.io/docs/apidocs/io/vertx/core/Launcher.html">Launcher</a> (which has supplanted Starter) or the Vert.x CLI, pass the following VM argument:</p>
 </div>
@@ -179,10 +185,8 @@ Setting maxEventLoopExecuteTime via system properties is likely the best approac
 </table>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="_directly_in_vertxoptions">Directly in VertxOptions</h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="_directly_in_vertxoptions">Directly in VertxOptions</h3>
 <div class="paragraph">
 <p>If you are not using the CLI or Launcher, or for some reason wish to avoid using system properties, then you can simply set the interval in <a href="http://vertx.io/docs/apidocs/io/vertx/core/VertxOptions.html">VertxOptions</a> directly.</p>
 </div>
@@ -204,6 +208,7 @@ Vertx myVertx = Vertx.vertx(vxOptions); <i class="conum" data-value="2"></i><b>(
 <td>Pass options to <code>Vertx.vertx()</code> factory.</td>
 </tr>
 </table>
+</div>
 </div>
 </div>
 </div>
@@ -313,8 +318,8 @@ Vertx myVertx = Vertx.vertx(vxOptions); <i class="conum" data-value="2"></i><b>(
         hljs.initHighlightingOnLoad();
       </script>
 
-    <script type="text/javascript" src="//www.rhymewithgravy.com/themes/casper-msavy/assets/js/jquery.fitvids.js?v=1477489144677"></script>
-    <script type="text/javascript" src="//www.rhymewithgravy.com/themes/casper-msavy/assets/js/index.js?v=1477489144677"></script>
+    <script type="text/javascript" src="//www.rhymewithgravy.com/themes/casper-msavy/assets/js/jquery.fitvids.js?v=1477489235434"></script>
+    <script type="text/javascript" src="//www.rhymewithgravy.com/themes/casper-msavy/assets/js/index.js?v=1477489235434"></script>
 
     <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
