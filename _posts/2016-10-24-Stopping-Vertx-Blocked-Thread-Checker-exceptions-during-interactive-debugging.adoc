@@ -32,8 +32,8 @@ Whether you're using {vertx-launcher}[Launcher] (which has supplanted Starter) o
 
 All IDEs also support setting system properties in some fashion. I've briefly outlined Eclipse and IntelliJ below, but the procedure should be similar for others.
 
-Eclipse:: Debug Configurations -> Arguments -> VM Arguments
-IntelliJ:: Edit Configurations -> Select Application -> Configuration -> VM Options
+*Eclipse* Debug Configurations -> Arguments -> VM Arguments
+*IntelliJ* Edit Configurations -> Select Application -> Configuration -> VM Options
 
 TIP: Setting maxEventLoopExecuteTime via system properties is likely the best approach; avoiding debug-specific behaviour leaking into your code.
 
