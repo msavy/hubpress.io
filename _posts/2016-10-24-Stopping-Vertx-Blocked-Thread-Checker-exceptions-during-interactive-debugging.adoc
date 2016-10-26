@@ -25,7 +25,8 @@ Mercifully there's a simple solution, which involves setting `maxEventLoopExecut
 .The following should only be used for debugging purposes!
 *If your production code is throwing BlockedThreadChecker exceptions, then you have a problem you need to fix.*
 
-== Via System Properties
+== Workarounds
+=== Via System Properties
 
 Whether you're using {vertx-launcher}[Launcher] (which has supplanted Starter) or the Vert.x CLI, pass the following VM argument:
 
@@ -42,7 +43,7 @@ All IDEs also support setting system properties in some fashion. I've briefly ou
 
 TIP: Setting maxEventLoopExecuteTime via system properties is likely the best approach; avoiding debug-specific behaviour leaking into your code.
 
-== Directly in VertxOptions
+=== Directly in VertxOptions
 
 If you are not using the CLI or Launcher, or for some reason wish to avoid using system properties, then you can simply set the interval in {vertx-options}[VertxOptions] directly.
 
