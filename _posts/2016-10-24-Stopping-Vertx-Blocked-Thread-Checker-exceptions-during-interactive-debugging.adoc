@@ -13,6 +13,8 @@ Vert.x's standard verticles require {blog-handling-blocking}[non-blocking code] 
 <script src="https://gist.github.com/msavy/cffdaa3c3e4dcb2395b09666f09e4cae.js"></script>
 ++++
 
+toc::[]
+
 == What's the cause?
 
 The exceptions occur because the interactive debugger repeatedly _halts the event loop thread_ while you use it: browsing around, poking at variables, stepping through your program, etc. The length of time it takes to execute the event being debugged will be drastically longer than normal; hence the watchdog starts barking.
