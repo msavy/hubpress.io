@@ -1,9 +1,18 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[The Musings of Marc]]></title><description><![CDATA[I'm a core contributor on apiman, an open source API Management platform. My surname does not rhyme with gravy.]]></description><link>http://www.rhymewithgravy.com</link><generator>RSS for Node</generator><lastBuildDate>Wed, 26 Oct 2016 13:38:27 GMT</lastBuildDate><atom:link href="http://www.rhymewithgravy.com/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Stopping Vert.x BlockedThreadChecker exceptions during interactive debugging]]></title><description><![CDATA[<div id="preamble">
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[The Musings of Marc]]></title><description><![CDATA[I'm a core contributor on apiman, an open source API Management platform. My surname does not rhyme with gravy.]]></description><link>http://www.rhymewithgravy.com</link><generator>RSS for Node</generator><lastBuildDate>Wed, 26 Oct 2016 13:39:04 GMT</lastBuildDate><atom:link href="http://www.rhymewithgravy.com/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Stopping Vert.x BlockedThreadChecker exceptions during interactive debugging]]></title><description><![CDATA[<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
 <p>Vert.x&#8217;s standard verticles require <a href="https://www.rhymewithgravy.com/2016/10/18/Vertx-and-Blocking-Code.html">non-blocking code</a> to work optimally. A watchdog will warn you (extremely insistently) if anything does block for an excessive period. However, if you&#8217;re just trying to run an interactive debugger <sup class="footnote">[<a id="_footnoteref_1" class="footnote" href="#_footnote_1" title="View footnote.">1</a>]</sup> then this can become extremely annoying as your console is flooded with <code>io.vertx.core.impl.BlockedThreadChecker</code> exceptions that look something like this:</p>
 </div>
 <script src="https://gist.github.com/msavy/cffdaa3c3e4dcb2395b09666f09e4cae.js"></script>
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Sections</div>
+<ul class="sectlevel1">
+<li><a href="#_what_s_the_cause">What&#8217;s the cause?</a></li>
+<li><a href="#_via_system_properties">Via System Properties</a></li>
+<li><a href="#_directly_in_vertxoptions">Directly in VertxOptions</a></li>
+<li><a href="#_caveats_conclusion">Caveats &amp; Conclusion</a></li>
+</ul>
+</div>
 </div>
 </div>
 <div class="sect1">
