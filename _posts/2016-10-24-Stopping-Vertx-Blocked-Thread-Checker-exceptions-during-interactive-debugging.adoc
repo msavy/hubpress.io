@@ -15,7 +15,7 @@ Vert.x's standard verticles require {blog-handling-blocking}[non-blocking code] 
 
 The exceptions occur because the interactive debugger repeatedly _halts the event loop thread_ while you use it: browsing around, poking at variables, stepping through your program, etc. The length of time it takes to execute the event being debugged will be drastically longer than normal; hence the watchdog starts barking.
 
-Mercifully there's a simple solution, which is to set the `maxEventLoopExecuteTime` to some sufficiently long time.
+Mercifully there's a simple solution, which involves setting `maxEventLoopExecuteTime` to a sufficiently long time.
 
 [IMPORTANT]
 .The following should only be used for debugging purposes!
