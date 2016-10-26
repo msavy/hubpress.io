@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[The Musings of Marc]]></title><description><![CDATA[I'm a core contributor on apiman, an open source API Management platform. My surname does not rhyme with gravy.]]></description><link>http://www.rhymewithgravy.com</link><generator>RSS for Node</generator><lastBuildDate>Wed, 26 Oct 2016 13:31:37 GMT</lastBuildDate><atom:link href="http://www.rhymewithgravy.com/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Stopping Vert.x BlockedThreadChecker exceptions during interactive debugging]]></title><description><![CDATA[<div id="preamble">
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[The Musings of Marc]]></title><description><![CDATA[I'm a core contributor on apiman, an open source API Management platform. My surname does not rhyme with gravy.]]></description><link>http://www.rhymewithgravy.com</link><generator>RSS for Node</generator><lastBuildDate>Wed, 26 Oct 2016 13:32:38 GMT</lastBuildDate><atom:link href="http://www.rhymewithgravy.com/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Stopping Vert.x BlockedThreadChecker exceptions during interactive debugging]]></title><description><![CDATA[<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
 <p>Vert.x&#8217;s standard verticles require <a href="https://www.rhymewithgravy.com/2016/10/18/Vertx-and-Blocking-Code.html">non-blocking code</a> to work optimally. A watchdog will warn you (extremely insistently) if anything does block for an excessive period. However, if you&#8217;re just trying to run an interactive debugger <sup class="footnote">[<a id="_footnoteref_1" class="footnote" href="#_footnote_1" title="View footnote.">1</a>]</sup> then this can become extremely annoying as your console is flooded with <code>io.vertx.core.impl.BlockedThreadChecker</code> exceptions that look something like this:</p>
@@ -52,17 +52,9 @@
 <div class="paragraph">
 <p>All IDEs also support setting system properties in some fashion. I&#8217;ve briefly outlined Eclipse and IntelliJ below, but the procedure should be similar for others.</p>
 </div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1">Eclipse</dt>
-<dd>
-<p>Debug Configurations &#8594; Arguments &#8594; VM Arguments</p>
-</dd>
-<dt class="hdlist1">IntelliJ</dt>
-<dd>
-<p>Edit Configurations &#8594; Select Application &#8594; Configuration &#8594; VM Options</p>
-</dd>
-</dl>
+<div class="paragraph">
+<p><strong>Eclipse</strong> Debug Configurations &#8594; Arguments &#8594; VM Arguments
+<strong>IntelliJ</strong> Edit Configurations &#8594; Select Application &#8594; Configuration &#8594; VM Options</p>
 </div>
 <div class="admonitionblock tip">
 <table>
