@@ -16,9 +16,9 @@
 
     <link rel="shortcut icon" href="http://www.rhymewithgravy.com/favicon.ico">
 
-    <link rel="stylesheet" type="text/css" href="//www.rhymewithgravy.com/themes/casper-msavy/assets/css/screen.css?v=1477489107489" />
-    <link rel="stylesheet" type="text/css" href="//www.rhymewithgravy.com/themes/casper-msavy/assets/css/atom-one-light.css?v=1477489107489" />
-    <link rel="stylesheet" type="text/css" href="//www.rhymewithgravy.com/themes/casper-msavy/assets/css/font-awesome.min.css?v=1477489107489" />
+    <link rel="stylesheet" type="text/css" href="//www.rhymewithgravy.com/themes/casper-msavy/assets/css/screen.css?v=1477489144677" />
+    <link rel="stylesheet" type="text/css" href="//www.rhymewithgravy.com/themes/casper-msavy/assets/css/atom-one-light.css?v=1477489144677" />
+    <link rel="stylesheet" type="text/css" href="//www.rhymewithgravy.com/themes/casper-msavy/assets/css/font-awesome.min.css?v=1477489144677" />
     
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400" />
 
@@ -103,6 +103,15 @@ null
 <p>Vert.x&#8217;s standard verticles require <a href="https://www.rhymewithgravy.com/2016/10/18/Vertx-and-Blocking-Code.html">non-blocking code</a> to work optimally. A watchdog will warn you (extremely insistently) if anything does block for an excessive period. However, if you&#8217;re just trying to run an interactive debugger <sup class="footnote">[<a id="_footnoteref_1" class="footnote" href="#_footnote_1" title="View footnote.">1</a>]</sup> then this can become extremely annoying as your console is flooded with <code>io.vertx.core.impl.BlockedThreadChecker</code> exceptions that look something like this:</p>
 </div>
 <script src="https://gist.github.com/msavy/cffdaa3c3e4dcb2395b09666f09e4cae.js"></script>
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Sections</div>
+<ul class="sectlevel1">
+<li><a href="#_what_s_the_cause">What&#8217;s the cause?</a></li>
+<li><a href="#_via_system_properties">Via System Properties</a></li>
+<li><a href="#_directly_in_vertxoptions">Directly in VertxOptions</a></li>
+<li><a href="#_caveats_conclusion">Caveats &amp; Conclusion</a></li>
+</ul>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -304,8 +313,8 @@ Vertx myVertx = Vertx.vertx(vxOptions); <i class="conum" data-value="2"></i><b>(
         hljs.initHighlightingOnLoad();
       </script>
 
-    <script type="text/javascript" src="//www.rhymewithgravy.com/themes/casper-msavy/assets/js/jquery.fitvids.js?v=1477489107489"></script>
-    <script type="text/javascript" src="//www.rhymewithgravy.com/themes/casper-msavy/assets/js/index.js?v=1477489107489"></script>
+    <script type="text/javascript" src="//www.rhymewithgravy.com/themes/casper-msavy/assets/js/jquery.fitvids.js?v=1477489144677"></script>
+    <script type="text/javascript" src="//www.rhymewithgravy.com/themes/casper-msavy/assets/js/index.js?v=1477489144677"></script>
 
     <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
