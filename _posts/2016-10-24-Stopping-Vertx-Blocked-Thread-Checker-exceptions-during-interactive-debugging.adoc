@@ -19,7 +19,7 @@ toc::[]
 
 The exceptions occur because the interactive debugger repeatedly _halts the event loop thread_ while you use it: browsing around, poking at variables, stepping through your program, etc. The length of time it takes to execute the event being debugged will be drastically longer than normal; hence the watchdog starts barking.
 
-Mercifully there's a simple solution, which involves setting `blockedThreadCheckPeriod` to a sufficiently long time. footnote:[Had this as maxEventLoopExecuteTime in a previous revision of the blog, but this doesn't work consistently.]
+Mercifully there's a simple solution, which involves setting `blockedThreadCheckInterval` to a sufficiently long time. footnote:[Had this as maxEventLoopExecuteTime in a previous revision of the blog, but this doesn't work consistently.]
 
 [IMPORTANT]
 .The following should only be used for debugging purposes!
@@ -31,7 +31,7 @@ Mercifully there's a simple solution, which involves setting `blockedThreadCheck
 Whether you're using {vertx-launcher}[Launcher] (which has supplanted Starter) or the Vert.x CLI, pass the following VM argument:
 
 ```java
--Dvertx.options.blockedThreadCheckPeriod=200000000 // <1>
+-Dvertx.options.blockedThreadCheckInterval=200000000 // <1>
 ```
 <1> Some sufficiently large integer (milliseconds).
 
@@ -41,7 +41,7 @@ All IDEs also support setting system properties in some fashion. I've briefly ou
 
 *IntelliJ* Edit Configurations -> Select Application -> Configuration -> VM Options
 
-TIP: Setting blockedThreadCheckPeriod via system properties is likely the best approach; avoiding debug-specific behaviour leaking into your code.
+TIP: Setting blockedThreadCheckInterval via system properties is likely the best approach; avoiding debug-specific behaviour leaking into your code.
 
 === Directly in VertxOptions
 
@@ -49,7 +49,7 @@ If you are not using the CLI or Launcher, or for some reason wish to avoid using
 
 ```java
 VertxOptions vxOptions = new VertxOptions()
-	.setblockedThreadCheckPeriod(200000000); // <1>
+	.setblockedThreadCheckInterval(200000000); // <1>
 Vertx myVertx = Vertx.vertx(vxOptions); // <2>
 ```
 <1> Set interval in `VertxOptions`.
@@ -57,7 +57,7 @@ Vertx myVertx = Vertx.vertx(vxOptions); // <2>
 
 == Caveats & Conclusion
 
-It's worth remembering that by halting executing thread(s) in the debugger you may not encounter timing-related issues you otherwise would. So, it is wise to ensure you aren't altering `blockedThreadCheckPeriod` unless you really need to.
+It's worth remembering that by halting executing thread(s) in the debugger you may not encounter timing-related issues you otherwise would. So, it is wise to ensure you aren't altering `blockedThreadCheckInterval` unless you really need to.
 
 Needless to say, seeing BlockedThreadChecker warnings in production is a symptom of pathological code behaviour, indicating that the event loop is being blocked for excessive periods; you should fix it rather than altering timeouts.
 
