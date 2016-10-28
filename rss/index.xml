@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[The Musings of Marc]]></title><description><![CDATA[I'm a core contributor on apiman, an open source API Management platform. My surname does not rhyme with gravy.]]></description><link>http://www.rhymewithgravy.com</link><generator>RSS for Node</generator><lastBuildDate>Fri, 28 Oct 2016 21:41:25 GMT</lastBuildDate><atom:link href="http://www.rhymewithgravy.com/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Stopping Vert.x BlockedThreadChecker exceptions during interactive debugging]]></title><description><![CDATA[<div id="preamble">
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[The Musings of Marc]]></title><description><![CDATA[I'm a core contributor on apiman, an open source API Management platform. My surname does not rhyme with gravy.]]></description><link>http://www.rhymewithgravy.com</link><generator>RSS for Node</generator><lastBuildDate>Fri, 28 Oct 2016 21:52:02 GMT</lastBuildDate><atom:link href="http://www.rhymewithgravy.com/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Stopping Vert.x BlockedThreadChecker exceptions during interactive debugging]]></title><description><![CDATA[<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
 <p>Vert.x&#8217;s standard verticles require <a href="https://www.rhymewithgravy.com/2016/10/18/Vertx-and-Blocking-Code.html">non-blocking code</a> to work optimally. A watchdog will warn you (extremely insistently) if anything does block for an excessive period. However, if you&#8217;re just trying to run an interactive debugger <sup class="footnote">[<a id="_footnoteref_1" class="footnote" href="#_footnote_1" title="View footnote.">1</a>]</sup> then this can become extremely annoying as your console is flooded with <code>io.vertx.core.impl.BlockedThreadChecker</code> exceptions that look something like this:</p>
@@ -26,7 +26,7 @@
 <p>The exceptions occur because the interactive debugger repeatedly <em>halts the event loop thread</em> while you use it: browsing around, poking at variables, stepping through your program, etc. The length of time it takes to execute the event being debugged will be drastically longer than normal; hence the watchdog starts barking.</p>
 </div>
 <div class="paragraph">
-<p>Mercifully there&#8217;s a simple solution, which involves setting <code>blockedThreadCheckPeriod</code> to a sufficiently long time. <sup class="footnote">[<a id="_footnoteref_2" class="footnote" href="#_footnote_2" title="View footnote.">2</a>]</sup></p>
+<p>Mercifully there&#8217;s a simple solution, which involves setting <code>blockedThreadCheckInterval</code> to a sufficiently long time. <sup class="footnote">[<a id="_footnoteref_2" class="footnote" href="#_footnote_2" title="View footnote.">2</a>]</sup></p>
 </div>
 <div class="admonitionblock important">
 <table>
@@ -53,7 +53,7 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">-Dvertx.options.blockedThreadCheckPeriod=200000000 <i class="conum" data-value="1"></i><b>(1)</b></code></pre>
+<pre class="highlight"><code class="language-java" data-lang="java">-Dvertx.options.blockedThreadCheckInterval=200000000 <i class="conum" data-value="1"></i><b>(1)</b></code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -80,7 +80,7 @@
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-Setting blockedThreadCheckPeriod via system properties is likely the best approach; avoiding debug-specific behaviour leaking into your code.
+Setting blockedThreadCheckInterval via system properties is likely the best approach; avoiding debug-specific behaviour leaking into your code.
 </td>
 </tr>
 </table>
@@ -94,7 +94,7 @@ Setting blockedThreadCheckPeriod via system properties is likely the best approa
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-java" data-lang="java">VertxOptions vxOptions = new VertxOptions()
-	.setblockedThreadCheckPeriod(200000000); <i class="conum" data-value="1"></i><b>(1)</b>
+	.setblockedThreadCheckInterval(200000000); <i class="conum" data-value="1"></i><b>(1)</b>
 Vertx myVertx = Vertx.vertx(vxOptions); <i class="conum" data-value="2"></i><b>(2)</b></code></pre>
 </div>
 </div>
@@ -117,7 +117,7 @@ Vertx myVertx = Vertx.vertx(vxOptions); <i class="conum" data-value="2"></i><b>(
 <h2 id="_caveats_conclusion">Caveats &amp; Conclusion</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>It&#8217;s worth remembering that by halting executing thread(s) in the debugger you may not encounter timing-related issues you otherwise would. So, it is wise to ensure you aren&#8217;t altering <code>blockedThreadCheckPeriod</code> unless you really need to.</p>
+<p>It&#8217;s worth remembering that by halting executing thread(s) in the debugger you may not encounter timing-related issues you otherwise would. So, it is wise to ensure you aren&#8217;t altering <code>blockedThreadCheckInterval</code> unless you really need to.</p>
 </div>
 <div class="paragraph">
 <p>Needless to say, seeing BlockedThreadChecker warnings in production is a symptom of pathological code behaviour, indicating that the event loop is being blocked for excessive periods; you should fix it rather than altering timeouts.</p>
