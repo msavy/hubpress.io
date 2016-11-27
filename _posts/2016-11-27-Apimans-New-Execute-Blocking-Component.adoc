@@ -1,0 +1,60 @@
+= Apiman's New Execute Blocking Component
+Marc Savy <marc@rhymewithgravy.com>
+:hp-tags: apiman, apiman-gateway, apiman-components, apiman-custom-policies
+:custom-policy-docs: http://www.apiman.io/latest/developer-guide.html#_plugins
+:vertx-blocking-bad: https://www.rhymewithgravy.com/2016/10/18/Vertx-and-Blocking-Code.html
+:vertx: http://vertx.io/
+:pr: https://github.com/apiman/apiman/pull/509
+
+Execute Blocking Component is a small but potentially useful {pr}[new component I've written and committed to the apiman gateway], allowing {custom-policy-docs}[custom policy plugin] authors to _safely execute blocking code_.
+
+== Blocking is bad, but...
+
+Apiman's gateway embraces non-blocking and asychronous design principles in order to best exploit the beneficial performance characteristics of platforms such as {vertx}[Vert.x]. 
+
+A constraint of this approach means that code must not block the thread they are executing upon for excessive periods of time, for instance, blocking on IO or holding locks; lest an entire reactor (and often physical core) becomes completely unavailable. For those who are interested {vertx-blocking-bad}[I explored this issue in more depth in a previous post], but safe to say, this _golden rule_ can be difficult to abide by in the real world where libraries and protocols outside of our control may not behave as we need.
+
+The Execute Blocking Component (`IExecuteBlockingComponent`) comes to our rescue, providing a mechanism to execute blocking code _from a threadpool_ rather than directly on the reactor.
+
+Needless to say, special attention should be paid to its limitations and characteristics. Only use this functionality when strictly necessary, and with the smallest practical scope, as it substantially reduces the performance benefits of the underlying non-blocking architecture.
+
+== Execute Blocking
+
+Here's a short example of the component in action:
+
+```java
+void doApply(ApiRequest request, IPolicyContext context, ...) {
+    IExecuteBlockingComponent ebComponent = 
+        context.getComponent("IExecuteBlockingComponent.class");
+        
+        ebComponent.executeBlocking(future -> { // <1>
+            String result = BlockingService(50000); // <2>
+            future.completed(result); // <3>
+        },
+        result -> { // <4>
+            if (result.successful()) {
+                System.out.println("Woohoo " + result.getResult()); // <5>
+            } else {
+                System.err.println(result.getError()) // <6>
+            }
+        });
+}
+```
+<1> Execute your blocking code within the first lambda, and indicate to the `future` when your code has terminated, either `completed` or `fail`. Exceptions thrown within the scope of the lambda will be caught and implicitly passed to `fail`.
+<2> Imaginary blocking service that blocks for 50000ms.
+<3> Indicating the future has completed successfully and passing the result to `completed`.
+<4> The result is passed to this second lambda _asynchronously_.
+<5> Printing out a successful result.
+<6> Printing out any exception.
+
+IMPORTANT: Only use _executeBlocking_ when absolutely necessary and constrain it as tightly as possible.
+
+== Apiman on blocking platforms
+
+You may be wondering what happens if you use `executeBlocking` on an apiman platform which has backed by a implementation where it's safe to block the executing thread (such a servlet on WildFly). Simply, a passthrough implementation is used on those platforms which executes immediately on the same thread - so it's safe to use on any platform.
+
+Even if you tend to run your plugins on a blocking platform you should still respect the "no blocking the main thread" rule and use `executeBlocking`, as other platforms and users _will_ expect this guarantee - it's especially crucial if you wish to share your work with the community.
+
+== Final Words
+
+This is the first commit of this code onto master, so changes are possible. This feature is directly designed to enable the use of Vert.x, so their interface has been adopted fairly closely, so many thanks to them again for their brilliant work which we're fortunate to be able harness in apiman. 
