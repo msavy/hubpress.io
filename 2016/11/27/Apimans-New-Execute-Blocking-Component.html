@@ -16,9 +16,9 @@
 
     <link rel="shortcut icon" href="http://www.rhymewithgravy.com/favicon.ico">
 
-    <link rel="stylesheet" type="text/css" href="//www.rhymewithgravy.com/themes/casper-msavy/assets/css/screen.css?v=1480277788949" />
-    <link rel="stylesheet" type="text/css" href="//www.rhymewithgravy.com/themes/casper-msavy/assets/css/atom-one-light.css?v=1480277788949" />
-    <link rel="stylesheet" type="text/css" href="//www.rhymewithgravy.com/themes/casper-msavy/assets/css/font-awesome.min.css?v=1480277788949" />
+    <link rel="stylesheet" type="text/css" href="//www.rhymewithgravy.com/themes/casper-msavy/assets/css/screen.css?v=1480278272498" />
+    <link rel="stylesheet" type="text/css" href="//www.rhymewithgravy.com/themes/casper-msavy/assets/css/atom-one-light.css?v=1480278272498" />
+    <link rel="stylesheet" type="text/css" href="//www.rhymewithgravy.com/themes/casper-msavy/assets/css/font-awesome.min.css?v=1480278272498" />
     
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400" />
 
@@ -131,7 +131,9 @@ null
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">void doApply(ApiRequest request, IPolicyContext context, ...) {
+<pre class="highlight"><code class="language-java" data-lang="java">void doApply(ApiRequest request, IPolicyContext context,
+    IPolicyChain&lt;ApiRequest&gt; chain) {
+
     IExecuteBlockingComponent ebComponent =
         context.getComponent("IExecuteBlockingComponent.class");
 
@@ -141,9 +143,10 @@ null
         },
         result -&gt; { <i class="conum" data-value="4"></i><b>(4)</b>
             if (result.successful()) {
-                System.out.println("Woohoo " + result.getResult()); <i class="conum" data-value="5"></i><b>(5)</b>
+                request.getHeaders().put("Foo", request.getResult()) <i class="conum" data-value="5"></i><b>(5)</b>
+                chain.doApply(request);
             } else {
-                System.err.println(result.getError()) <i class="conum" data-value="6"></i><b>(6)</b>
+                chain.doFailure(new PolFailure(result.getError())); <i class="conum" data-value="6"></i><b>(6)</b>
             }
         });
 }</code></pre>
@@ -153,7 +156,7 @@ null
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Execute blocking code within the first lambda, and indicate to the <code>future</code> when the code has terminated, either <code>completed</code> or <code>fail</code>. Exceptions thrown within the scope of the lambda will be caught and implicitly passed to <code>fail</code>.</td>
+<td>Execute your blocking code within the first lambda, and indicate to the <code>future</code> when your code has terminated, either <code>completed</code> or <code>fail</code>. Exceptions thrown within the scope of the lambda will be caught and implicitly passed to <code>fail</code>.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
@@ -169,11 +172,11 @@ null
 </tr>
 <tr>
 <td><i class="conum" data-value="5"></i><b>5</b></td>
-<td>Printing out a successful result.</td>
+<td>Set our successful result as a header <code>Foo</code>.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="6"></i><b>6</b></td>
-<td>Printing out any exception.</td>
+<td>Creating a policy failure with the error.</td>
 </tr>
 </table>
 </div>
@@ -295,8 +298,8 @@ Only use <em>executeBlocking</em> when absolutely necessary and constrain it as 
         hljs.initHighlightingOnLoad();
       </script>
 
-    <script type="text/javascript" src="//www.rhymewithgravy.com/themes/casper-msavy/assets/js/jquery.fitvids.js?v=1480277788949"></script>
-    <script type="text/javascript" src="//www.rhymewithgravy.com/themes/casper-msavy/assets/js/index.js?v=1480277788949"></script>
+    <script type="text/javascript" src="//www.rhymewithgravy.com/themes/casper-msavy/assets/js/jquery.fitvids.js?v=1480278272498"></script>
+    <script type="text/javascript" src="//www.rhymewithgravy.com/themes/casper-msavy/assets/js/index.js?v=1480278272498"></script>
 
     <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
