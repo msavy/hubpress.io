@@ -23,7 +23,9 @@ Needless to say, special attention should be paid to its limitations and charact
 Here's a short example of the component in action:
 
 ```java
-void doApply(ApiRequest request, IPolicyContext context, ...) {
+void doApply(ApiRequest request, IPolicyContext context,
+    IPolicyChain<ApiRequest> chain) {
+
     IExecuteBlockingComponent ebComponent = 
         context.getComponent("IExecuteBlockingComponent.class");
         
@@ -33,19 +35,20 @@ void doApply(ApiRequest request, IPolicyContext context, ...) {
         },
         result -> { // <4>
             if (result.successful()) {
-                System.out.println("Woohoo " + result.getResult()); // <5>
+                request.getHeaders().put("Foo", request.getResult()) // <5>
+                chain.doApply(request);
             } else {
-                System.err.println(result.getError()) // <6>
+                chain.doFailure(new PolFailure(result.getError())); // <6>
             }
         });
 }
 ```
-<1> Execute blocking code within the first lambda, and indicate to the `future` when the code has terminated, either `completed` or `fail`. Exceptions thrown within the scope of the lambda will be caught and implicitly passed to `fail`.
+<1> Execute your blocking code within the first lambda, and indicate to the `future` when your code has terminated, either `completed` or `fail`. Exceptions thrown within the scope of the lambda will be caught and implicitly passed to `fail`.
 <2> Imaginary blocking service that blocks for 50000ms.
 <3> Indicating the future has completed successfully and passing the result to `completed`.
 <4> The result is passed to this second lambda _asynchronously_.
-<5> Printing out a successful result.
-<6> Printing out any exception.
+<5> Set our successful result as a header `Foo`.
+<6> Creating a policy failure with the error.
 
 IMPORTANT: Only use _executeBlocking_ when absolutely necessary and constrain it as tightly as possible.
 
