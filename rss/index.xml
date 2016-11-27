@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[The Musings of Marc]]></title><description><![CDATA[I'm a core contributor on apiman, an open source API Management platform. My surname does not rhyme with gravy.]]></description><link>http://www.rhymewithgravy.com</link><generator>RSS for Node</generator><lastBuildDate>Sun, 27 Nov 2016 20:16:28 GMT</lastBuildDate><atom:link href="http://www.rhymewithgravy.com/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Apiman's New Execute Blocking Component]]></title><description><![CDATA[<div id="preamble">
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[The Musings of Marc]]></title><description><![CDATA[I'm a core contributor on apiman, an open source API Management platform. My surname does not rhyme with gravy.]]></description><link>http://www.rhymewithgravy.com</link><generator>RSS for Node</generator><lastBuildDate>Sun, 27 Nov 2016 20:24:32 GMT</lastBuildDate><atom:link href="http://www.rhymewithgravy.com/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Apiman's New Execute Blocking Component]]></title><description><![CDATA[<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
 <p>The Execute Blocking component is a small but potentially useful <a href="https://github.com/apiman/apiman/pull/509">new component I&#8217;ve written and committed to the apiman gateway</a>, allowing <a href="http://www.apiman.io/latest/developer-guide.html#_plugins">custom policy plugin</a> authors to <em>safely execute blocking code</em>.</p>
@@ -30,7 +30,9 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">void doApply(ApiRequest request, IPolicyContext context, ...) {
+<pre class="highlight"><code class="language-java" data-lang="java">void doApply(ApiRequest request, IPolicyContext context,
+    IPolicyChain&lt;ApiRequest&gt; chain) {
+
     IExecuteBlockingComponent ebComponent =
         context.getComponent("IExecuteBlockingComponent.class");
 
@@ -40,9 +42,10 @@
         },
         result -&gt; { <i class="conum" data-value="4"></i><b>(4)</b>
             if (result.successful()) {
-                System.out.println("Woohoo " + result.getResult()); <i class="conum" data-value="5"></i><b>(5)</b>
+                request.getHeaders().put("Foo", request.getResult()) <i class="conum" data-value="5"></i><b>(5)</b>
+                chain.doApply(request);
             } else {
-                System.err.println(result.getError()) <i class="conum" data-value="6"></i><b>(6)</b>
+                chain.doFailure(new PolFailure(result.getError())); <i class="conum" data-value="6"></i><b>(6)</b>
             }
         });
 }</code></pre>
@@ -52,7 +55,7 @@
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Execute blocking code within the first lambda, and indicate to the <code>future</code> when the code has terminated, either <code>completed</code> or <code>fail</code>. Exceptions thrown within the scope of the lambda will be caught and implicitly passed to <code>fail</code>.</td>
+<td>Execute your blocking code within the first lambda, and indicate to the <code>future</code> when your code has terminated, either <code>completed</code> or <code>fail</code>. Exceptions thrown within the scope of the lambda will be caught and implicitly passed to <code>fail</code>.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
@@ -68,11 +71,11 @@
 </tr>
 <tr>
 <td><i class="conum" data-value="5"></i><b>5</b></td>
-<td>Printing out a successful result.</td>
+<td>Set our successful result as a header <code>Foo</code>.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="6"></i><b>6</b></td>
-<td>Printing out any exception.</td>
+<td>Creating a policy failure with the error.</td>
 </tr>
 </table>
 </div>
