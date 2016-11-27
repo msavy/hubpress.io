@@ -1,4 +1,114 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[The Musings of Marc]]></title><description><![CDATA[I'm a core contributor on apiman, an open source API Management platform. My surname does not rhyme with gravy.]]></description><link>http://www.rhymewithgravy.com</link><generator>RSS for Node</generator><lastBuildDate>Fri, 28 Oct 2016 21:52:02 GMT</lastBuildDate><atom:link href="http://www.rhymewithgravy.com/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Stopping Vert.x BlockedThreadChecker exceptions during interactive debugging]]></title><description><![CDATA[<div id="preamble">
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[The Musings of Marc]]></title><description><![CDATA[I'm a core contributor on apiman, an open source API Management platform. My surname does not rhyme with gravy.]]></description><link>http://www.rhymewithgravy.com</link><generator>RSS for Node</generator><lastBuildDate>Sun, 27 Nov 2016 20:10:05 GMT</lastBuildDate><atom:link href="http://www.rhymewithgravy.com/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Apiman's New Execute Blocking Component]]></title><description><![CDATA[<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Execute Blocking Component is a small but potentially useful <a href="https://github.com/apiman/apiman/pull/509">new component I&#8217;ve written and committed to the apiman gateway</a>, allowing <a href="http://www.apiman.io/latest/developer-guide.html#_plugins">custom policy plugin</a> authors to <em>safely execute blocking code</em>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_blocking_is_bad_but">Blocking is bad, but&#8230;&#8203;</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Apiman&#8217;s gateway embraces non-blocking and asychronous design principles in order to best exploit the beneficial performance characteristics of platforms such as <a href="http://vertx.io/">Vert.x</a>.</p>
+</div>
+<div class="paragraph">
+<p>A constraint of this approach means that code must not block the thread they are executing upon for excessive periods of time, for instance, blocking on IO or holding locks; lest an entire reactor (and often physical core) becomes completely unavailable. For those who are interested <a href="https://www.rhymewithgravy.com/2016/10/18/Vertx-and-Blocking-Code.html">I explored this issue in more depth in a previous post</a>, but safe to say, this <em>golden rule</em> can be difficult to abide by in the real world where libraries and protocols outside of our control may not behave as we need.</p>
+</div>
+<div class="paragraph">
+<p>The Execute Blocking Component (<code>IExecuteBlockingComponent</code>) comes to our rescue, providing a mechanism to execute blocking code <em>from a threadpool</em> rather than directly on the reactor.</p>
+</div>
+<div class="paragraph">
+<p>Needless to say, special attention should be paid to its limitations and characteristics. Only use this functionality when strictly necessary, and with the smallest practical scope, as it substantially reduces the performance benefits of the underlying non-blocking architecture.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_execute_blocking">Execute Blocking</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Here&#8217;s a short example of the component in action:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">void doApply(ApiRequest request, IPolicyContext context, ...) {
+    IExecuteBlockingComponent ebComponent =
+        context.getComponent("IExecuteBlockingComponent.class");
+
+        ebComponent.executeBlocking(future -&gt; { <i class="conum" data-value="1"></i><b>(1)</b>
+            String result = BlockingService(50000); <i class="conum" data-value="2"></i><b>(2)</b>
+            future.completed(result); <i class="conum" data-value="3"></i><b>(3)</b>
+        },
+        result -&gt; { <i class="conum" data-value="4"></i><b>(4)</b>
+            if (result.successful()) {
+                System.out.println("Woohoo " + result.getResult()); <i class="conum" data-value="5"></i><b>(5)</b>
+            } else {
+                System.err.println(result.getError()) <i class="conum" data-value="6"></i><b>(6)</b>
+            }
+        });
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Execute your blocking code within the first lambda, and indicate to the <code>future</code> when your code has terminated, either <code>completed</code> or <code>fail</code>. Exceptions thrown within the scope of the lambda will be caught and implicitly passed to <code>fail</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Imaginary blocking service that blocks for 50000ms.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Indicating the future has completed successfully and passing the result to <code>completed</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>The result is passed to this second lambda <em>asynchronously</em>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>Printing out a successful result.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="6"></i><b>6</b></td>
+<td>Printing out any exception.</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Only use <em>executeBlocking</em> when absolutely necessary and constrain it as tightly as possible.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_apiman_on_blocking_platforms">Apiman on blocking platforms</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You may be wondering what happens if you use <code>executeBlocking</code> on an apiman platform which has backed by a implementation where it&#8217;s safe to block the executing thread (such a servlet on WildFly). Simply, a passthrough implementation is used on those platforms which executes immediately on the same thread - so it&#8217;s safe to use on any platform.</p>
+</div>
+<div class="paragraph">
+<p>Even if you tend to run your plugins on a blocking platform you should still respect the "no blocking the main thread" rule and use <code>executeBlocking</code>, as other platforms and users <em>will</em> expect this guarantee - it&#8217;s especially crucial if you wish to share your work with the community.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_final_words">Final Words</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This is the first commit of this code onto master, so changes are possible. This feature is directly designed to enable the use of Vert.x, so their interface has been adopted fairly closely, so many thanks to them again for their brilliant work which we&#8217;re fortunate to be able harness in apiman.</p>
+</div>
+</div>
+</div>]]></description><link>http://www.rhymewithgravy.com/2016/11/27/Apimans-New-Execute-Blocking-Component.html</link><guid isPermaLink="true">http://www.rhymewithgravy.com/2016/11/27/Apimans-New-Execute-Blocking-Component.html</guid><category><![CDATA[apiman]]></category><category><![CDATA[ apiman-gateway]]></category><category><![CDATA[ apiman-components]]></category><category><![CDATA[ apiman-custom-policies]]></category><dc:creator><![CDATA[Marc Savy]]></dc:creator><pubDate>Sun, 27 Nov 2016 00:00:00 GMT</pubDate></item><item><title><![CDATA[Stopping Vert.x BlockedThreadChecker exceptions during interactive debugging]]></title><description><![CDATA[<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
 <p>Vert.x&#8217;s standard verticles require <a href="https://www.rhymewithgravy.com/2016/10/18/Vertx-and-Blocking-Code.html">non-blocking code</a> to work optimally. A watchdog will warn you (extremely insistently) if anything does block for an excessive period. However, if you&#8217;re just trying to run an interactive debugger <sup class="footnote">[<a id="_footnoteref_1" class="footnote" href="#_footnote_1" title="View footnote.">1</a>]</sup> then this can become extremely annoying as your console is flooded with <code>io.vertx.core.impl.BlockedThreadChecker</code> exceptions that look something like this:</p>
