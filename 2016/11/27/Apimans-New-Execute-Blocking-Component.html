@@ -16,9 +16,9 @@
 
     <link rel="shortcut icon" href="http://www.rhymewithgravy.com/favicon.ico">
 
-    <link rel="stylesheet" type="text/css" href="//www.rhymewithgravy.com/themes/casper-msavy/assets/css/screen.css?v=1480277405438" />
-    <link rel="stylesheet" type="text/css" href="//www.rhymewithgravy.com/themes/casper-msavy/assets/css/atom-one-light.css?v=1480277405438" />
-    <link rel="stylesheet" type="text/css" href="//www.rhymewithgravy.com/themes/casper-msavy/assets/css/font-awesome.min.css?v=1480277405438" />
+    <link rel="stylesheet" type="text/css" href="//www.rhymewithgravy.com/themes/casper-msavy/assets/css/screen.css?v=1480277788949" />
+    <link rel="stylesheet" type="text/css" href="//www.rhymewithgravy.com/themes/casper-msavy/assets/css/atom-one-light.css?v=1480277788949" />
+    <link rel="stylesheet" type="text/css" href="//www.rhymewithgravy.com/themes/casper-msavy/assets/css/font-awesome.min.css?v=1480277788949" />
     
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400" />
 
@@ -28,7 +28,7 @@
     <meta property="og:site_name" content="The Musings of Marc" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Apiman&#x27;s New Execute Blocking Component" />
-    <meta property="og:description" content="Execute Blocking Component is a small but potentially useful new component I&amp;#8217;ve written and committed to the apiman gateway, allowing custom policy plugin authors to safely execute blocking code. Blocking is bad, but&amp;#8230;&amp;#8203; Apiman&amp;#8217;s gateway embraces non-blocking and asychronous design principles in order to" />
+    <meta property="og:description" content="The Execute Blocking component is a small but potentially useful new component I&amp;#8217;ve written and committed to the apiman gateway, allowing custom policy plugin authors to safely execute blocking code. Blocking is bad, but&amp;#8230;&amp;#8203; Apiman&amp;#8217;s gateway embraces non-blocking and asychronous design principles in order" />
     <meta property="og:url" content="http://www.rhymewithgravy.com/2016/11/27/Apimans-New-Execute-Blocking-Component.html" />
     <meta property="article:tag" content="apiman" />
     <meta property="article:tag" content=" apiman-gateway" />
@@ -37,7 +37,7 @@
     
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content="Apiman&#x27;s New Execute Blocking Component" />
-    <meta name="twitter:description" content="Execute Blocking Component is a small but potentially useful new component I&amp;#8217;ve written and committed to the apiman gateway, allowing custom policy plugin authors to safely execute blocking code. Blocking is bad, but&amp;#8230;&amp;#8203; Apiman&amp;#8217;s gateway embraces non-blocking and asychronous design principles in order to" />
+    <meta name="twitter:description" content="The Execute Blocking component is a small but potentially useful new component I&amp;#8217;ve written and committed to the apiman gateway, allowing custom policy plugin authors to safely execute blocking code. Blocking is bad, but&amp;#8230;&amp;#8203; Apiman&amp;#8217;s gateway embraces non-blocking and asychronous design principles in order" />
     <meta name="twitter:url" content="http://www.rhymewithgravy.com/2016/11/27/Apimans-New-Execute-Blocking-Component.html" />
     
     <script type="application/ld+json">
@@ -102,7 +102,7 @@ null
             <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>Execute Blocking Component is a small but potentially useful <a href="https://github.com/apiman/apiman/pull/509">new component I&#8217;ve written and committed to the apiman gateway</a>, allowing <a href="http://www.apiman.io/latest/developer-guide.html#_plugins">custom policy plugin</a> authors to <em>safely execute blocking code</em>.</p>
+<p>The Execute Blocking component is a small but potentially useful <a href="https://github.com/apiman/apiman/pull/509">new component I&#8217;ve written and committed to the apiman gateway</a>, allowing <a href="http://www.apiman.io/latest/developer-guide.html#_plugins">custom policy plugin</a> authors to <em>safely execute blocking code</em>.</p>
 </div>
 </div>
 </div>
@@ -113,7 +113,7 @@ null
 <p>Apiman&#8217;s gateway embraces non-blocking and asychronous design principles in order to best exploit the beneficial performance characteristics of platforms such as <a href="http://vertx.io/">Vert.x</a>.</p>
 </div>
 <div class="paragraph">
-<p>A constraint of this approach means that code must not block the thread they are executing upon for excessive periods of time, for instance, blocking on IO or holding locks; lest an entire reactor (and often physical core) becomes completely unavailable. For those who are interested <a href="https://www.rhymewithgravy.com/2016/10/18/Vertx-and-Blocking-Code.html">I explored this issue in more depth in a previous post</a>, but safe to say, this <em>golden rule</em> can be difficult to abide by in the real world where libraries and protocols outside of our control may not behave as we need.</p>
+<p>A constraint of this approach means that code must not block the thread it is executing upon for excessive periods of time, lest an entire reactor (and often physical core) becomes completely unavailable; blocking on IO or holding locks for example. For those who are interested <a href="https://www.rhymewithgravy.com/2016/10/18/Vertx-and-Blocking-Code.html">I explored this issue in more depth in a previous post</a>, but safe to say, this <em>golden rule</em> can be difficult to abide by in the real world where libraries and protocols outside of our control may not behave as we need.</p>
 </div>
 <div class="paragraph">
 <p>The Execute Blocking Component (<code>IExecuteBlockingComponent</code>) comes to our rescue, providing a mechanism to execute blocking code <em>from a threadpool</em> rather than directly on the reactor.</p>
@@ -153,7 +153,7 @@ null
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Execute your blocking code within the first lambda, and indicate to the <code>future</code> when your code has terminated, either <code>completed</code> or <code>fail</code>. Exceptions thrown within the scope of the lambda will be caught and implicitly passed to <code>fail</code>.</td>
+<td>Execute blocking code within the first lambda, and indicate to the <code>future</code> when the code has terminated, either <code>completed</code> or <code>fail</code>. Exceptions thrown within the scope of the lambda will be caught and implicitly passed to <code>fail</code>.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
@@ -295,8 +295,8 @@ Only use <em>executeBlocking</em> when absolutely necessary and constrain it as 
         hljs.initHighlightingOnLoad();
       </script>
 
-    <script type="text/javascript" src="//www.rhymewithgravy.com/themes/casper-msavy/assets/js/jquery.fitvids.js?v=1480277405438"></script>
-    <script type="text/javascript" src="//www.rhymewithgravy.com/themes/casper-msavy/assets/js/index.js?v=1480277405438"></script>
+    <script type="text/javascript" src="//www.rhymewithgravy.com/themes/casper-msavy/assets/js/jquery.fitvids.js?v=1480277788949"></script>
+    <script type="text/javascript" src="//www.rhymewithgravy.com/themes/casper-msavy/assets/js/index.js?v=1480277788949"></script>
 
     <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
