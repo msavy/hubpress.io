@@ -31,7 +31,7 @@ It isn't yet as feature-rich as the {kc-oauth2-blog}[Keycloak plugin], but you c
 I'll expand on this in the near future to add some commonly-used features from the Keycloak plugin:
 
 - Extraction of roles for authorization
-- Forward token fields as headers (e.g. X-Sub = sub)
+- [line-through]#Forward token fields as headers (e.g. X-Sub = sub)#
 
 == How to use it
 
