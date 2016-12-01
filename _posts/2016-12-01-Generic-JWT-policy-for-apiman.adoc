@@ -1,0 +1,41 @@
+= Generic JWT policy for apiman
+Marc Savy <marc@rhymewithgravy.com>
+:hp-tags: apiman, apiman-gateway, apiman-custom-policies, jwt, security
+:apiman-plugins: https://github.com/apiman/apiman-plugins
+:kc-oauth2-blog: http://www.apiman.io/blog/gateway/security/oauth2/keycloak/authentication/authorization/1.2.x/2016/01/22/keycloak-oauth2-redux.html
+
+I just pushed an initial (very simple) generic JWT authentication plugin policy to master.
+
+== Build and install
+
+To try it out immediately you will need to build it from source. Just check out the {apiman-plugins}[apiman/apiman-plugins] repo and execute:
+
+`mvn clean install`
+
+The plugin coordinates will be: 
+
+G:: io.apiman.plugins 
+A:: apiman-plugins-jwt-policy 
+V:: 1.2.9-SNAPSHOT
+
+It isn't yet as feature-rich as the {kc-oauth2-blog}[Keycloak plugin], but you can:
+
+- Require JWT.
+- Require claims (e.g. sub = foo).
+- Require transport security (TLS, SSL).
+- Require JWT be cryptographically signed (aka. JWS).
+- Validate JWT against a provided public key.  
+- Remove auth tokens (prevent them reaching the backend).
+- Set maximum clock skew.
+
+I'll expand on this in the near future to add some commonly-used features from the Keycloak plugin:
+
+- Extraction of roles for authorization
+- Forward token fields as headers (e.g. X-Sub = sub)
+
+== How to use it
+
+Either:
+
+- Set the `Authorization` header as `Authorization: Bearer <B64 encoded token>`
+- Set the `access_token` query parameter as `example.com?access_token=<B64 encoded token>`
