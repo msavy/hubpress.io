@@ -4,7 +4,7 @@ Marc Savy <marc@rhymewithgravy.com>
 :apiman-plugins: https://github.com/apiman/apiman-plugins
 :kc-oauth2-blog: http://www.apiman.io/blog/gateway/security/oauth2/keycloak/authentication/authorization/1.2.x/2016/01/22/keycloak-oauth2-redux.html
 
-I just pushed an initial (very simple) generic JWT authentication plugin policy to master.
+I just pushed an initial (very simple) generic JWT authentication plugin policy to master. It should work with any JWT provider! Let me know how it works for you.
 
 == Build and install
 
