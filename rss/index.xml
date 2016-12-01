@@ -1,4 +1,99 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[The Musings of Marc]]></title><description><![CDATA[I'm a core contributor on apiman, an open source API Management platform. My surname does not rhyme with gravy.]]></description><link>http://www.rhymewithgravy.com</link><generator>RSS for Node</generator><lastBuildDate>Sun, 27 Nov 2016 20:24:32 GMT</lastBuildDate><atom:link href="http://www.rhymewithgravy.com/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Apiman's New Execute Blocking Component]]></title><description><![CDATA[<div id="preamble">
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[The Musings of Marc]]></title><description><![CDATA[I'm a core contributor on apiman, an open source API Management platform. My surname does not rhyme with gravy.]]></description><link>http://www.rhymewithgravy.com</link><generator>RSS for Node</generator><lastBuildDate>Thu, 01 Dec 2016 16:31:30 GMT</lastBuildDate><atom:link href="http://www.rhymewithgravy.com/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Generic JWT policy for apiman]]></title><description><![CDATA[<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>I just pushed an initial (very simple) generic JWT authentication plugin policy to master. It should work with any JWT provider! Let me know how it works for you.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_build_and_install">Build and install</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To try it out immediately you will need to build it from source. Just check out the <a href="https://github.com/apiman/apiman-plugins">apiman/apiman-plugins</a> repo and execute:</p>
+</div>
+<div class="paragraph">
+<p><code>mvn clean install</code></p>
+</div>
+<div class="paragraph">
+<p>The plugin coordinates will be:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">G</dt>
+<dd>
+<p>io.apiman.plugins</p>
+</dd>
+<dt class="hdlist1">A</dt>
+<dd>
+<p>apiman-plugins-jwt-policy</p>
+</dd>
+<dt class="hdlist1">V</dt>
+<dd>
+<p>1.2.9-SNAPSHOT</p>
+</dd>
+</dl>
+</div>
+<div class="paragraph">
+<p>It isn&#8217;t yet as feature-rich as the <a href="http://www.apiman.io/blog/gateway/security/oauth2/keycloak/authentication/authorization/1.2.x/2016/01/22/keycloak-oauth2-redux.html">Keycloak plugin</a>, but you can:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Require JWT.</p>
+</li>
+<li>
+<p>Require claims (e.g. sub = foo).</p>
+</li>
+<li>
+<p>Require transport security (TLS, SSL).</p>
+</li>
+<li>
+<p>Require JWT be cryptographically signed (aka. JWS).</p>
+</li>
+<li>
+<p>Validate JWT against a provided public key.</p>
+</li>
+<li>
+<p>Remove auth tokens (prevent them reaching the backend).</p>
+</li>
+<li>
+<p>Set maximum clock skew.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>I&#8217;ll expand on this in the near future to add some commonly-used features from the Keycloak plugin:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Extraction of roles for authorization</p>
+</li>
+<li>
+<p>Forward token fields as headers (e.g. X-Sub = sub)</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_how_to_use_it">How to use it</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Either:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Set the <code>Authorization</code> header as <code>Authorization: Bearer &lt;B64 encoded token&gt;</code></p>
+</li>
+<li>
+<p>Set the <code>access_token</code> query parameter as <code>example.com?access_token=&lt;B64 encoded token&gt;</code></p>
+</li>
+</ul>
+</div>
+</div>
+</div>]]></description><link>http://www.rhymewithgravy.com/2016/12/01/Generic-JWT-policy-for-apiman.html</link><guid isPermaLink="true">http://www.rhymewithgravy.com/2016/12/01/Generic-JWT-policy-for-apiman.html</guid><category><![CDATA[apiman]]></category><category><![CDATA[ apiman-gateway]]></category><category><![CDATA[ apiman-custom-policies]]></category><category><![CDATA[ jwt]]></category><category><![CDATA[ security]]></category><dc:creator><![CDATA[Marc Savy]]></dc:creator><pubDate>Thu, 01 Dec 2016 00:00:00 GMT</pubDate></item><item><title><![CDATA[Apiman's New Execute Blocking Component]]></title><description><![CDATA[<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
 <p>The Execute Blocking component is a small but potentially useful <a href="https://github.com/apiman/apiman/pull/509">new component I&#8217;ve written and committed to the apiman gateway</a>, allowing <a href="http://www.apiman.io/latest/developer-guide.html#_plugins">custom policy plugin</a> authors to <em>safely execute blocking code</em>.</p>
