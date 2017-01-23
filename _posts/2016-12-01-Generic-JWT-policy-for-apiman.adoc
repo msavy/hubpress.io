@@ -6,6 +6,17 @@ Marc Savy <marc@rhymewithgravy.com>
 
 I just pushed an initial (very simple) generic JWT authentication plugin policy to master. It should work with any JWT provider! Let me know how it works for you.
 
+---
+**Update on 23/01/07**: The JWT plugin has now been released to Maven, you can install it via:
+
+G:: io.apiman.plugins 
+A:: apiman-plugins-jwt-policy 
+V:: 1.2.9.Final (or whatever the latest/matching version of apiman is)
+
+---
+
+Old Instructions:
+
 == Build and install
 
 To try it out immediately you will need to build it from source. Just check out the {apiman-plugins}[apiman/apiman-plugins] repo and execute:
