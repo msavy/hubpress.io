@@ -4,7 +4,7 @@ Marc Savy <marc@rhymewithgravy.com>
 :apiman-docs-example: https://github.com/msavy/apiman-docs-installation-guide
 :gitbook-asciidoc: https://toolchain.gitbook.com/syntax/asciidoc.html
 :admonition-blocks: http://asciidoctor.org/docs/user-manual/#admonition
-:gh-readme: https://github.com/msavy/gitbook-plugin-asciidoc-admonition-icons
+:gh-readme: https://github.com/msavy/gitbook-plugin-asciidoc-admonition-icons#installation
 :gitbook-plugin-docs: https://plugins.gitbook.com/plugin/asciidoc-admonition-icons
 :npm: https://www.npmjs.com/package/gitbook-plugin-asciidoc-admonition-icons
 
@@ -32,6 +32,6 @@ If you have any problems, please feel free to file an issue.
 
 == Installation & Configuration
 
-Check out the plugin's {gh-readme}[GitHub repo], {gitbook-plugin-docs}[GitBook plugin page] or {npm}[NPM readme] for detailed instructions, including how to customise the glyphs and styling.
+Check out the plugin's {gitbook-plugin-docs}[GitBook plugin page], {gh-readme}[GitHub repo] or {npm}[NPM readme] for detailed instructions, including how to customise the glyphs and styling.
 
 Despite being simple code, quite interesting customisations are possible using a combination of configuration options and CSS. I might add some more sophisticated examples in a future blog post (refer to the docs for some simple ones).
