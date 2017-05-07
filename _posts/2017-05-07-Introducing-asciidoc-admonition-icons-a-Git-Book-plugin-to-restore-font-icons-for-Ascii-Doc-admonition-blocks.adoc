@@ -1,0 +1,37 @@
+= Introducing asciidoc-admonition-icons, a GitBook plugin to restore font icons for AsciiDoc admonition blocks.
+Marc Savy <marc@rhymewithgravy.com>
+:hp-tags: gitbook asciidoc asciidoctor
+:apiman-docs-example: https://github.com/msavy/apiman-docs-installation-guide
+:gitbook-asciidoc: https://toolchain.gitbook.com/syntax/asciidoc.html
+:admonition-blocks: http://asciidoctor.org/docs/user-manual/#admonition
+:gh-readme: https://github.com/msavy/gitbook-plugin-asciidoc-admonition-icons
+:gitbook-plugin-docs: https://plugins.gitbook.com/plugin/asciidoc-admonition-icons
+:npm: https://www.npmjs.com/package/gitbook-plugin-asciidoc-admonition-icons
+
+I've been working hard on the {apiman-docs-example}[apiman 1.3.x documentation].
+One nice feature of AsciiDoc/Asciidoctor are {admonition-blocks}[admonition blocks]; allowing visually clear and categorised emphasis for the important points.
+
+However, at the time of writing this blog, the {gitbook-asciidoc}[GitBook AsciiDoc] 3.x.x rendering pipeline does _not_ support icons for admonition blocks, providing an inconspicuous, text-only representation:
+
+image::https://cloud.githubusercontent.com/assets/423513/25775568/fbde3670-329f-11e7-9e5a-a5a1e716be38.png[]
+
+There are some PRs and GitHub issues with people trying to get this fixed, but none of them has been merged, so I really wanted to provide an interim solution that would still work on the gitbook.com hosted platform.
+
+== Plugin to the rescue.
+
+The solution was to {gitbook-plugin-docs}[create a simple plugin], `asciidoc-admonition-icons` footnote:[Full NPM package name is: `gitbook-plugin-asciidoc-admonition-icons`], that identifies admonition blocks and rewrites the label element to contain the missing glyphs:
+
+image::https://cloud.githubusercontent.com/assets/423513/25775581/46741c22-32a0-11e7-9279-7c7d5d27e280.png[]
+
+The default styling provides a similar look-and-feel to the Asciidoctor's standard theme; with FontAwesome icons and a comparable colour scheme.
+Naturally, you can override both the glyphs and styling.
+
+This should hopefully provide a satisfactory workaround until the GitBook team resolve the issue properly in their codebase. 
+
+If you have any problems, please feel free to file an issue.
+
+== Installation & Configuration
+
+Check out the plugin's {gh-readme}[GitHub repo], {gitbook-plugin-docs}[GitBook plugin page] or {npm}[NPM readme] for detailed instructions, including how to customise the glyphs and styling.
+
+Despite being simple code, quite interesting customisations are possible using a combination of configuration options and CSS. I might add some more sophisticated examples in a future blog post (refer to the docs for some simple ones).
