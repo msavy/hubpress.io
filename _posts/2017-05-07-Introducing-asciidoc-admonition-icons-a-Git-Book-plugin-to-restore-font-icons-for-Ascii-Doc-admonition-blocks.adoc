@@ -32,6 +32,66 @@ If you have any problems, please feel free to file an issue.
 
 == Installation & Configuration
 
-Check out the plugin's {gitbook-plugin-docs}[GitBook plugin page], {gh-readme}[GitHub repo] or {npm}[NPM readme] for detailed instructions, including how to customise the glyphs and styling.
+In your `book.json`, put `asciidoc-admonition-icons` in your `plugins` array
+
+```json
+{
+	"plugins": ["asciidoc-admonition-icons"],
+}
+```
+
+Provide your overrides in `pluginsConfig.admonitions`:
+
+* The 5 standard AsciiDoc admonition types are available:
+  * `classes`: CSS classes of the admonition icon container.
+  * `title`: HTML title attribute of admonition icon container.
+  * `content`: Unicode value of glyph to use.
+
+The entire set of defaults are shown here for illustrative purposes, but you need only provide those you're overriding:
+
+**Example book.json configuration:**
+```json
+"pluginsConfig": {
+    "admonitions": {
+        "note": {
+            "classes": "fa icon-note",
+            "title": "Note",
+            "content": "\uf05a"
+        },
+        "tip": {
+            "classes": "fa icon-tip",
+            "title": "Tip",
+            "content": "\uf0eb"
+        },
+        "important": {
+            "classes": "fa icon-important",
+            "title": "Important",
+            "content": "\uf06a"
+        },
+        "caution": {
+            "classes": "fa icon-caution",
+            "title": "Caution",
+            "content": "\uf06d"
+        },
+        "warning": {
+            "classes": "fa icon-warning",
+            "title": "Warning",
+            "content": "\uf071"
+        }
+    }
+}
+```
+
+For example, if we were to override the `important` icon with another glyph:
+
+```json
+"important": {
+	"classes": "fa icon-important",
+    "title": "La bañera es muy importante!",
+    "content": "\uf2cd"
+}
+```
+
+Check out the plugin's {gitbook-plugin-docs}[GitBook plugin page], {gh-readme}[GitHub repo] or {npm}[NPM readme] for detailed instructions.
 
 Despite being simple code, quite interesting customisations are possible using a combination of configuration options and CSS. I might add some more sophisticated examples in a future blog post (refer to the docs for some simple ones).
