@@ -1,6 +1,6 @@
 = Introducing asciidoc-admonition-icons, a GitBook plugin to restore font icons for AsciiDoc admonition blocks.
 Marc Savy <marc@rhymewithgravy.com>
-:hp-tags: gitbook gitbook-plugin asciidoc asciidoctor
+:hp-tags: gitbook, gitbook-plugin, asciidoc, asciidoctor
 :apiman-docs-example: https://github.com/msavy/apiman-docs-installation-guide
 :gitbook-asciidoc: https://toolchain.gitbook.com/syntax/asciidoc.html
 :admonition-blocks: http://asciidoctor.org/docs/user-manual/#admonition
