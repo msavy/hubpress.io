@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[The Musings of Marc]]></title><description><![CDATA[I'm a core contributor on apiman, an open source API Management platform. My surname does not rhyme with gravy.]]></description><link>http://www.rhymewithgravy.com</link><generator>RSS for Node</generator><lastBuildDate>Sun, 07 May 2017 16:12:59 GMT</lastBuildDate><atom:link href="http://www.rhymewithgravy.com/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Introducing asciidoc-admonition-icons, a GitBook plugin to restore font icons for AsciiDoc admonition blocks.]]></title><description><![CDATA[<div id="preamble">
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[The Musings of Marc]]></title><description><![CDATA[I'm a core contributor on apiman, an open source API Management platform. My surname does not rhyme with gravy.]]></description><link>http://www.rhymewithgravy.com</link><generator>RSS for Node</generator><lastBuildDate>Tue, 09 May 2017 09:02:30 GMT</lastBuildDate><atom:link href="http://www.rhymewithgravy.com/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Introducing asciidoc-admonition-icons, a GitBook plugin to restore font icons for AsciiDoc admonition blocks.]]></title><description><![CDATA[<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
 <p>I&#8217;ve been working hard on the <a href="https://github.com/msavy/apiman-docs-installation-guide">apiman 1.3.x documentation</a>.
@@ -44,7 +44,87 @@ Naturally, you can override both the glyphs and styling.</p>
 <h2 id="_installation_configuration">Installation &amp; Configuration</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Check out the plugin&#8217;s <a href="https://plugins.gitbook.com/plugin/asciidoc-admonition-icons">GitBook plugin page</a>, <a href="https://github.com/msavy/gitbook-plugin-asciidoc-admonition-icons#installation">GitHub repo</a> or <a href="https://www.npmjs.com/package/gitbook-plugin-asciidoc-admonition-icons">NPM readme</a> for detailed instructions, including how to customise the glyphs and styling.</p>
+<p>In your <code>book.json</code>, put <code>asciidoc-admonition-icons</code> in your <code>plugins</code> array</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">{
+	"plugins": ["asciidoc-admonition-icons"],
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Provide your overrides in <code>pluginsConfig.admonitions</code>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The 5 standard AsciiDoc admonition types are available:</p>
+</li>
+<li>
+<p><code>classes</code>: CSS classes of the admonition icon container.</p>
+</li>
+<li>
+<p><code>title</code>: HTML title attribute of admonition icon container.</p>
+</li>
+<li>
+<p><code>content</code>: Unicode value of glyph to use.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The entire set of defaults are shown here for illustrative purposes, but you need only provide those you&#8217;re overriding:</p>
+</div>
+<div class="paragraph">
+<p><strong>Example book.json configuration:</strong></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">"pluginsConfig": {
+    "admonitions": {
+        "note": {
+            "classes": "fa icon-note",
+            "title": "Note",
+            "content": "\uf05a"
+        },
+        "tip": {
+            "classes": "fa icon-tip",
+            "title": "Tip",
+            "content": "\uf0eb"
+        },
+        "important": {
+            "classes": "fa icon-important",
+            "title": "Important",
+            "content": "\uf06a"
+        },
+        "caution": {
+            "classes": "fa icon-caution",
+            "title": "Caution",
+            "content": "\uf06d"
+        },
+        "warning": {
+            "classes": "fa icon-warning",
+            "title": "Warning",
+            "content": "\uf071"
+        }
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For example, if we were to override the <code>important</code> icon with another glyph:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">"important": {
+	"classes": "fa icon-important",
+    "title": "La bañera es muy importante!",
+    "content": "\uf2cd"
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Check out the plugin&#8217;s <a href="https://plugins.gitbook.com/plugin/asciidoc-admonition-icons">GitBook plugin page</a>, <a href="https://github.com/msavy/gitbook-plugin-asciidoc-admonition-icons#installation">GitHub repo</a> or <a href="https://www.npmjs.com/package/gitbook-plugin-asciidoc-admonition-icons">NPM readme</a> for detailed instructions.</p>
 </div>
 <div class="paragraph">
 <p>Despite being simple code, quite interesting customisations are possible using a combination of configuration options and CSS. I might add some more sophisticated examples in a future blog post (refer to the docs for some simple ones).</p>
