@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[The Musings of Marc]]></title><description><![CDATA[I'm a core contributor on apiman, an open source API Management platform. My surname does not rhyme with gravy.]]></description><link>http://www.rhymewithgravy.com</link><generator>RSS for Node</generator><lastBuildDate>Fri, 18 May 2018 13:06:10 GMT</lastBuildDate><atom:link href="http://www.rhymewithgravy.com/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[I was involved in a shocking incident and want to talk about mental health - and what we're doing as a country to address it.]]></title><description><![CDATA[<div id="preamble">
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[The Musings of Marc]]></title><description><![CDATA[I'm a core contributor on apiman, an open source API Management platform. My surname does not rhyme with gravy.]]></description><link>http://www.rhymewithgravy.com</link><generator>RSS for Node</generator><lastBuildDate>Fri, 18 May 2018 13:11:26 GMT</lastBuildDate><atom:link href="http://www.rhymewithgravy.com/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[I was involved in a shocking incident and want to talk about mental health - and what we're doing as a country to address it.]]></title><description><![CDATA[<div id="preamble">
 <div class="sectionbody">
 <div class="admonitionblock warning">
 <table>
@@ -100,7 +100,7 @@
 <p>If you made it this far: thank you for reading.</p>
 </div>
 <meta name="og:image" content="https://www.rhymewithgravy.com/images/neurons.jpg" />
-<meta name="twitter:description" content="" />
+<meta name="twitter:description" content="I was involved in a shocking incident and want to talk about mental health - and what we're doing as a country to address it." />
 </div>]]></description><link>http://www.rhymewithgravy.com/2018/05/18/I-was-involved-in-a-shocking-incident-and-want-to-talk-about-mental-health-and-what-were-doing-as-a-country-to-address-it.html</link><guid isPermaLink="true">http://www.rhymewithgravy.com/2018/05/18/I-was-involved-in-a-shocking-incident-and-want-to-talk-about-mental-health-and-what-were-doing-as-a-country-to-address-it.html</guid><category><![CDATA[personal]]></category><dc:creator><![CDATA[Marc Savy]]></dc:creator><pubDate>Fri, 18 May 2018 00:00:00 GMT</pubDate></item><item><title><![CDATA[Introducing asciidoc-admonition-icons, a GitBook plugin to restore font icons for AsciiDoc admonition blocks.]]></title><description><![CDATA[<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
