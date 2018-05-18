@@ -66,5 +66,5 @@ If you made it this far: thank you for reading.
 
 ++++
 <meta name="og:image" content="https://www.rhymewithgravy.com/images/neurons.jpg" />
-<meta name="twitter:description" content="" />
+<meta name="twitter:description" content="I was involved in a shocking incident and want to talk about mental health - and what we're doing as a country to address it." />
 ++++
