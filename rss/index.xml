@@ -1,4 +1,106 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[The Musings of Marc]]></title><description><![CDATA[I'm a core contributor on apiman, an open source API Management platform. My surname does not rhyme with gravy.]]></description><link>http://www.rhymewithgravy.com</link><generator>RSS for Node</generator><lastBuildDate>Tue, 09 May 2017 09:04:41 GMT</lastBuildDate><atom:link href="http://www.rhymewithgravy.com/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Introducing asciidoc-admonition-icons, a GitBook plugin to restore font icons for AsciiDoc admonition blocks.]]></title><description><![CDATA[<div id="preamble">
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[The Musings of Marc]]></title><description><![CDATA[I'm a core contributor on apiman, an open source API Management platform. My surname does not rhyme with gravy.]]></description><link>http://www.rhymewithgravy.com</link><generator>RSS for Node</generator><lastBuildDate>Fri, 18 May 2018 12:59:09 GMT</lastBuildDate><atom:link href="http://www.rhymewithgravy.com/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[I was involved in a shocking incident and want to talk about mental health - and what we're doing as a country to address it.]]></title><description><![CDATA[<div id="preamble">
+<div class="sectionbody">
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>This post covers sensitive topics including attempted suicide and mental illness.</p>
+</div>
+<div class="paragraph">
+<p>Please, if you ever have suicidal thoughts, reach out to an organisation such as <a href="https://www.samaritans.org/how-we-can-help-you/contact-us">The Samaritans</a>. People truly care about you.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>On 7th May, at about 10pm, I pulled back a suicidal man who was jumping off the Redheugh Bridge in Newcastle/Gateshead.</p>
+</div>
+<div class="paragraph">
+<p>It was one of the most extraordinary and frightening moments in my life.</p>
+</div>
+<div class="paragraph">
+<p>I wasn&#8217;t intending to go out at all on that day. At the last minute a friend called me and we decided to meet up. One thing led to another and we ended up going for a walk down the river and grabbing a few drinks. We then decided to go for something to eat, but the first choice was closed; we ended up going to a Japanese restaurant. The food was slow as it was very busy, so it was much later than expected when I started heading back home.</p>
+</div>
+<div class="paragraph">
+<p>There&#8217;s a narrow walkway along the bridge, with 4 lanes of traffic and chest-high barriers to either side. I saw a large, shirtless, and shoeless man walking the opposite way to me. He suddenly straddled the barrier.</p>
+</div>
+<div class="paragraph">
+<p>I ran towards him, grabbed his arm and started talking to him; trying to convince him not to jump. I said I wanted to hear what he had to say, and that I could see that he is in a dark place, but his life is valuable and important, and that although things seem awful now, they can improve.</p>
+</div>
+<div class="paragraph">
+<p>He was talking back to me, but refused to come down; saying he was going to jump and kill himself.</p>
+</div>
+<div class="paragraph">
+<p>A lady who seemed to have encountered him before ran up and also tried to persuade him to come down.</p>
+</div>
+<div class="paragraph">
+<p>We were there for a good while talking back and forth as I tried to convince him, but he wasn&#8217;t coming back.</p>
+</div>
+<div class="paragraph">
+<p>He eventually started objecting to me holding his arm, and kept pushing me off. So, I moved slightly behind him and tried to position myself as best I could.</p>
+</div>
+<div class="paragraph">
+<p>Suddenly he went for it and started dropping off the side.</p>
+</div>
+<div class="paragraph">
+<p>I had to try something, as things seemed to have reached a point of no return. I reached over and yanked him with all my force and, fortunately, dragged him back over, off the barrier, and onto the floor of the walkway.</p>
+</div>
+<div class="paragraph">
+<p>He was pretty angry for a few moments, and he was a lot larger than me, so I probably took my chances. After a short while he started crying and said he is bipolar. I managed to keep him on the floor. He clearly was in a terribly dark place and mentioned awful reasons contributing to his state that I won&#8217;t repeat here.</p>
+</div>
+<div class="paragraph">
+<p>I&#8217;m so glad for his sakes, and mine, that he didn&#8217;t go off and I was able to stop him. I think I would have been messed up for life if I&#8217;d seen him fall and die.</p>
+</div>
+<div class="paragraph">
+<p>A passerby came as I was dragging the guy back over, and he called the emergency services. My phone had died so, unfortunately, I didn&#8217;t get to collect his details. I&#8217;m also going to reach out to the officers to see if I can send him my contact information to thank him in person and talk about what happened.</p>
+</div>
+<div class="paragraph">
+<p>The Police arrived for the ill man soon after and took some of my information.</p>
+</div>
+<div class="paragraph">
+<p>The suicidal man shook my hand and thanked me as they took him to hospital. One of the officers was a bit impatient with him because he wasn&#8217;t being completely cooperative. I guess they get compassion fatigue from seeing this sort of thing so frequently. I imagine the most challenging types of compassion and empathy are with types of people we aren&#8217;t innately sympathetic towards, and who don&#8217;t necessarily cooperate.</p>
+</div>
+<div class="paragraph">
+<p>The officers gave me a lift back home and suggested I "have a stiff drink". I was so amped up I couldn&#8217;t sleep for several hours; felt weird for a few days, but I&#8217;m perfectly okay now.</p>
+</div>
+<div class="paragraph">
+<p>It really strikes me that my coincidental encounter with this man was promulgated by a huge sequence of unusual events and timings. With the smallest change I would have missed him, or worse, seen him drop. I wasn&#8217;t planning to go out at all, let alone planning to be out late.</p>
+</div>
+<div class="paragraph">
+<p>I&#8217;m writing about this for a few reasons:</p>
+</div>
+<div class="paragraph">
+<p>Firstly, we need to do much better at looking after people with severe mental health issues. I&#8217;ve become increasingly concerned over the last few years about underfunding of mental health care causing people who ought to be receiving intensive levels of care to be sent home when it is not in their best interests. I hope by recounting this it makes some people rethink how much they are willing to contribute to ensure we are able to offer sufficient care to vulnerable people. I truly hope he gets the care he needs - given the extremity of the issue hopefully he&#8217;ll be prioritised.</p>
+</div>
+<div class="paragraph">
+<p>He said he&#8217;d felt suicidal many times before but nobody had taken him seriously. I&#8217;d guess his perception is likely shaped through the lens of his illness, but the fact he was wandering around half-naked in such a distressed state is a terrible shame.</p>
+</div>
+<div class="paragraph">
+<p>I hope everyone would try to help a stranger in such a state. I asked a couple of (homeless, I think) guys walking past to help, but they just ignored me and walked off. We&#8217;re nothing if we don&#8217;t help one another.</p>
+</div>
+<div class="paragraph">
+<p>People with addiction and mental health issues are often at the bottom of the pile in society. This encounter really reminded me that we need to be better to one another and do more to address MH concerns. I&#8217;m cognisant that many people are extremely difficult to deal with and there are no easy solutions, but perhaps we don&#8217;t have the balance right.</p>
+</div>
+<div class="paragraph">
+<p>I think the barriers are far too low on the Redheugh bridge. I realise that a thoroughly determined person will defeat any measures, but my understanding is that many suicides are spur-of-the-moment, and modest impediments can help delay their actions long enough for them to find the clarity they need to reconsider. Perhaps they need to think about nets or similar devices that have been used successfully in other locations. I plan to bring it up with my MP, but I&#8217;m sure it ultimately comes down to a lack of funding and/or structural issues.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_follow_up">Follow-up</h3>
+<div class="paragraph">
+<p>I went down to the police station the next day to give them my phone number. An officer emailed later asking what I wanted to know, but then didn&#8217;t bother responding to my message. I had wanted to make myself available to give a full statement and record the very serious things the man had told me; they would have been relevant to his treatment team (and likely legally). I guess it was too much hassle.</p>
+</div>
+<div class="paragraph">
+<p>If you made it this far: thank you for reading.</p>
+</div>
+<meta name="og:image" content="https://www.rhymewithgravy.com/images/neurons.jpg" />
+</div>]]></description><link>http://www.rhymewithgravy.com/2018/05/18/I-was-involved-in-a-shocking-incident-and-want-to-talk-about-mental-health-and-what-were-doing-as-a-country-to-address-it.html</link><guid isPermaLink="true">http://www.rhymewithgravy.com/2018/05/18/I-was-involved-in-a-shocking-incident-and-want-to-talk-about-mental-health-and-what-were-doing-as-a-country-to-address-it.html</guid><category><![CDATA[personal]]></category><dc:creator><![CDATA[Marc Savy]]></dc:creator><pubDate>Fri, 18 May 2018 00:00:00 GMT</pubDate></item><item><title><![CDATA[Introducing asciidoc-admonition-icons, a GitBook plugin to restore font icons for AsciiDoc admonition blocks.]]></title><description><![CDATA[<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
 <p>I&#8217;ve been working hard on the <a href="https://github.com/msavy/apiman-docs-installation-guide">apiman 1.3.x documentation</a>.
