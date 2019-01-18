@@ -1,4 +1,34 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[The Musings of Marc]]></title><description><![CDATA[I'm a core contributor on apiman, an open source API Management platform. My surname does not rhyme with gravy.]]></description><link>http://www.rhymewithgravy.com</link><generator>RSS for Node</generator><lastBuildDate>Fri, 18 May 2018 13:11:26 GMT</lastBuildDate><atom:link href="http://www.rhymewithgravy.com/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[I was involved in a shocking incident and want to talk about mental health - and what we're doing as a country to address it.]]></title><description><![CDATA[<div id="preamble">
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[The Musings of Marc]]></title><description><![CDATA[I'm a core contributor on apiman, an open source API Management platform. My surname does not rhyme with gravy.]]></description><link>http://www.rhymewithgravy.com</link><generator>RSS for Node</generator><lastBuildDate>Fri, 18 Jan 2019 17:03:46 GMT</lastBuildDate><atom:link href="http://www.rhymewithgravy.com/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Farewell, Red Hat friends!]]></title><description><![CDATA[<div class="paragraph">
+<p><em>This is an approximate reproduction of the email I sent to my soon-to-be erstwhile Red Hat colleagues:</em></p>
+</div>
+<div class="paragraph">
+<p>This is a difficult email to write. I&#8217;ve had the great fortune to be part of Red Hat for over 8 years, and whilst there have been many challenges and accomplishments along the way, the one constant has been the wonderful people.</p>
+</div>
+<div class="paragraph">
+<p>For many, colleagues are only ever acquaintances; it&#8217;s a tribute to you all that many have become personal friends. I am certain we&#8217;ll stay that way.</p>
+</div>
+<div class="paragraph">
+<p>Whilst it&#8217;s time for me to move on and embrace a new challenge, I very much hope this isn&#8217;t the last I will see of you all. Whether in person, or in the open source community.</p>
+</div>
+<div class="paragraph">
+<p>I have so many of you to thank for helping me develop my career, and more importantly, being a significant presence outside of work; always offering good advice, encouragement, and advocating for me. Truly, thank you.</p>
+</div>
+<div class="paragraph">
+<p>I&#8217;d like to make special mention of Eric Wittmann, who has been a truly excellent person to collaborate with, and has helped me develop in ways I wouldn&#8217;t have imagined. You could not wish to work with a better person. We nearly got over the line, but not quite!</p>
+</div>
+<div class="paragraph">
+<p>There are so many other Red Hatters who have had very a positive influence on my career and life, and it&#8217;s difficult to choose who to mention, but I&#8217;d like to explicitly call out a few: Julien and all the Vert.x team, Sanne, Stian and the KC team, Andrew Dinn, Dave, MarkL, Keith Babo, Keith Lynch, Kev, Ken, Bob, Lance, Ben &amp; Co, all my friends at Newcastle, our excellent friends in QE, and all those that advocated for our work. There are so many others, and your name not explicitly being here isn&#8217;t a sign of anything other than my attempt at brevity.</p>
+</div>
+<div class="paragraph">
+<p>If you have time, I would love for you all to check out Apicurio (<a href="https://www.apicur.io/&#8201;&#8212;&#8201;click" class="bare">https://www.apicur.io/&#8201;&#8212;&#8201;click</a> "try live"); it&#8217;s Eric&#8217;s latest project, and I&#8217;ve been assisting the last month or so. It&#8217;s a rich UI, editor, and validator for creating and collaborating on OpenAPI (fka Swagger) documents; moreover, it can generate code and is increasingly providing slick integration with other Red Hat projects. It&#8217;s really at the head of the pipe when it comes to the developer experience, and I think it&#8217;s a fantastic addition to the Middleware portfolio.</p>
+</div>
+<div class="paragraph">
+<p>Finally, I wish you all the very best of luck with your endeavours. Your technical talents, understanding of open source and community, and continued hard work will be amongst the key attributes that I hope will allow Middleware to prevail.</p>
+</div>
+<div class="paragraph">
+<p>Regards,
+Marc</p>
+</div>]]></description><link>http://www.rhymewithgravy.com/2019/01/18/Farewell-Red-Hat-friends.html</link><guid isPermaLink="true">http://www.rhymewithgravy.com/2019/01/18/Farewell-Red-Hat-friends.html</guid><category><![CDATA[personal]]></category><dc:creator><![CDATA[Marc Savy]]></dc:creator><pubDate>Fri, 18 Jan 2019 00:00:00 GMT</pubDate></item><item><title><![CDATA[I was involved in a shocking incident and want to talk about mental health - and what we're doing as a country to address it.]]></title><description><![CDATA[<div id="preamble">
 <div class="sectionbody">
 <div class="admonitionblock warning">
 <table>
