@@ -1,0 +1,25 @@
+= Farewell, Red Hat friends!
+Marc Savy <marc@rhymewithgravy.com>
+:hp-tags: personal 
+:description: I'm leaving Red Hat for a new adventure.
+
+_This is an approximate reproduction of the email I sent to my soon-to-be erstwhile Red Hat colleagues:_
+
+This is a difficult email to write. I've had the great fortune to be part of Red Hat for over 8 years, and whilst there have been many challenges and accomplishments along the way, the one constant has been the wonderful people.
+
+For many, colleagues are only ever acquaintances; it's a tribute to you all that many have become personal friends. I am certain we'll stay that way.
+
+Whilst it's time for me to move on and embrace a new challenge, I very much hope this isn't the last I will see of you all. Whether in person, or in the open source community.
+
+I have so many of you to thank for helping me develop my career, and more importantly, being a significant presence outside of work; always offering good advice, encouragement, and advocating for me. Truly, thank you. 
+
+I'd like to make special mention of Eric Wittmann, who has been a truly excellent person to collaborate with, and has helped me develop in ways I wouldn't have imagined. You could not wish to work with a better person. We nearly got over the line, but not quite!
+ 
+There are so many other Red Hatters who have had very a positive influence on my career and life, and it's difficult to choose who to mention, but I'd like to explicitly call out a few: Julien and all the Vert.x team, Sanne, Stian and the KC team, Andrew Dinn, Dave, MarkL, Keith Babo, Keith Lynch, Kev, Ken, Bob, Lance, Ben & Co, all my friends at Newcastle, our excellent friends in QE, and all those that advocated for our work. There are so many others, and your name not explicitly being here isn't a sign of anything other than my attempt at brevity.
+
+If you have time, I would love for you all to check out Apicurio (https://www.apicur.io/ -- click "try live"); it's Eric's latest project, and I've been assisting the last month or so. It's a rich UI, editor, and validator for creating and collaborating on OpenAPI (fka Swagger) documents; moreover, it can generate code and is increasingly providing slick integration with other Red Hat projects. It's really at the head of the pipe when it comes to the developer experience, and I think it's a fantastic addition to the Middleware portfolio. 
+
+Finally, I wish you all the very best of luck with your endeavours. Your technical talents, understanding of open source and community, and continued hard work will be amongst the key attributes that I hope will allow Middleware to prevail.
+
+Regards,
+Marc
