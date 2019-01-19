@@ -27,5 +27,5 @@ Marc
 
 
 ++++
-<meta name="og:image" content="https://avatars2.githubusercontent.com/u/423513?v=4" />
+<meta property="og:image" content="https://avatars2.githubusercontent.com/u/423513?v=4" />
 ++++
