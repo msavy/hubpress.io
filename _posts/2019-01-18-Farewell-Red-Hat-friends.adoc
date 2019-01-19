@@ -22,4 +22,5 @@ If you have time, I would love for you all to check out Apicurio (link:++https:/
 Finally, I wish you all the very best of luck with your endeavours. Your technical talents, understanding of open source and community, and continued hard work will be amongst the key attributes that I hope will allow Middleware to prevail.
 
 Regards,
+
 Marc
