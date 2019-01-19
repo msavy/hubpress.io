@@ -14,7 +14,7 @@ Whilst it's time for me to move on and embrace a new challenge, I very much hope
 
 I have so many of you to thank for helping me develop my career, and more importantly, being a significant presence outside of work; always offering good advice, encouragement, and advocating for me. Truly, thank you. 
 
-I'd like to make special mention of Eric Wittmann, who has been a truly excellent person to collaborate with, and has helped me develop in ways I wouldn't have imagined. You could not wish to work with a better person. We nearly got over the line, but not quite!
+I'd like to make special mention of Eric, who has been a truly excellent person to collaborate with, and has helped me develop in ways I wouldn't have imagined. You could not wish to work with a better person. We nearly got over the line, but not quite!
  
 There are so many other Red Hatters who have had very a positive influence on my career and life, and it's difficult to choose who to mention, but I'd like to explicitly call out a few: Julien and all the Vert.x team, Sanne, Stian and the KC team, Andrew Dinn, Dave, MarkL, Keith Babo, Keith Lynch, Kev, Ken, Bob, Lance, Ben & Co, Rachel, all my friends at Newcastle, our excellent friends in QE, and all those that advocated for our work. There are so many others, and your name not explicitly being here isn't a sign of anything other than my attempt at brevity.
 
