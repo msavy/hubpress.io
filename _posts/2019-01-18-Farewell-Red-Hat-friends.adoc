@@ -24,3 +24,8 @@ Finally, I wish you all the very best of luck with your endeavours. Your technic
 Regards,
 
 Marc
+
+
+++++
+<meta name="og:image" content="https://avatars2.githubusercontent.com/u/423513?v=4" />
+++++
