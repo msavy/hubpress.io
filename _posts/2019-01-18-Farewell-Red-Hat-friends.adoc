@@ -1,7 +1,7 @@
 = Farewell, Red Hat friends!
 Marc Savy <marc@rhymewithgravy.com>
 :hp-tags: personal 
-:hp-image: https://avatars2.githubusercontent.com/u/423513?v=4
+:hp-og-image: https://avatars2.githubusercontent.com/u/423513?v=4
 :description: I'm leaving Red Hat for a new adventure.
 
 _This is an approximate reproduction of the email I sent to my soon-to-be erstwhile Red Hat colleagues:_
