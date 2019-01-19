@@ -25,6 +25,13 @@
     
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400" />
 
+
+{{#if @post.og-image}}
+<meta property="og:image" content="{{@post.og-image}}" />
+<meta property="og:image:type" content="image/jpeg" /> 
+{{/if}}
+
+
     {{! Ghost outputs important style and meta data with this tag }}
     {{ghost_head}}
 </head>
