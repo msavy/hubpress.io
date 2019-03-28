@@ -1,0 +1,73 @@
+= Setting Content-Type for multipart/form-data values
+Marc Savy <marc@rhymewithgravy.com>
+:hp-tags: typescript, javascript
+
+I was recently creating a form that submitted two elements at once: a JSON payload, and a file.
+My back-end kept choking on the JSON payload, claiming it did not know how to decode it. 
+That seemed odd, to say the least.
+
+My first attempt looked something like this:
+
+```
+    const file .... 
+    const jsonPayload: String = JSON.stringify(objToSend);
+    const formData: FormData = new FormData();
+
+    formData.append('jsonPayload', jsonPayload);
+    formData.append('my-file', file);
+
+    return this.http.post<File>(`${this.resourceUrl}`, formData, {
+        observe: 'response'
+    });
+```
+
+This _appears_ to work, however your backend will likely start complaining about the `jsonPayload` field. Why?
+
+Let's see what the browser sent:
+
+```
+------WebKitFormBoundaryJU3pJb6zPtyXf5GH
+Content-Disposition: form-data; name="jsonPayload"
+
+{"foo":"bar"}
+
+------WebKitFormBoundaryJU3pJb6zPtyXf5GH
+Content-Disposition: form-data; name="my-file"; filename="something.csv"
+Content-Type: text/csv <1>
+
+------WebKitFormBoundaryJU3pJb6zPtyXf5GH--
+```
+
+
+At first blush, everything seems okay; the data is there, and the names seem correct.
+However, on closer inspection, notice that `my-file` has a `Content-Type` set at *(1)*, whilst `jsonPayload` does not.
+
+By default, most browsers will infer a `File` Content-Type correctly, but will not set a the Content-Type for the `jsonPayload` string.
+
+Unfortunately, the standard `append` String method on FormData doesn't seem to let us set the content type; so we must take a slightly more obscure route by creating a new `Blob`, into which goes our `jsonPayload` -- setting the content type in the subsequent options parameter:
+
+```
+   formData.append('jsonPayload', new Blob([
+       jsonPayload
+   ], {
+       type: "application/json"
+   }));
+```
+
+Now it should be behaving as expected:
+
+```
+------WebKitFormBoundaryJU3pJb6zPtyXf5GH
+Content-Disposition: form-data; name="jsonPayload"; filename="blob"
+Content-Type: application/json <1>
+
+{"foo":"bar"}
+------WebKitFormBoundaryJU3pJb6zPtyXf5GH
+Content-Disposition: form-data; name="my-file"; filename="something.csv"
+Content-Type: text/csv
+
+
+------WebKitFormBoundaryJU3pJb6zPtyXf5GH--
+```
+<1> Now our JSON payload has the correct Content-Type, hooray!
+
