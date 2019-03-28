@@ -1,4 +1,90 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[The Musings of Marc]]></title><description><![CDATA[I'm a core contributor on apiman, an open source API Management platform. My surname does not rhyme with gravy.]]></description><link>http://www.rhymewithgravy.com</link><generator>RSS for Node</generator><lastBuildDate>Sat, 19 Jan 2019 21:13:26 GMT</lastBuildDate><atom:link href="http://www.rhymewithgravy.com/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Farewell, Red Hat friends!]]></title><description><![CDATA[<div class="paragraph">
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[The Musings of Marc]]></title><description><![CDATA[I'm a core contributor on apiman, an open source API Management platform. My surname does not rhyme with gravy.]]></description><link>http://www.rhymewithgravy.com</link><generator>RSS for Node</generator><lastBuildDate>Thu, 28 Mar 2019 20:38:13 GMT</lastBuildDate><atom:link href="http://www.rhymewithgravy.com/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Setting Content-Type for multipart/form-data values]]></title><description><![CDATA[<div class="paragraph">
+<p>I was recently creating a form that submitted two elements at once: a JSON payload, and a file.
+My back-end kept choking on the JSON payload, claiming it did not know how to decode it.
+That seemed odd, to say the least.</p>
+</div>
+<div class="paragraph">
+<p>My first attempt looked something like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>    const file ....
+    const jsonPayload: String = JSON.stringify(objToSend);
+    const formData: FormData = new FormData();
+
+    formData.append('jsonPayload', jsonPayload);
+    formData.append('my-file', file);
+
+    return this.http.post&lt;File&gt;(`${this.resourceUrl}`, formData, {
+        observe: 'response'
+    });</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This <em>appears</em> to work, however your backend will likely start complaining about the <code>jsonPayload</code> field. Why?</p>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s see what the browser sent:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>------WebKitFormBoundaryJU3pJb6zPtyXf5GH
+Content-Disposition: form-data; name="jsonPayload"
+
+{"foo":"bar"}
+
+------WebKitFormBoundaryJU3pJb6zPtyXf5GH
+Content-Disposition: form-data; name="my-file"; filename="something.csv"
+Content-Type: text/csv <i class="conum" data-value="1"></i><b>(1)</b>
+
+------WebKitFormBoundaryJU3pJb6zPtyXf5GH--</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>At first blush, everything seems okay; the data is there, and the names seem correct.
+However, on closer inspection, notice that <code>my-file</code> has a <code>Content-Type</code> set at <strong>(1)</strong>, whilst <code>jsonPayload</code> does not.</p>
+</div>
+<div class="paragraph">
+<p>By default, most browsers will infer a <code>File</code> Content-Type correctly, but will not set a the Content-Type for the <code>jsonPayload</code> string.</p>
+</div>
+<div class="paragraph">
+<p>Unfortunately, the standard <code>append</code> String method on FormData doesn&#8217;t seem to let us set the content type; so we must take a slightly more obscure route by creating a new <code>Blob</code>, into which goes our <code>jsonPayload</code>&#8201;&#8212;&#8201;setting the content type in the subsequent options parameter:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>   formData.append('jsonPayload', new Blob([
+       jsonPayload
+   ], {
+       type: "application/json"
+   }));</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now it should be behaving as expected:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>------WebKitFormBoundaryJU3pJb6zPtyXf5GH
+Content-Disposition: form-data; name="jsonPayload"; filename="blob"
+Content-Type: application/json <i class="conum" data-value="1"></i><b>(1)</b>
+
+{"foo":"bar"}
+------WebKitFormBoundaryJU3pJb6zPtyXf5GH
+Content-Disposition: form-data; name="my-file"; filename="something.csv"
+Content-Type: text/csv
+
+
+------WebKitFormBoundaryJU3pJb6zPtyXf5GH--</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Now our JSON payload has the correct Content-Type, hooray!</td>
+</tr>
+</table>
+</div>]]></description><link>http://www.rhymewithgravy.com/2019/03/28/Setting-Content-Type-for-multipartform-data-values.html</link><guid isPermaLink="true">http://www.rhymewithgravy.com/2019/03/28/Setting-Content-Type-for-multipartform-data-values.html</guid><category><![CDATA[typescript]]></category><category><![CDATA[ javascript]]></category><dc:creator><![CDATA[Marc Savy]]></dc:creator><pubDate>Thu, 28 Mar 2019 00:00:00 GMT</pubDate></item><item><title><![CDATA[Farewell, Red Hat friends!]]></title><description><![CDATA[<div class="paragraph">
 <p><em>This is an approximate reproduction of the email I sent to my soon-to-be erstwhile Red Hat colleagues:</em></p>
 </div>
 <div class="paragraph">
